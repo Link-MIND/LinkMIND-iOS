@@ -166,6 +166,9 @@
 		3FE00F0C2BC632A500CC821E /* NetworkResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE6DA352B5059CE008B06FA /* NetworkResult.swift */; };
 		3FE28DC22B879B1400B6AED8 /* OnboardingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE28DC12B879B1400B6AED8 /* OnboardingType.swift */; };
 		3FE828352B54E58E00F10732 /* APIInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE828342B54E58E00F10732 /* APIInterceptor.swift */; };
+		3FEA674B2CB51BBC00675805 /* PatchChangeCategoryRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA674A2CB51BBC00675805 /* PatchChangeCategoryRequestDTO.swift */; };
+		3FEA674D2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA674C2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift */; };
+		3FEA674E2CB51E6D00675805 /* PatchChangeCategoryRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA674A2CB51BBC00675805 /* PatchChangeCategoryRequestDTO.swift */; };
 		3FF02B302CAFE6600074332E /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8334CF9F2CA6E2D200319922 /* ViewModelType.swift */; };
 		3FF2BF092BA17492001D7DC1 /* ToasterShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3FF2BEFF2BA17492001D7DC1 /* ToasterShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3FF2BF0E2BA188AE001D7DC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B6AE6572B3FF103000E2366 /* Assets.xcassets */; };
@@ -417,6 +420,8 @@
 		3FE00F0A2BC6328900CC821E /* MoyaPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoyaPlugin.swift; sourceTree = "<group>"; };
 		3FE28DC12B879B1400B6AED8 /* OnboardingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingType.swift; sourceTree = "<group>"; };
 		3FE828342B54E58E00F10732 /* APIInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIInterceptor.swift; sourceTree = "<group>"; };
+		3FEA674A2CB51BBC00675805 /* PatchChangeCategoryRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchChangeCategoryRequestDTO.swift; sourceTree = "<group>"; };
+		3FEA674C2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchChangeCategoryResponseDTO.swift; sourceTree = "<group>"; };
 		3FF2BEFF2BA17492001D7DC1 /* ToasterShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ToasterShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FF2BF062BA17492001D7DC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B0E85D82B564913001BC15F /* RemindTimerAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindTimerAddViewModel.swift; sourceTree = "<group>"; };
@@ -1502,6 +1507,7 @@
 				6BE6DA812B545786008B06FA /* PostSaveLinkRequestDTO.swift */,
 				390247A92B58016C00F9A86A /* PatchOpenLinkRequestDTO.swift */,
 				8388E98B2BC8FAB200858C5C /* PatchEditLinkTitleRequestDTO.swift */,
+				3FEA674A2CB51BBC00675805 /* PatchChangeCategoryRequestDTO.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -1512,6 +1518,7 @@
 				6BE6DA872B546B24008B06FA /* PatchOpenLinkResponseDTO.swift */,
 				6BE6DA8B2B546CA9008B06FA /* GetWeeksLinkResponseDTO.swift */,
 				8364220B2BE7BFB2005C4085 /* PatchEditLinkTitleResponseDTO.swift */,
+				3FEA674C2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1945,6 +1952,7 @@
 				3F3ED29B2BA1A475004E79F0 /* PatchEditTimerRequestDTO.swift in Sources */,
 				3F3ED29C2BA1A475004E79F0 /* PatchEditTimerTitleRequestDTO.swift in Sources */,
 				3F3ED29D2BA1A475004E79F0 /* PostCreateTimerRequestDTO.swift in Sources */,
+				3FEA674E2CB51E6D00675805 /* PatchChangeCategoryRequestDTO.swift in Sources */,
 				3F1F26262BAAC231004F75CE /* ShareViewController.swift in Sources */,
 				3F1F26222BAAB395004F75CE /* ToasterToastMessageView.swift in Sources */,
 				3F3ED2992BA1A46E004E79F0 /* PatchOpenLinkResponseDTO.swift in Sources */,
@@ -2048,6 +2056,8 @@
 				830517962B4D21BB009FFB60 /* CompositioinalFactory.swift in Sources */,
 				6BE6D9E82B4EA773008B06FA /* RemindCollectionFooterView.swift in Sources */,
 				39A843CA2B74512B007A4D75 /* DetailClipViewModel.swift in Sources */,
+				3FEA674D2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift in Sources */,
+				3FEA674B2CB51BBC00675805 /* PatchChangeCategoryRequestDTO.swift in Sources */,
 				83CFC3392B568BE700A2EB2B /* RecommendSiteModel.swift in Sources */,
 				391908442B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift in Sources */,
 				6BE6D9F42B4EF568008B06FA /* RemindTimerEditBottomSheetView.swift in Sources */,
