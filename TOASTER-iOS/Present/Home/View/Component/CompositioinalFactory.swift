@@ -69,12 +69,12 @@ enum CompositionalFactory {
     // MARK: - User Clip 에 대한 Layout
     
     static func createUserClipSection() -> NSCollectionLayoutSection {
-        let itemFractionalWidthFraction = 1.0 / 2.0
-        let itemInset: CGFloat = 7
+        let itemFractionalWidthFraction = 1.0 / 1.0
+        let itemInset: CGFloat = 8
         
         // item
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(itemFractionalWidthFraction),
-                                              heightDimension: .absolute(150))
+                                              heightDimension: .absolute(98))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: itemInset,
                                                      leading: itemInset,
@@ -83,7 +83,7 @@ enum CompositionalFactory {
         
         // group
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .absolute(150))
+                                               heightDimension: .absolute(98))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
                                                        subitems: [item])
         
