@@ -41,6 +41,7 @@ final class HomeViewController: UIViewController {
         viewModel.fetchWeeklyLinkData()
         viewModel.fetchRecommendSiteData()
         viewModel.getPopupInfoAPI()
+        viewModel.fetchRecentLinkData()
     }
 }
 
@@ -91,8 +92,8 @@ extension HomeViewController: UICollectionViewDataSource {
         case 0:
             return 1
         case 1:
-            let count = viewModel.mainInfoList.mainCategoryListDto.count
-            return min(count + 1, 4)
+            let count = viewModel.recentLink.count
+            return min(count + 1, 3)
         case 2:
             return viewModel.weeklyLinkList.count
         case 3:
@@ -113,26 +114,20 @@ extension HomeViewController: UICollectionViewDataSource {
             cell.bindData(forModel: model)
             return cell
         case 1:
-            let lastIndex = viewModel.mainInfoList.mainCategoryListDto.count
-            if indexPath.item == lastIndex && lastIndex < 4 {
+            let lastIndex = viewModel.recentLink.count
+            if indexPath.item == lastIndex && lastIndex < 3 {
                 guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: UserClipEmptyCollectionViewCell.className,
+                    withReuseIdentifier: DetailClipListCollectionViewCell.className,
                     for: indexPath
-                ) as? UserClipEmptyCollectionViewCell else { return UICollectionViewCell() }
+                ) as? DetailClipListCollectionViewCell else { return UICollectionViewCell() }
                 return cell
             } else {
                 guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: UserClipCollectionViewCell.className,
+                    withReuseIdentifier: DetailClipListCollectionViewCell.className,
                     for: indexPath
-                ) as? UserClipCollectionViewCell else { return UICollectionViewCell() }
-                let model = viewModel.mainInfoList.mainCategoryListDto
-                if indexPath.item == 0 {
-                    cell.bindData(forModel: model[indexPath.item],
-                                  icon: .icAllClip24.withTintColor(.black900))
-                } else {
-                    cell.bindData(forModel: model[indexPath.item],
-                                  icon: .icClipFull24)
-                }
+                ) as? DetailClipListCollectionViewCell else { return UICollectionViewCell() }
+                let model = viewModel.recentLink
+                cell.configureCell(forModel: model[indexPath.item], isClipHidden: false)
                 return cell
             }
         case 2:
@@ -235,8 +230,8 @@ private extension HomeViewController {
                         forCellWithReuseIdentifier: WeeklyLinkCollectionViewCell.className)
             $0.register(WeeklyRecommendCollectionViewCell.self,
                         forCellWithReuseIdentifier: WeeklyRecommendCollectionViewCell.className)
-            $0.register(UserClipEmptyCollectionViewCell.self,
-                        forCellWithReuseIdentifier: UserClipEmptyCollectionViewCell.className)
+            $0.register(DetailClipListCollectionViewCell.self,
+                        forCellWithReuseIdentifier: DetailClipListCollectionViewCell.className)
             
             // header
             $0.register(HomeHeaderCollectionView.self,

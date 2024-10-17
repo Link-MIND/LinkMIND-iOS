@@ -294,6 +294,7 @@
 		83CFC33B2B57324700A2EB2B /* SaveLinkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CFC33A2B57324700A2EB2B /* SaveLinkModel.swift */; };
 		83D80DCC2CC1059000DD5410 /* RecentLinkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D80DCB2CC1059000DD5410 /* RecentLinkModel.swift */; };
 		83D80DD02CC10D8C00DD5410 /* GetRecentLinkResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D80DCF2CC10D8C00DD5410 /* GetRecentLinkResponseDTO.swift */; };
+		83D80DD12CC1113E00DD5410 /* GetRecentLinkResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D80DCF2CC10D8C00DD5410 /* GetRecentLinkResponseDTO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1895,6 +1896,7 @@
 				3F3ED27C2BA1A29F004E79F0 /* BaseAPIService.swift in Sources */,
 				3F3ED2B32BA1D59D004E79F0 /* ClipListCollectionViewCell.swift in Sources */,
 				3F3ED2B72BA1D897004E79F0 /* SearchResultModel.swift in Sources */,
+				83D80DD12CC1113E00DD5410 /* GetRecentLinkResponseDTO.swift in Sources */,
 				3F3ED2812BA1A3F5004E79F0 /* ClipAPIService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

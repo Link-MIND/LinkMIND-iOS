@@ -92,6 +92,29 @@ extension DetailClipListCollectionViewCell {
         }
     }
     
+    func configureCell(forModel: RecentLinkModel, isClipHidden: Bool) {
+        modifiedButton.isHidden = false
+        clipNameLabel.text = forModel.toastTitle
+        linkTitleLabel.text = forModel.toastTitle
+        linkLabel.text = forModel.linkUrl
+        isClipNameLabelHidden = forModel.categoryTitle != nil ? true : false
+        isReadDimmedView = forModel.isRead
+        toastId = forModel.toastId
+        
+        if forModel.categoryTitle != nil && !isClipHidden {
+            clipNameLabel.text = forModel.categoryTitle
+            isClipNameLabelHidden = false
+        } else {
+            isClipNameLabelHidden = true
+        }
+        
+        if let imageURL = forModel.thumbnailUrl {
+            linkImage.kf.setImage(with: URL(string: imageURL))
+        } else {
+            linkImage.image = .imgThumbnail
+        }
+    }
+    
     func configureCell(forModel: SearchResultDetailClipModel, forText: String) {
         modifiedButton.isHidden = true
         linkTitleLabel.text = forModel.title
