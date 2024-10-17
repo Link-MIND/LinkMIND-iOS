@@ -17,7 +17,7 @@ enum CompositionalFactory {
             case 0:
                 section = createMainSection()
             case 1:
-                section = createUserClipSection()
+                section = createUserRecentLinkSection()
             case 2:
                 section = createWeeklyLinkSection()
             case 3:
@@ -68,7 +68,7 @@ enum CompositionalFactory {
     
     // MARK: - User Clip 에 대한 Layout
     
-    static func createUserClipSection() -> NSCollectionLayoutSection {
+    static func createUserRecentLinkSection() -> NSCollectionLayoutSection {
         let itemFractionalWidthFraction = 1.0 / 1.0
         let itemInset: CGFloat = 8
         
