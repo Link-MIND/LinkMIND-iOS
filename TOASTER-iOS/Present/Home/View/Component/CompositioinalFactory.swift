@@ -74,16 +74,16 @@ enum CompositionalFactory {
         
         // item
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(itemFractionalWidthFraction),
-                                              heightDimension: .absolute(98))
+                                              heightDimension: .absolute(104))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: itemInset,
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0,
                                                      leading: itemInset,
                                                      bottom: itemInset,
                                                      trailing: itemInset)
         
         // group
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .absolute(98))
+                                               heightDimension: .absolute(104))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
                                                        subitems: [item])
         
@@ -101,7 +101,7 @@ enum CompositionalFactory {
                                                         elementKind: UICollectionView.elementKindSectionHeader, 
                                                         alignment: .top),
             NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                          heightDimension: .absolute(17)),
+                                                                          heightDimension: .absolute(9)),
                                                         elementKind: UICollectionView.elementKindSectionFooter, 
                                                         alignment: .bottom)]
         return section
