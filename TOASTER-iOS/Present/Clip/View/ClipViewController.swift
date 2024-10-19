@@ -7,6 +7,7 @@
 
 import UIKit
 
+import SkeletonView
 import SnapKit
 import Then
 
@@ -79,6 +80,7 @@ private extension ClipViewController {
     
     func setupViewModel() {
         viewModel.setupDataChangeAction(changeAction: reloadCollectionView,
+                                        loadingAction: setupSkeleton,
                                         forUnAuthorizedAction: unAuthorizedAction,
                                         editAction: addClipAction,
                                         moveAction: moveBottomAction)
@@ -87,6 +89,16 @@ private extension ClipViewController {
     func reloadCollectionView(isHidden: Bool) {
         clipListCollectionView.reloadData()
         clipEmptyView.isHidden = isHidden
+    }
+    
+    func setupSkeleton(isLoading: Bool) {
+        clipListCollectionView.isSkeletonable = true
+        if isLoading {
+            clipEmptyView.isHidden = true
+            clipListCollectionView.showAnimatedGradientSkeleton()
+        } else {
+            clipListCollectionView.hideSkeleton()
+        }
     }
     
     func unAuthorizedAction() {
@@ -148,7 +160,11 @@ extension ClipViewController: UICollectionViewDelegate {
 
 // MARK: - CollectionView DataSource
 
-extension ClipViewController: UICollectionViewDataSource {
+extension ClipViewController: SkeletonCollectionViewDataSource {
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> SkeletonView.ReusableCellIdentifier {
+        return ClipListCollectionViewCell.className
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.clipList.clips.count + 1
     }

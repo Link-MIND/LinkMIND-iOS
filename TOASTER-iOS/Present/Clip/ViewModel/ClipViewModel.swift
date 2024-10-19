@@ -13,12 +13,13 @@ final class ClipViewModel: NSObject {
     
     typealias DataChangeAction = (Bool) -> Void
     private var dataChangeAction: DataChangeAction?
+    private var loadingStatusAction: DataChangeAction?
     private var moveBottomAction: DataChangeAction?
     
     typealias NormalChangeAction = () -> Void
     private var unAuthorizedAction: NormalChangeAction?
     private var textFieldEditAction: NormalChangeAction?
-        
+    
     // MARK: - Data
     
     private(set) var clipList: ClipModel = ClipModel(allClipToastCount: 0, clips: []) {
@@ -32,24 +33,28 @@ final class ClipViewModel: NSObject {
 
 extension ClipViewModel {
     func setupDataChangeAction(changeAction: @escaping DataChangeAction,
+                               loadingAction: @escaping DataChangeAction,
                                forUnAuthorizedAction: @escaping NormalChangeAction,
                                editAction: @escaping NormalChangeAction,
                                moveAction: @escaping DataChangeAction) {
         dataChangeAction = changeAction
+        loadingStatusAction = loadingAction
         unAuthorizedAction = forUnAuthorizedAction
         textFieldEditAction = editAction
         moveBottomAction = moveAction
     }
     
     func getAllCategoryAPI() {
+        loadingStatusAction?(true)
         NetworkService.shared.clipService.getAllCategory { [weak self] result in
+            self?.loadingStatusAction?(false)
             switch result {
             case .success(let response):
                 let allClipToastCount = response?.data.toastNumberInEntire
                 let clips = response?.data.categories.map {
                     AllClipModel(id: $0.categoryId,
-                                title: $0.categoryTitle,
-                                toastCount: $0.toastNum)
+                                 title: $0.categoryTitle,
+                                 toastCount: $0.toastNum)
                 }
                 self?.clipList = ClipModel(allClipToastCount: allClipToastCount ?? 0,
                                            clips: clips ?? [])

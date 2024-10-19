@@ -7,6 +7,7 @@
 
 import UIKit
 
+import SkeletonView
 import SnapKit
 import Then
 
@@ -27,6 +28,7 @@ final class ClipListCollectionViewCell: UICollectionViewCell {
         setupStyle()
         setupHierarchy()
         setupLayout()
+        setupSkeleton()
     }
     
     required init?(coder: NSCoder) {
@@ -104,6 +106,13 @@ private extension ClipListCollectionViewCell {
             $0.centerY.equalTo(clipImage)
             $0.trailing.equalToSuperview().inset(14)
             $0.size.equalTo(20)
+        }
+    }
+    
+    func setupSkeleton() {
+        isSkeletonable = true
+        [clipImage, clipNameLabel, countLabel, arrowImage].forEach {
+            $0.isSkeletonable = true
         }
     }
 }
