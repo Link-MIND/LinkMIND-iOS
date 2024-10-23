@@ -5,9 +5,11 @@
 //  Created by 김다예 on 12/30/23.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
+import Then
 
 final class DetailClipViewController: UIViewController {
     
@@ -16,19 +18,31 @@ final class DetailClipViewController: UIViewController {
     // MARK: - UI Properties
     
     private let viewModel = DetailClipViewModel()
+    private let changeClipViewModel = ChangeClipViewModel()
     private let detailClipSegmentedControlView = DetailClipSegmentedControlView()
     private let detailClipEmptyView = DetailClipEmptyView()
     private let detailClipListCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
-    private let deleteLinkBottomSheetView = DeleteLinkBottomSheetView()
-    private lazy var editBottom = ToasterBottomSheetViewController(bottomType: .gray,
-                                                               bottomTitle: "수정하기",
-                                                               insertView: deleteLinkBottomSheetView)
+    private let linkOptionBottomSheetView = LinkOptionBottomSheetView()
+    private lazy var optionBottom = ToasterBottomSheetViewController(bottomType: .gray,
+                                                               bottomTitle: "더보기",
+                                                               insertView: linkOptionBottomSheetView)
     
     private let editLinkBottomSheetView = EditLinkBottomSheetView()
     private lazy var editLinkBottom = ToasterBottomSheetViewController(bottomType: .white,
                                                                        bottomTitle: "링크 제목 편집",
                                                                        insertView: editLinkBottomSheetView)
+    
+    private let changeClipBottomSheetView = ChangeClipBottomSheetView()
+    private lazy var changeClipBottom = ToasterBottomSheetViewController(bottomType: .gray,
+                                                                       bottomTitle: "클립을 선택해 주세요",
+                                                                       insertView: changeClipBottomSheetView)
+    
+    private let changeClipSubject = PassthroughSubject<Void, Never>()
+    private let selectedClipSubject = PassthroughSubject<Int, Never>()
+    private let completeButtonSubject = PassthroughSubject<Void, Never>()
+    
+    private var cancelBag = CancelBag()
     
     // MARK: - Life Cycle
     
@@ -41,6 +55,7 @@ final class DetailClipViewController: UIViewController {
         setupRegisterCell()
         setupDelegate()
         setupViewModel()
+        bindViewModels()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,6 +72,7 @@ extension DetailClipViewController {
     func setupCategory(id: Int, name: String) {
         viewModel.categoryId = id
         viewModel.categoryName = name
+        changeClipViewModel.setupCateogry(id)
     }
 }
 
@@ -104,6 +120,7 @@ private extension DetailClipViewController {
         detailClipListCollectionView.dataSource = self
         detailClipSegmentedControlView.detailClipSegmentedDelegate = self
         viewModel.delegate = self
+        changeClipBottomSheetView.delegate = self
     }
     
     func setupViewModel() {
@@ -135,6 +152,52 @@ private extension DetailClipViewController {
             navigationController.setupNavigationBar(forType: type)
         }
     }
+    
+    func bindViewModels() {
+        let input = ChangeClipViewModel.Input(
+            changeButtonTap: changeClipSubject.eraseToAnyPublisher(),
+            selectedClip: selectedClipSubject.eraseToAnyPublisher(),
+            completeButtonTap: completeButtonSubject.eraseToAnyPublisher()
+        )
+        
+        let output = changeClipViewModel.transform(input, cancelBag: cancelBag)
+        
+        output.clipData
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] clipData in
+                self?.changeClipBottomSheetView.dataSourceHandler = { clipData }
+                self?.changeClipBottomSheetView.reloadChangeClipBottom()
+            }
+            .store(in: cancelBag)
+        
+        output.isCompleteButtonEnable
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                self?.changeClipBottomSheetView.updateCompleteButtonUI(result)
+            }
+            .store(in: cancelBag)
+            
+        output.changeCategoryResult
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                guard let self else { return }
+                if result == true {
+                    
+                    self.changeClipBottom.dismiss(animated: true) {
+                        if self.viewModel.categoryId == 0 {
+                            self.viewModel.getDetailAllCategoryAPI(filter: .all)
+                        } else {
+                            self.viewModel.getDetailCategoryAPI(categoryID: self.viewModel.categoryId, filter: .all)
+                        }
+                    }
+
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.showToastMessage(width: 152, status: .check, message: "링크 이동 완료")
+                    }
+                }
+            }
+            .store(in: cancelBag)
+    }
 }
 
 // MARK: - CollectionView DataSource
@@ -158,15 +221,26 @@ extension DetailClipViewController: UICollectionViewDataSource {
             cell.configureCell(forModel: viewModel.toastList, index: indexPath.item, isClipHidden: true)
         }
         
-        /// "수정하기" 클릭 시
-        deleteLinkBottomSheetView.setupEditLinkTitleBottomSheetButtonAction {
+        // "수정하기" 클릭 시
+        linkOptionBottomSheetView.setupEditLinkTitleBottomSheetButtonAction {
             self.dismiss(animated: true) {
                 self.editLinkBottom.setupSheetPresentation(bottomHeight: 198)
                 self.present(self.editLinkBottom, animated: true)
             }
         }
-        /// "삭제" 클릭 시
-        deleteLinkBottomSheetView.setupDeleteLinkBottomSheetButtonAction {
+        
+        // "클립이동" 클릭 시
+        linkOptionBottomSheetView.setupChangeClipBottomSheetButtonAction {
+            self.changeClipSubject.send()
+            
+            self.dismiss(animated: true) {
+                self.changeClipBottom.setupSheetPresentation(bottomHeight: self.changeClipViewModel.collectionViewHeight + 185)
+                self.present(self.changeClipBottom, animated: true)
+            }
+        }
+        
+        // "삭제" 클릭 시
+        linkOptionBottomSheetView.setupDeleteLinkBottomSheetButtonAction {
             self.viewModel.deleteLinkAPI(toastId: self.viewModel.toastId)
             self.dismiss(animated: true) { [weak self] in
                 self?.showToastMessage(width: 152, status: .check, message: StringLiterals.ToastMessage.completeDeleteLink)
@@ -270,8 +344,9 @@ extension DetailClipViewController: DetailClipSegmentedDelegate {
 extension DetailClipViewController: DetailClipListCollectionViewCellDelegate {
     func modifiedButtonTapped(toastId: Int) {
         viewModel.toastId = toastId
-        editBottom.setupSheetPresentation(bottomHeight: 226)
-        present(editBottom, animated: true)
+        changeClipViewModel.setupToastId(toastId)
+        optionBottom.setupSheetPresentation(bottomHeight: 280)
+        present(optionBottom, animated: true)
     }
 }
 
@@ -307,5 +382,15 @@ extension DetailClipViewController: PatchClipDelegate {
         ) {
             self.detailClipListCollectionView.reloadData()
         }
+    }
+}
+
+extension DetailClipViewController: ChangeClipBottomSheetViewDelegate {
+    func didSelectClip(selectClipId: Int) {
+        selectedClipSubject.send(selectClipId)
+    }
+    
+    func completButtonTap() {
+        completeButtonSubject.send()
     }
 }

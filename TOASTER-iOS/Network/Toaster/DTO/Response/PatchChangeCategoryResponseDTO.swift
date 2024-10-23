@@ -7,6 +7,12 @@
 
 import Foundation
 
-struct PatchChangeCategoryResponseDTO: Decodable {
+struct PatchChangeCategoryResponseDTO: Codable {
+    let code: Int
+    let message: String
+    let data: PatchChangeCategoryResponseData
+}
+
+struct PatchChangeCategoryResponseData: Codable {
     let categoryId: Int
 }

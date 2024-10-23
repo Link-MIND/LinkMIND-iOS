@@ -10,20 +10,23 @@ import UIKit
 import SnapKit
 import Then
 
-final class DeleteLinkBottomSheetView: UIView {
+final class LinkOptionBottomSheetView: UIView {
     
     // MARK: - Properties
     
     private var deleteLinkBottomSheetViewButtonAction: (() -> Void)?
     private var editLinkTitleBottomSheetViewButtonAction: (() -> Void)?
     private var confirmBottomSheetViewButtonAction: (() -> Void)?
+    private var changeClipBottomSheetViewButtonAction: (() -> Void)?
     
     // MARK: - UI Components
     
     private let deleteButton = UIButton()
     private let editButton = UIButton()
+    private let changeClipButton = UIButton()
     private let deleteButtonLabel = UILabel()
     private let editButtonLabel = UILabel()
+    private let changeClipButtonLabel = UILabel()
     
     // MARK: - Life Cycles
     
@@ -44,7 +47,7 @@ final class DeleteLinkBottomSheetView: UIView {
 
 // MARK: - Extensions
 
-extension DeleteLinkBottomSheetView {
+extension LinkOptionBottomSheetView {
     func setupDeleteLinkBottomSheetButtonAction(_ action: (() -> Void)?) {
         deleteLinkBottomSheetViewButtonAction = action
     }
@@ -56,11 +59,15 @@ extension DeleteLinkBottomSheetView {
     func setupConfirmBottomSheetButtonAction(_ action: (() -> Void)?) {
         confirmBottomSheetViewButtonAction = action
     }
+    
+    func setupChangeClipBottomSheetButtonAction(_ action: (() -> Void)?) {
+        changeClipBottomSheetViewButtonAction = action
+    }
 }
 
 // MARK: - Private Extensions
 
-private extension DeleteLinkBottomSheetView {
+private extension LinkOptionBottomSheetView {
     func setupStyle() {
         backgroundColor = .gray50
   
@@ -76,8 +83,12 @@ private extension DeleteLinkBottomSheetView {
             $0.makeRounded(radius: 12)
         }
         
+        changeClipButton.do {
+            $0.backgroundColor = .toasterWhite
+        }
+        
         editButtonLabel.do {
-            $0.text = "수정하기"
+            $0.text = "제목 편집"
             $0.textColor = .black900
             $0.font = .suitMedium(size: 16)
         }
@@ -87,11 +98,18 @@ private extension DeleteLinkBottomSheetView {
             $0.textColor = .toasterError
             $0.font = .suitMedium(size: 16)
         }
+        
+        changeClipButtonLabel.do {
+            $0.text = "클립 이동"
+            $0.textColor = .black900
+            $0.font = .suitMedium(size: 16)
+        }
     }
     
     func setupHierarchy() {
-        addSubviews(editButton, deleteButton)
+        addSubviews(editButton, changeClipButton, deleteButton)
         editButton.addSubview(editButtonLabel)
+        changeClipButton.addSubview(changeClipButtonLabel)
         deleteButton.addSubview(deleteButtonLabel)
     }
     
@@ -102,13 +120,19 @@ private extension DeleteLinkBottomSheetView {
             $0.height.equalTo(54)
         }
         
-        deleteButton.snp.makeConstraints {
+        changeClipButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.top.equalTo(editButton.snp.bottom).offset(1)
             $0.height.equalTo(54)
         }
         
-        [editButtonLabel, deleteButtonLabel].forEach {
+        deleteButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.top.equalTo(changeClipButton.snp.bottom).offset(1)
+            $0.height.equalTo(54)
+        }
+        
+        [editButtonLabel, changeClipButtonLabel, deleteButtonLabel].forEach {
             $0.snp.makeConstraints {
                 $0.centerY.equalToSuperview()
                 $0.leading.equalToSuperview().inset(20)
@@ -119,6 +143,7 @@ private extension DeleteLinkBottomSheetView {
     func setupAddTarget() {
         editButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         deleteButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        changeClipButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
     
     @objc
@@ -128,6 +153,8 @@ private extension DeleteLinkBottomSheetView {
             editLinkTitleBottomSheetViewButtonAction?()
         case deleteButton:
             deleteLinkBottomSheetViewButtonAction?()
+        case changeClipButton:
+            changeClipBottomSheetViewButtonAction?()
         default:
             break
         }
