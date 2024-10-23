@@ -311,9 +311,9 @@ extension ShareViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RemindSelectClipCollectionViewCell.className, for: indexPath) as? RemindSelectClipCollectionViewCell else { return UICollectionViewCell() }
         
         if indexPath.item == 0 {
-            cell.configureCell(forModel: viewModel.clipData[indexPath.item], icon: .icAllClip24, isShareExtension: true)
+            cell.configureCell(forModel: viewModel.clipData[indexPath.item], icon: .icAllClip24, isRounded: false)
         } else {
-            cell.configureCell(forModel: viewModel.clipData[indexPath.item], icon: .icClip24Black, isShareExtension: true)
+            cell.configureCell(forModel: viewModel.clipData[indexPath.item], icon: .icClip24Black, isRounded: false)
         }
         
         return cell

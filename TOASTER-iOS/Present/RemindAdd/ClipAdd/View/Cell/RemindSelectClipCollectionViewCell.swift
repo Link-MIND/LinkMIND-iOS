@@ -10,21 +10,31 @@ import UIKit
 import SnapKit
 import Then
 
+enum ClipCellType {
+    case remind
+    case shareExtension
+    case chagneClip
+}
+
 final class RemindSelectClipCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
+    
+    private var currentCategoryTitle: String?
 
     override var isSelected: Bool {
         didSet {
-            if isSelected {
-                setupSelected()
-            } else {
-                setupDeselected()
+            if clipTitleLabel.text != currentCategoryTitle {
+                if isSelected {
+                    setupSelected()
+                } else {
+                    setupDeselected()
+                }
             }
         }
     }
 
-    var isShareExtension = false {
+    var isRounded = true {
         didSet {
             updateRoundedStyle()
         }
@@ -67,11 +77,34 @@ extension RemindSelectClipCollectionViewCell {
         clipImageView.image = isSelected == true ? icon.withTintColor(.toasterPrimary) : icon
     }
     
-    func configureCell(forModel: RemindClipModel, icon: UIImage, isShareExtension: Bool) {
+    func configureCell(forModel: RemindClipModel, icon: UIImage, isRounded: Bool) {
         clipTitleLabel.text = forModel.title
         clipCountLabel.text = "\(forModel.clipCount)개"
         clipImageView.image = isSelected == true ? icon.withTintColor(.toasterPrimary) : icon
-        self.isShareExtension = isShareExtension
+        self.isRounded = isRounded
+    }
+    
+    func configureCurrentClipCell(forModel: SelectClipModel, icon: UIImage) {
+        currentCategoryTitle = forModel.title
+        clipTitleLabel.text = forModel.title
+        clipCountLabel.text = "\(forModel.clipCount)개"
+        clipImageView.image = icon
+        
+        clipTitleLabel.textColor = .gray200
+        clipCountLabel.textColor = .gray200
+
+        self.isRounded = false
+    }
+    
+    func configureChnageClipCell(forModel: SelectClipModel, icon: UIImage) {
+        clipTitleLabel.text = forModel.title
+        clipCountLabel.text = "\(forModel.clipCount)개"
+        clipImageView.image = icon
+
+        clipTitleLabel.textColor = .black850
+        clipCountLabel.textColor = .gray600
+        
+        self.isRounded = false
     }
 }
 
@@ -139,10 +172,10 @@ private extension RemindSelectClipCollectionViewCell {
     }
     
     func updateRoundedStyle() {
-        if isShareExtension {
-            makeRounded(radius: 0)
-        } else {
+        if isRounded {
             makeRounded(radius: 12)
+        } else {
+            makeRounded(radius: 0)
         }
     }
 }
