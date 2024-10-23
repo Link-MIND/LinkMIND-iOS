@@ -9,19 +9,12 @@ import UIKit
 import SnapKit
 import Then
 
-protocol MainCollectionViewDelegate: AnyObject {
-    func searchButtonTapped()
-}
-
 // MARK: - main section
 
 final class MainCollectionViewCell: UICollectionViewCell {
     
-    weak var mainCollectionViewDelegate: MainCollectionViewDelegate?
-    
     // MARK: - UI Components
     
-    private let searchButton = UIButton()
     private let userLabel = UILabel()
     private let noticeLabel = UILabel()
     private let countToastLabel = UILabel()
@@ -76,21 +69,6 @@ extension MainCollectionViewCell {
 
 private extension MainCollectionViewCell {
     func setupStyle() {
-        searchButton.do {
-            $0.makeRounded(radius: 12)
-            $0.setImage(.icSearch20, for: .normal)
-            $0.setTitle(StringLiterals.Placeholder.search, for: .normal)
-            $0.setTitleColor(.gray400, for: .normal)
-            $0.titleLabel?.font = .suitRegular(size: 16)
-            $0.contentHorizontalAlignment = .left
-            $0.imageView?.contentMode = .scaleAspectFit
-            $0.semanticContentAttribute = .forceLeftToRight
-            var configuration = UIButton.Configuration.filled()
-            configuration.imagePadding = 8
-            configuration.baseBackgroundColor = .gray50
-            $0.configuration = configuration
-            $0.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        }
         
         userLabel.do {
             $0.font = .suitRegular(size: 20)
@@ -120,22 +98,15 @@ private extension MainCollectionViewCell {
     }
     
     func setupHierarchy() {
-        addSubviews(searchButton, 
-                    userLabel,
+        addSubviews(userLabel,
                     noticeLabel,
                     countToastLabel,
                     linkProgressView)
     }
     
     func setupLayout() {
-        searchButton.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(42)
-        }
-        
         userLabel.snp.makeConstraints {
-            $0.top.equalTo(searchButton.snp.bottom).offset(18)
+            $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(22)
         }
         
@@ -154,9 +125,5 @@ private extension MainCollectionViewCell {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(12)
         }
-    }
-    
-    @objc func buttonTapped() {
-        mainCollectionViewDelegate?.searchButtonTapped()
     }
 }

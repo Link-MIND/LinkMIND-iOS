@@ -185,7 +185,7 @@ private extension ShareViewController {
                 if itemProvider.hasItemConformingToTypeIdentifier("public.url") {
                     itemProvider.loadItem(forTypeIdentifier: "public.url") { [weak self] (url, error) in
                         if let shareURL = url as? URL {
-                            self?.urlString = shareURL.absoluteString
+                            self?.shareViewModel.bindUrl(shareURL.absoluteString)
                         } else {
                             print("Error loading URL: \(error?.localizedDescription ?? "")")
                         }

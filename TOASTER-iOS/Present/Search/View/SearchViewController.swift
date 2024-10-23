@@ -29,7 +29,6 @@ final class SearchViewController: UIViewController {
     
     private let navigationBar: UIView = UIView()
     private let searchTextField: UITextField = UITextField()
-    private let backButton: UIButton = UIButton()
     private let searchButton: UIButton = UIButton()
     private let clearButton: UIButton = UIButton()
     
@@ -51,13 +50,7 @@ final class SearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        hideNavigationBar()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        showNavigationBar()
+        setupNavigationBar()
     }
 }
 
@@ -72,11 +65,6 @@ private extension SearchViewController {
         
         navigationBar.do {
             $0.backgroundColor = .toasterBackground
-        }
-        
-        backButton.do {
-            $0.setImage(.icArrowLeft24, for: .normal)
-            $0.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         }
         
         searchButton.do {
@@ -112,7 +100,7 @@ private extension SearchViewController {
     
     func setupHierarchy() {
         view.addSubviews(navigationBar, emptyView, searchResultCollectionView)
-        navigationBar.addSubviews(backButton, searchTextField)
+        navigationBar.addSubview(searchTextField)
         searchTextField.addSubviews(searchButton, clearButton)
     }
     
@@ -121,12 +109,6 @@ private extension SearchViewController {
             $0.height.equalTo(64)
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.horizontalEdges.equalToSuperview()
-        }
-        
-        backButton.snp.makeConstraints {
-            $0.width.height.equalTo(24)
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(20)
         }
         
         [searchButton, clearButton].forEach {
@@ -139,9 +121,8 @@ private extension SearchViewController {
         
         searchTextField.snp.makeConstraints {
             $0.height.equalTo(42)
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(backButton.snp.trailing).offset(12)
-            $0.trailing.equalToSuperview().inset(20)
+            $0.top.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         emptyView.snp.makeConstraints {
@@ -195,6 +176,18 @@ private extension SearchViewController {
         self.changeViewController(viewController: LoginViewController())
     }
     
+    func setupNavigationBar() {
+        let type: ToasterNavigationType = ToasterNavigationType(hasBackButton: false,
+                                                                hasRightButton: false,
+                                                                mainTitle: StringOrImageType.string(StringLiterals.Tabbar.search),
+                                                                rightButton: StringOrImageType.string(""),
+                                                                rightButtonAction: {})
+        
+        if let navigationController = navigationController as? ToasterNavigationController {
+            navigationController.setupNavigationBar(forType: type)
+        }
+    }
+    
     @objc func searchButtonTapped() {
         fetchSearchResult()
     }
@@ -203,10 +196,6 @@ private extension SearchViewController {
         isSearching = true
         searchTextField.text = nil
         searchTextField.becomeFirstResponder()
-    }
-    
-    @objc func backButtonTapped() {
-        navigationController?.popViewController(animated: true)
     }
 }
 

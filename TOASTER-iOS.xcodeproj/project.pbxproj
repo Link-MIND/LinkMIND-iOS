@@ -50,6 +50,10 @@
 		39A843CA2B74512B007A4D75 /* DetailClipViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A843C92B74512B007A4D75 /* DetailClipViewModel.swift */; };
 		39A843CE2B745B3A007A4D75 /* DetailClipPropertyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A843CD2B745B3A007A4D75 /* DetailClipPropertyType.swift */; };
 		39A843D12B746420007A4D75 /* EditClipViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A843D02B746420007A4D75 /* EditClipViewModel.swift */; };
+		39AE73C72CB3D41E00F89793 /* ToasterLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AE73C62CB3D41E00F89793 /* ToasterLoadingView.swift */; };
+		39AE73C92CB41DF200F89793 /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AE73C82CB41DF200F89793 /* UIButton+.swift */; };
+		39AE73CC2CB4EADB00F89793 /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AE73C82CB41DF200F89793 /* UIButton+.swift */; };
+		39AE73CD2CB4EBC300F89793 /* ToasterLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AE73C62CB3D41E00F89793 /* ToasterLoadingView.swift */; };
 		39B54E732B53C50300538DAE /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B54E722B53C50300538DAE /* SettingViewController.swift */; };
 		39B54E7A2B53D49900538DAE /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B54E792B53D49900538DAE /* SettingTableViewCell.swift */; };
 		39BC5B0B2B400602004024E6 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 39BC5B0A2B400602004024E6 /* .swiftlint.yml */; };
@@ -380,6 +384,8 @@
 		39A843C92B74512B007A4D75 /* DetailClipViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailClipViewModel.swift; sourceTree = "<group>"; };
 		39A843CD2B745B3A007A4D75 /* DetailClipPropertyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailClipPropertyType.swift; sourceTree = "<group>"; };
 		39A843D02B746420007A4D75 /* EditClipViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClipViewModel.swift; sourceTree = "<group>"; };
+		39AE73C62CB3D41E00F89793 /* ToasterLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToasterLoadingView.swift; sourceTree = "<group>"; };
+		39AE73C82CB41DF200F89793 /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
 		39B54E722B53C50300538DAE /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		39B54E792B53D49900538DAE /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		39BC5B0A2B400602004024E6 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -703,6 +709,7 @@
 				6B6AE6A52B3FF6BD000E2366 /* UIView+.swift */,
 				6B6AE6A32B3FF6B0000E2366 /* UIViewController+.swift */,
 				830517AF2B4D9A3B009FFB60 /* UILabel+.swift */,
+				39AE73C82CB41DF200F89793 /* UIButton+.swift */,
 			);
 			path = "UIKit+";
 			sourceTree = "<group>";
@@ -835,6 +842,14 @@
 				390925C32B4EF64100487AA3 /* LinkWebViewController.swift */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		39AE73C52CB3D3DF00F89793 /* ToasterLoadingView */ = {
+			isa = PBXGroup;
+			children = (
+				39AE73C62CB3D41E00F89793 /* ToasterLoadingView.swift */,
+			);
+			path = ToasterLoadingView;
 			sourceTree = "<group>";
 		};
 		39B54E712B53C4F100538DAE /* Setting */ = {
@@ -1037,6 +1052,7 @@
 		6B6AE6832B3FF514000E2366 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				39AE73C52CB3D3DF00F89793 /* ToasterLoadingView */,
 				6BC493662B45D78F00544249 /* ToasterNavigationController */,
 				398BE7F42B456ACF001595E0 /* ToasterBottomSheet */,
 				398BE7F12B45628F001595E0 /* ToasterToastMessage */,
@@ -1976,6 +1992,7 @@
 				3F82C3252CADA1F900492EEE /* Publisher+UIControl.swift in Sources */,
 				3F3ED2A42BA1A47E004E79F0 /* GetRecommendSiteResponseDTO.swift in Sources */,
 				3F3ED2A52BA1A47E004E79F0 /* SearchAPIService.swift in Sources */,
+				39AE73CD2CB4EBC300F89793 /* ToasterLoadingView.swift in Sources */,
 				3F3ED2962BA1A46B004E79F0 /* PostSaveLinkRequestDTO.swift in Sources */,
 				3F3ED2882BA1A400004E79F0 /* PatchEditPriorityCategoryRequestDTO.swift in Sources */,
 				3FE00F082BC5076200CC821E /* PostTokenHealthResponseDTO.swift in Sources */,
@@ -1990,6 +2007,7 @@
 				3F3ED2B32BA1D59D004E79F0 /* ClipListCollectionViewCell.swift in Sources */,
 				3F3ED2B72BA1D897004E79F0 /* SearchResultModel.swift in Sources */,
 				3F3ED2812BA1A3F5004E79F0 /* ClipAPIService.swift in Sources */,
+				39AE73CC2CB4EADB00F89793 /* UIButton+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2079,10 +2097,12 @@
 				39B54E7A2B53D49900538DAE /* SettingTableViewCell.swift in Sources */,
 				39A843C52B736039007A4D75 /* ClipViewModel.swift in Sources */,
 				6BE6DA392B50636B008B06FA /* BaseAPIService.swift in Sources */,
+				39AE73C72CB3D41E00F89793 /* ToasterLoadingView.swift in Sources */,
 				397215592CA8D15F009DF1F9 /* Publisher+UIControl.swift in Sources */,
 				6BE6DA572B50B44F008B06FA /* GetMyPageResponseDTO.swift in Sources */,
 				6BE6DA182B4FF285008B06FA /* TimerRepeatDate.swift in Sources */,
 				6BE6D9F22B4EEBC3008B06FA /* RemindViewModel.swift in Sources */,
+				39AE73C92CB41DF200F89793 /* UIButton+.swift in Sources */,
 				6B6AE64F2B3FF101000E2366 /* AppDelegate.swift in Sources */,
 				6BE6DA922B546F07008B06FA /* TimerTargetType.swift in Sources */,
 				6BE6DA1A2B4FF443008B06FA /* TimerRepeatBottomSheetView.swift in Sources */,

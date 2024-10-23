@@ -197,17 +197,11 @@ extension ClipViewController: UICollectionViewDelegateFlowLayout {
     
     // referenceSizeForHeaderInSection: 각 섹션의 헤더 뷰 크기를 CGSize 형태로 return
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 90)
+        return CGSize(width: collectionView.frame.width, height: 33)
     }
 }
 
 extension ClipViewController: ClipCollectionHeaderViewDelegate {
-    func searchBarButtonTapped() {
-        let searchVC = SearchViewController()
-        searchVC.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(searchVC, animated: true)
-    }
-    
     func addClipButtonTapped() {
         if viewModel.clipList.clips.count >= 15 {
             showToastMessage(width: 243, status: .warning, message: StringLiterals.ToastMessage.noticeMaxClip)
