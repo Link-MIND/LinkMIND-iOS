@@ -55,7 +55,7 @@ private extension UserClipEmptyCollectionViewCell {
         addClipLabel.do {
             $0.font = .suitBold(size: 14)
             $0.textColor = .gray200
-            $0.text = "클립 추가"
+            $0.text = "첫번째 링크를 저장해보세요"
         }
     }
     
