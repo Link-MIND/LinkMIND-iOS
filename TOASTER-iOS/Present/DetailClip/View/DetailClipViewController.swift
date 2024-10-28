@@ -182,17 +182,20 @@ private extension DetailClipViewController {
             .sink { [weak self] result in
                 guard let self else { return }
                 if result == true {
+                    let categoryFilter = DetailCategoryFilter.allCases[viewModel.getViewModelProperty(dataType: .segmentIndex) as? Int ?? 0]
                     
                     self.changeClipBottom.dismiss(animated: true) {
                         if self.viewModel.categoryId == 0 {
-                            self.viewModel.getDetailAllCategoryAPI(filter: .all)
+                            self.viewModel.getDetailAllCategoryAPI(filter: categoryFilter)
                         } else {
-                            self.viewModel.getDetailCategoryAPI(categoryID: self.viewModel.categoryId, filter: .all)
+                            self.viewModel.getDetailCategoryAPI(categoryID: self.viewModel.categoryId, filter: categoryFilter)
                         }
                     }
 
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.showToastMessage(width: 152, status: .check, message: "링크 이동 완료")
+                        self.showToastMessage(width: 152, 
+                                              status: .check,
+                                              message: "링크 이동 완료")
                     }
                 }
             }

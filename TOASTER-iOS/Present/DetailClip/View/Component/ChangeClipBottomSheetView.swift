@@ -46,13 +46,9 @@ final class ChangeClipBottomSheetView: UIView {
     
     /// 버튼 활성화에 따른 UI 변경
     func updateCompleteButtonUI(_ isEnable: Bool) {
-        if isEnable == true {
-            completeBottomButton.isUserInteractionEnabled = true
-            completeBottomButton.backgroundColor = .black850
-        } else {
-            completeBottomButton.isUserInteractionEnabled = false
-            completeBottomButton.backgroundColor = .gray200
-        }
+        
+        completeBottomButton.isUserInteractionEnabled = isEnable ? true : false
+        completeBottomButton.backgroundColor = isEnable ? .black850 : .gray200
     }
 }
 
