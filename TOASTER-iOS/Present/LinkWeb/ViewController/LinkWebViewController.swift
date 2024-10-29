@@ -51,6 +51,7 @@ final class LinkWebViewController: UIViewController {
         setupLayout()
         setupNavigationBarAction()
         setupToolBarAction()
+        setupToolTip()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,19 +64,6 @@ final class LinkWebViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         showNavigationBar()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now()+3) {
-            self.view.addSubview(self.secondToolTip)
-            self.secondToolTip.showToolTipAndDismissAfterDelay(duration: 3) {
-                self.view.addSubview(self.firstToolTip)
-                self.firstToolTip.showToolTipAndDismissAfterDelay(duration: 3)
-            }
-        }
-
     }
     
     deinit {
@@ -208,6 +196,21 @@ private extension LinkWebViewController {
         /// 툴바 사파리 버튼 클릭 액션 클로저
         toolBar.safariButtonTapped {
             if let url = self.webView.url { UIApplication.shared.open(url) }
+        }
+    }
+    
+    func setupToolTip() {
+        if UserDefaults.standard.value(forKey: TipUserDefaults.isShowLinkWebViewToolTip) == nil {
+            UserDefaults.standard.set(true, forKey: TipUserDefaults.isShowLinkWebViewToolTip)
+    
+            DispatchQueue.main.asyncAfter(deadline: .now()+1) { [weak self] in
+                guard let self else { return }
+                self.view.addSubview(self.secondToolTip)
+                self.secondToolTip.showToolTipAndDismissAfterDelay(duration: 4) {
+                    self.view.addSubview(self.firstToolTip)
+                    self.firstToolTip.showToolTipAndDismissAfterDelay(duration: 4)
+                }
+            }
         }
     }
 }

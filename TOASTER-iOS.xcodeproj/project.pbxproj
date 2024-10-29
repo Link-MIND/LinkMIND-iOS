@@ -22,6 +22,8 @@
 		3913B0B02BCECFC80031A3EB /* UpdateAlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3913B0AF2BCECFC80031A3EB /* UpdateAlertType.swift */; };
 		391908422B56CFE4006F978A /* PatchEditPriorityCategoryRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391908412B56CFE4006F978A /* PatchEditPriorityCategoryRequestDTO.swift */; };
 		391908442B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391908432B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift */; };
+		392461802CD0D1FB00C0CBC4 /* TipUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3924617F2CD0D1FB00C0CBC4 /* TipUserDefaults.swift */; };
+		392461812CD0D1FB00C0CBC4 /* TipUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3924617F2CD0D1FB00C0CBC4 /* TipUserDefaults.swift */; };
 		396D7ECB2C855F5F0034A14E /* LinkWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396D7ECA2C855F5F0034A14E /* LinkWebViewModel.swift */; };
 		396D7ECD2C880F1F0034A14E /* LinkWebToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396D7ECC2C880F1F0034A14E /* LinkWebToolBarView.swift */; };
 		396DCDF42CA19EC600FEF7C8 /* PatchPopupHiddenResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396DCDF32CA19EC600FEF7C8 /* PatchPopupHiddenResponseDTO.swift */; };
@@ -358,6 +360,7 @@
 		3913B0AF2BCECFC80031A3EB /* UpdateAlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateAlertType.swift; sourceTree = "<group>"; };
 		391908412B56CFE4006F978A /* PatchEditPriorityCategoryRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchEditPriorityCategoryRequestDTO.swift; sourceTree = "<group>"; };
 		391908432B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchEditNameCategoryRequestDTO.swift; sourceTree = "<group>"; };
+		3924617F2CD0D1FB00C0CBC4 /* TipUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipUserDefaults.swift; sourceTree = "<group>"; };
 		396D7EC72C855F180034A14E /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		396D7ECA2C855F5F0034A14E /* LinkWebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkWebViewModel.swift; sourceTree = "<group>"; };
 		396D7ECC2C880F1F0034A14E /* LinkWebToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkWebToolBarView.swift; sourceTree = "<group>"; };
@@ -773,6 +776,7 @@
 			children = (
 				39A232DF2CB8F29A00ACC803 /* ToasterTipView.swift */,
 				39A232DC2CB8F28000ACC803 /* TipPathView.swift */,
+				3924617F2CD0D1FB00C0CBC4 /* TipUserDefaults.swift */,
 			);
 			path = ToasterTipView;
 			sourceTree = "<group>";
@@ -1995,6 +1999,7 @@
 				3F3ED2A42BA1A47E004E79F0 /* GetRecommendSiteResponseDTO.swift in Sources */,
 				3F3ED2A52BA1A47E004E79F0 /* SearchAPIService.swift in Sources */,
 				39AE73CD2CB4EBC300F89793 /* ToasterLoadingView.swift in Sources */,
+				392461812CD0D1FB00C0CBC4 /* TipUserDefaults.swift in Sources */,
 				3F3ED2962BA1A46B004E79F0 /* PostSaveLinkRequestDTO.swift in Sources */,
 				3F3ED2882BA1A400004E79F0 /* PatchEditPriorityCategoryRequestDTO.swift in Sources */,
 				3FE00F082BC5076200CC821E /* PostTokenHealthResponseDTO.swift in Sources */,
@@ -2038,6 +2043,7 @@
 				3F6CD49D2B86229A00DEC113 /* CustomPageIndicatorView.swift in Sources */,
 				6BE6DAB32B547BEF008B06FA /* GetRecommendSiteResponseDTO.swift in Sources */,
 				6B6AE6532B3FF101000E2366 /* ViewController.swift in Sources */,
+				392461802CD0D1FB00C0CBC4 /* TipUserDefaults.swift in Sources */,
 				6B6AE6902B3FF59C000E2366 /* DetailClipViewController.swift in Sources */,
 				6BE6DA202B504433008B06FA /* BaseTargetType.swift in Sources */,
 				6B6AE6A62B3FF6BD000E2366 /* UIView+.swift in Sources */,
