@@ -111,7 +111,6 @@ extension HomeViewController: UICollectionViewDataSource {
             ) as? MainCollectionViewCell else { return UICollectionViewCell() }
             let model = viewModel.mainInfoList
             cell.bindData(forModel: model)
-            cell.mainCollectionViewDelegate = self
             return cell
         case 1:
             let lastIndex = viewModel.mainInfoList.mainCategoryListDto.count
@@ -370,14 +369,5 @@ extension HomeViewController: UserClipCollectionViewCellDelegate {
     func addClipCellTapped() {
         addClipBottom.setupSheetPresentation(bottomHeight: 198)
         self.present(addClipBottom, animated: true)
-    }
-}
-
-// MARK: - MainCollectionViewDelegate
-
-extension HomeViewController: MainCollectionViewDelegate {
-    func searchButtonTapped() {
-        let searchVC = SearchViewController()
-        self.navigationController?.pushViewController(searchVC, animated: true)
     }
 }
