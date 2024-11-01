@@ -66,13 +66,13 @@ private extension UserClipEmptyCollectionViewCell {
     func setupLayout() {
         addClipImage.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().inset(34)
+            $0.top.equalToSuperview().inset(17)
             $0.size.equalTo(42)
         }
         
         addClipLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(addClipImage.snp.bottom).offset(1)
+            $0.top.equalTo(addClipImage.snp.bottom).offset(5)
         }
     }
     
