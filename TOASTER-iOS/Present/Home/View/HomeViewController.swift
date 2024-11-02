@@ -14,6 +14,7 @@ final class HomeViewController: UIViewController {
     // MARK: - UI Properties
     
     private let viewModel = HomeViewModel()
+    private let clipViewModel = DetailClipViewModel()
     private let homeView = HomeView()
     
     private let addClipBottomSheetView = AddClipBottomSheetView()
@@ -51,12 +52,13 @@ extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.section {
         case 1:
-            let data = viewModel.mainInfoList.mainCategoryListDto
+            let data = viewModel.recentLink
             if indexPath.item < data.count {
-                let nextVC = DetailClipViewController()
-                nextVC.setupCategory(id: data[indexPath.item].categoryId,
-                                     name: data[indexPath.item].categroyTitle)
+                let nextVC = LinkWebViewController()
                 nextVC.hidesBottomBarWhenPushed = true
+                nextVC.setupDataBind(linkURL: viewModel.recentLink[indexPath.item].linkUrl,
+                                     isRead: viewModel.recentLink[indexPath.item].isRead,
+                                     id: viewModel.recentLink[indexPath.item].toastId)
                 self.navigationController?.pushViewController(nextVC, animated: true)
             } else {
                 addClipCellTapped()
@@ -93,7 +95,7 @@ extension HomeViewController: UICollectionViewDataSource {
             return 1
         case 1:
             let count = viewModel.recentLink.count
-            return min(count + 1, 3)
+            return count == 0 ? 1 : min(count, 3)
         case 2:
             return viewModel.weeklyLinkList.count
         case 3:
@@ -115,19 +117,21 @@ extension HomeViewController: UICollectionViewDataSource {
             return cell
         case 1:
             let lastIndex = viewModel.recentLink.count
-            if indexPath.item == lastIndex && lastIndex < 3 {
+            if lastIndex == 0 {
                 guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: DetailClipListCollectionViewCell.className,
+                    withReuseIdentifier: UserClipEmptyCollectionViewCell.className,
                     for: indexPath
-                ) as? DetailClipListCollectionViewCell else { return UICollectionViewCell() }
+                ) as? UserClipEmptyCollectionViewCell else { return UICollectionViewCell() }
                 return cell
             } else {
                 guard let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: DetailClipListCollectionViewCell.className,
                     for: indexPath
                 ) as? DetailClipListCollectionViewCell else { return UICollectionViewCell() }
-                let model = viewModel.recentLink
-                cell.configureCell(forModel: model[indexPath.item], isClipHidden: false)
+                if indexPath.item < lastIndex {
+                    let model = viewModel.recentLink
+                    cell.configureCell(forModel: model[indexPath.item], isClipHidden: false)
+                }
                 return cell
             }
         case 2:
@@ -224,12 +228,12 @@ private extension HomeViewController {
         homeCollectionView.do {
             $0.register(MainCollectionViewCell.self,
                         forCellWithReuseIdentifier: MainCollectionViewCell.className)
-            $0.register(UserClipCollectionViewCell.self,
-                        forCellWithReuseIdentifier: UserClipCollectionViewCell.className)
             $0.register(WeeklyLinkCollectionViewCell.self,
                         forCellWithReuseIdentifier: WeeklyLinkCollectionViewCell.className)
             $0.register(WeeklyRecommendCollectionViewCell.self,
                         forCellWithReuseIdentifier: WeeklyRecommendCollectionViewCell.className)
+            $0.register(UserClipEmptyCollectionViewCell.self,
+                        forCellWithReuseIdentifier: UserClipEmptyCollectionViewCell.className)
             $0.register(DetailClipListCollectionViewCell.self,
                         forCellWithReuseIdentifier: DetailClipListCollectionViewCell.className)
             
@@ -362,7 +366,7 @@ extension HomeViewController: AddClipBottomSheetViewDelegate {
 
 extension HomeViewController: UserClipCollectionViewCellDelegate {
     func addClipCellTapped() {
-        addClipBottom.setupSheetPresentation(bottomHeight: 198)
-        self.present(addClipBottom, animated: true)
+        let nextVC = AddLinkViewController()
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
 }
