@@ -27,6 +27,7 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         homeView.backgroundColor = .toasterBackground
+        
         setupHierarchy()
         setupLayout()
         createCollectionView()
@@ -171,6 +172,7 @@ extension HomeViewController: UICollectionViewDataSource {
                 let nickName = viewModel.mainInfoList.nickname
                 header.configureHeader(forTitle: nickName,
                                        num: indexPath.section)
+                header.arrowButton.addTarget(self, action: #selector(arrowButtonTapped), for: .touchUpInside)
             case 2:
                 header.configureHeader(forTitle: "이주의 링크",
                                        num: indexPath.section)
@@ -339,6 +341,13 @@ private extension HomeViewController {
         let settingVC = SettingViewController()
         settingVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(settingVC, animated: true)
+    }
+    
+    @objc
+    func arrowButtonTapped() {
+        print("ARROW BUTTON TAPPED")
+        let clipViewController = ClipViewController()
+        navigationController?.pushViewController(clipViewController, animated: true)
     }
 }
 

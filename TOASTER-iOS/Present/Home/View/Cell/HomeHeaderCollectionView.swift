@@ -14,6 +14,7 @@ final class HomeHeaderCollectionView: UICollectionReusableView {
     // MARK: - Properties
     
     private let titleLabel = UILabel()
+    let arrowButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -21,6 +22,7 @@ final class HomeHeaderCollectionView: UICollectionReusableView {
         super.init(frame: frame)
         
         self.backgroundColor = .clear
+        
         setView()
     }
     
@@ -41,20 +43,31 @@ final class HomeHeaderCollectionView: UICollectionReusableView {
             $0.textColor = .black900
             $0.font = .suitMedium(size: 18)
         }
+        
+        arrowButton.do {
+            $0.setImage(.icArrow20, for: .normal)
+            $0.isUserInteractionEnabled = true
+            $0.isHidden = false
+        }
     }
     
     // MARK: - set up Hierarchy
     
     private func setupHierarchy() {
-        addSubview(titleLabel)
+        addSubviews(titleLabel, arrowButton)
     }
     
     // MARK: - set up Layout
     
     private func setupLayout() {
         titleLabel.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(10)
+            $0.leading.equalToSuperview().inset(10)
             $0.bottom.equalToSuperview().inset(5)
+        }
+        
+        arrowButton.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.top).inset(1)
+            $0.trailing.equalToSuperview().inset(10)
         }
     }
 }
@@ -68,6 +81,7 @@ extension HomeHeaderCollectionView {
         } else {
             titleLabel.text = forTitle
             titleLabel.asFont(targetString: forTitle, font: .suitBold(size: 18))
+            arrowButton.isHidden = true
         }
     }
 }
