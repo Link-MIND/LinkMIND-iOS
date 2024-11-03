@@ -23,7 +23,7 @@ final class DetailClipViewController: UIViewController {
     private let detailClipEmptyView = DetailClipEmptyView()
     private let detailClipListCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
-    private let linkOptionBottomSheetView = LinkOptionBottomSheetView()
+    private lazy var linkOptionBottomSheetView = LinkOptionBottomSheetView(currentClipType: ClipType(categoryId: viewModel.categoryId))
     private lazy var optionBottom = ToasterBottomSheetViewController(bottomType: .gray,
                                                                bottomTitle: "더보기",
                                                                insertView: linkOptionBottomSheetView)
@@ -72,7 +72,7 @@ extension DetailClipViewController {
     func setupCategory(id: Int, name: String) {
         viewModel.categoryId = id
         viewModel.categoryName = name
-        changeClipViewModel.setupCateogry(id)
+        changeClipViewModel.setupCategory(id)
     }
 }
 
@@ -348,7 +348,7 @@ extension DetailClipViewController: DetailClipListCollectionViewCellDelegate {
     func modifiedButtonTapped(toastId: Int) {
         viewModel.toastId = toastId
         changeClipViewModel.setupToastId(toastId)
-        optionBottom.setupSheetPresentation(bottomHeight: 280)
+        optionBottom.setupSheetPresentation(bottomHeight: viewModel.categoryId == 0 ? 226 : 280)
         present(optionBottom, animated: true)
     }
 }

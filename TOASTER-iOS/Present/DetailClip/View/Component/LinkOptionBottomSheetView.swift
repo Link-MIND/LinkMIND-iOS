@@ -10,9 +10,20 @@ import UIKit
 import SnapKit
 import Then
 
+enum ClipType {
+    case allClip
+    case anthoerClip
+    
+    init(categoryId: Int) {
+        self = categoryId == 0 ? .allClip : .anthoerClip
+    }
+}
+
 final class LinkOptionBottomSheetView: UIView {
     
     // MARK: - Properties
+    
+    private let currentClipType: ClipType
     
     private var deleteLinkBottomSheetViewButtonAction: (() -> Void)?
     private var editLinkTitleBottomSheetViewButtonAction: (() -> Void)?
@@ -30,7 +41,8 @@ final class LinkOptionBottomSheetView: UIView {
     
     // MARK: - Life Cycles
     
-    override init(frame: CGRect) {
+    init(currentClipType: ClipType, frame: CGRect = .zero) {
+        self.currentClipType = currentClipType
         super.init(frame: frame)
         
         setupStyle()
@@ -107,13 +119,47 @@ private extension LinkOptionBottomSheetView {
     }
     
     func setupHierarchy() {
-        addSubviews(editButton, changeClipButton, deleteButton)
+        addSubviews(editButton, deleteButton)
         editButton.addSubview(editButtonLabel)
-        changeClipButton.addSubview(changeClipButtonLabel)
         deleteButton.addSubview(deleteButtonLabel)
+        
+        if case .anthoerClip = currentClipType {
+            addSubview(changeClipButton)
+            changeClipButton.addSubview(changeClipButtonLabel)
+        }
     }
     
     func setupLayout() {
+        switch currentClipType {
+        case .allClip:
+            setupAllClipLayout()
+        case .anthoerClip:
+            setupAnthoerClipLayout()
+        }
+    }
+    
+    func setupAllClipLayout() {
+        editButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.top.equalToSuperview()
+            $0.height.equalTo(54)
+        }
+        
+        deleteButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.top.equalTo(editButton.snp.bottom).offset(1)
+            $0.height.equalTo(54)
+        }
+        
+        [editButtonLabel, deleteButtonLabel].forEach {
+            $0.snp.makeConstraints {
+                $0.centerY.equalToSuperview()
+                $0.leading.equalToSuperview().inset(20)
+            }
+        }
+    }
+    
+    func setupAnthoerClipLayout() {
         editButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.top.equalToSuperview()

@@ -46,7 +46,6 @@ final class ChangeClipBottomSheetView: UIView {
     
     /// 버튼 활성화에 따른 UI 변경
     func updateCompleteButtonUI(_ isEnable: Bool) {
-        
         completeBottomButton.isUserInteractionEnabled = isEnable ? true : false
         completeBottomButton.backgroundColor = isEnable ? .black850 : .gray200
     }
@@ -61,7 +60,6 @@ private extension ChangeClipBottomSheetView {
         clipSelectCollectionView.do {
             $0.backgroundColor = .gray50
             $0.makeRounded(radius: 12)
-            $0.clipsToBounds = true
             $0.isScrollEnabled = true
             $0.showsVerticalScrollIndicator = false
         }
@@ -121,12 +119,8 @@ extension ChangeClipBottomSheetView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RemindSelectClipCollectionViewCell.className, for: indexPath) as? RemindSelectClipCollectionViewCell, let clipData = dataSourceHandler?() else { return UICollectionViewCell() }
         
-        if indexPath.row == 0 {
-            cell.configureCurrentClipCell(forModel: clipData[indexPath.item], icon: .icClip24)
-        } else {
-            cell.configureChnageClipCell(forModel: clipData[indexPath.item], icon: .icClip24Black)
-        }
-            
+        cell.configureChangeClipCell(forModel: clipData[indexPath.item], canSelect: indexPath.row == 0 ? false : true, icon: .icClip24)
+        
         return cell
     }
 }
