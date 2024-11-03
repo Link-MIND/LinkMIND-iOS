@@ -44,7 +44,7 @@ final class ToasterBottomSheetViewController: UIViewController {
 extension ToasterBottomSheetViewController {
     func setupSheetPresentation(bottomHeight: CGFloat) {
         if let sheet = self.sheetPresentationController {
-            sheet.detents = [.custom(resolver: { _ in bottomHeight - 40 })]
+            sheet.detents = [.custom(resolver: { _ in bottomHeight - (self.view.hasNotch ? 34 : 0)})]
             sheet.preferredCornerRadius = 20
         }
     }
@@ -52,7 +52,7 @@ extension ToasterBottomSheetViewController {
     func setupSheetHeightChanges(bottomHeight: CGFloat) {
         if let sheet = self.sheetPresentationController {
             sheet.animateChanges {
-                sheet.detents = [.custom(resolver: { _ in bottomHeight - 40 })]
+                sheet.detents = [.custom(resolver: { _ in bottomHeight - (self.view.hasNotch ? 34 : 0)})]
             }
         }
     }
