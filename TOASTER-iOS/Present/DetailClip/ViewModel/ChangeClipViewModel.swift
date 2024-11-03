@@ -51,9 +51,10 @@ final class ChangeClipViewModel: ViewModelType {
             } .eraseToAnyPublisher()
         
         /// 이동할 클립을 선택 시 버튼의 UI 를 변경하는 동작
-        let isCompleteButtonEnable = input.selectedClip
-            .map { _ in true }
-            .eraseToAnyPublisher()
+        let isCompleteButtonEnable = Publishers.Merge(
+            input.changeButtonTap.map { false },  // bottomSheet 열릴 때 false
+            input.selectedClip.map { _ in true }  // 클립 선택 시 true
+        ).eraseToAnyPublisher()
         
         /// 완료 버튼이 눌렸을때 동작
         let changeCategoryResult = input.completeButtonTap
@@ -81,7 +82,7 @@ final class ChangeClipViewModel: ViewModelType {
         )
     }
     
-    func setupCateogry(_ id: Int) {
+    func setupCategory(_ id: Int) {
         currentCategoryId = id
     }
     
