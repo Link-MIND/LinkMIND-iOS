@@ -145,6 +145,7 @@ private extension ToasterTipView {
         
         tipLabel.do {
             $0.text = title
+            $0.numberOfLines = 2
             $0.font = .suitMedium(size: 12)
             $0.textColor = .toasterWhite
             $0.textAlignment = .center

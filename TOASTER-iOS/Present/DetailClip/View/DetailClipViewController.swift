@@ -38,6 +38,12 @@ final class DetailClipViewController: UIViewController {
                                                                        bottomTitle: "클립을 선택해 주세요",
                                                                        insertView: changeClipBottomSheetView)
     
+    private lazy var firstToolTip = ToasterTipView(
+        title: "링크를 다른 클립으로\n이동할 수 있어요!",
+        type: .right,
+        sourceItem: linkOptionBottomSheetView.changeClipButtonLabel
+    )
+    
     private let changeClipSubject = PassthroughSubject<Void, Never>()
     private let selectedClipSubject = PassthroughSubject<Int, Never>()
     private let completeButtonSubject = PassthroughSubject<Void, Never>()
@@ -201,6 +207,16 @@ private extension DetailClipViewController {
             }
             .store(in: cancelBag)
     }
+    
+    func setupToolTip() {
+        if UserDefaults.standard.value(forKey: TipUserDefaults.isShowDetailClipViewToolTip) == nil {
+            UserDefaults.standard.set(true, forKey: TipUserDefaults.isShowDetailClipViewToolTip)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.linkOptionBottomSheetView.addSubview(self?.firstToolTip ?? UIView())
+                self?.firstToolTip.showToolTipAndDismissAfterDelay(duration: 4)
+            }
+        }
+    }
 }
 
 // MARK: - CollectionView DataSource
@@ -350,6 +366,7 @@ extension DetailClipViewController: DetailClipListCollectionViewCellDelegate {
         changeClipViewModel.setupToastId(toastId)
         optionBottom.setupSheetPresentation(bottomHeight: viewModel.categoryId == 0 ? 226 : 280)
         present(optionBottom, animated: true)
+        if viewModel.categoryId != 0 { setupToolTip() }
     }
 }
 

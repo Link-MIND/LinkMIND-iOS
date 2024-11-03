@@ -203,7 +203,7 @@ private extension LinkWebViewController {
         if UserDefaults.standard.value(forKey: TipUserDefaults.isShowLinkWebViewToolTip) == nil {
             UserDefaults.standard.set(true, forKey: TipUserDefaults.isShowLinkWebViewToolTip)
     
-            DispatchQueue.main.asyncAfter(deadline: .now()+1) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 guard let self else { return }
                 self.view.addSubview(self.secondToolTip)
                 self.secondToolTip.showToolTipAndDismissAfterDelay(duration: 4) {
