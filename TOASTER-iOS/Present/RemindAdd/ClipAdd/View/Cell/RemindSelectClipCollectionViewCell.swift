@@ -83,26 +83,20 @@ extension RemindSelectClipCollectionViewCell {
         clipImageView.image = isSelected == true ? icon.withTintColor(.toasterPrimary) : icon
         self.isRounded = isRounded
     }
-    
-    func configureCurrentClipCell(forModel: SelectClipModel, icon: UIImage) {
-        currentCategoryTitle = forModel.title
-        clipTitleLabel.text = forModel.title
-        clipCountLabel.text = "\(forModel.clipCount)개"
-        clipImageView.image = icon
+
+    /// 이동 할 카테고리 Cell 을 초기화 시키는 메서드
+    func configureChangeClipCell(forModel: SelectClipModel, canSelect: Bool, icon: UIImage) {
         
-        clipTitleLabel.textColor = .gray200
-        clipCountLabel.textColor = .gray200
-
-        self.isRounded = false
-    }
-    
-    func configureChnageClipCell(forModel: SelectClipModel, icon: UIImage) {
+        if canSelect == false {
+            currentCategoryTitle = forModel.title
+        }
+        
         clipTitleLabel.text = forModel.title
         clipCountLabel.text = "\(forModel.clipCount)개"
-        clipImageView.image = icon
+        clipImageView.image = icon.withTintColor(canSelect ? .toasterBlack : .gray200)
 
-        clipTitleLabel.textColor = .black850
-        clipCountLabel.textColor = .gray600
+        clipTitleLabel.textColor = canSelect ? .black850 : .gray200
+        clipCountLabel.textColor = canSelect ? .gray600 : .gray200
         
         self.isRounded = false
     }
