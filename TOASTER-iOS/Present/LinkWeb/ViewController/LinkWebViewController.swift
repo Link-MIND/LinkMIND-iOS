@@ -206,9 +206,9 @@ private extension LinkWebViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 guard let self else { return }
                 self.view.addSubview(self.secondToolTip)
-                self.secondToolTip.showToolTipAndDismissAfterDelay(duration: 4) {
+                self.secondToolTip.showToolTipAndDismissAfterDelay(duration: 2) {
                     self.view.addSubview(self.firstToolTip)
-                    self.firstToolTip.showToolTipAndDismissAfterDelay(duration: 4)
+                    self.firstToolTip.showToolTipAndDismissAfterDelay(duration: 3)
                 }
             }
         }
