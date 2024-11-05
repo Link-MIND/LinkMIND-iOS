@@ -22,7 +22,7 @@ final class ChangeClipViewModel: ViewModelType {
     }
     
     struct Output {
-        let clipData: AnyPublisher<[SelectClipModel], Never>
+        let clipData: AnyPublisher<[SelectClipModel]?, Never>
         let isCompleteButtonEnable: AnyPublisher<Bool, Never>
         let changeCategoryResult: AnyPublisher<Bool, Never>
     }
@@ -31,19 +31,25 @@ final class ChangeClipViewModel: ViewModelType {
         
         /// 클립이동  버튼이 눌렸을때 동작
         let clipDataPublisher = input.changeButtonTap
-            .flatMap { [weak self] _ -> AnyPublisher<[SelectClipModel], Never> in
+            .flatMap { [weak self] _ -> AnyPublisher<[SelectClipModel]?, Never> in
                 guard let self else {
                     return Just([]).eraseToAnyPublisher()
                 }
                 
                 return self.getAllCategoryAPI()
-                    .map { [weak self] result -> [SelectClipModel] in
+                    .map { [weak self] result -> [SelectClipModel]? in
                         guard let self = self else { return [] }
+                        
+                        // 2개 이하일 경우 nil 반환
+                        if result.count < 2 {
+                            return nil
+                        }
+                        
                         let sortedResult = self.sortCurrentCategoryToTop(result)
                         self.collectionViewHeight = self.calculateCollectionViewHeight(numberOfItems: sortedResult.count)
                         return sortedResult
                     }
-                    .catch { error -> AnyPublisher<[SelectClipModel], Never> in
+                    .catch { error -> AnyPublisher<[SelectClipModel]?, Never> in
                         print("Error: \(error)")
                         return Just([]).eraseToAnyPublisher()
                     }
