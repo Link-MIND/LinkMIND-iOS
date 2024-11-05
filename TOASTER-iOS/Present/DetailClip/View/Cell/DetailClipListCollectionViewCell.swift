@@ -93,7 +93,7 @@ extension DetailClipListCollectionViewCell {
     }
     
     func configureCell(forModel: RecentLinkModel, isClipHidden: Bool) {
-        modifiedButton.isHidden = false
+        modifiedButton.isHidden = true
         clipNameLabel.text = forModel.toastTitle
         linkTitleLabel.text = forModel.toastTitle
         linkLabel.text = forModel.linkUrl

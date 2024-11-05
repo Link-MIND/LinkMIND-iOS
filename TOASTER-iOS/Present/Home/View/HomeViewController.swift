@@ -345,9 +345,9 @@ private extension HomeViewController {
     
     @objc
     func arrowButtonTapped() {
-        print("ARROW BUTTON TAPPED")
-        let clipViewController = ClipViewController()
-        navigationController?.pushViewController(clipViewController, animated: true)
+        let detailClipViewController = DetailClipViewController()
+        detailClipViewController.setupCategory(id: 0, name: "전체 클립")
+        navigationController?.pushViewController(detailClipViewController, animated: true)
     }
 }
 
