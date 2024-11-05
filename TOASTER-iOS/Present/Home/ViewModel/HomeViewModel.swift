@@ -32,6 +32,19 @@ final class HomeViewModel {
         }
     }
     
+    private(set) var recentLink: [RecentLinkModel] = [
+        RecentLinkModel(toastId: 0,
+                        toastTitle: "",
+                        linkUrl: "",
+                        isRead: true,
+                        categoryTitle: nil ?? "",
+                        thumbnailUrl: nil ?? "")
+    ] {
+        didSet {
+            dataChangeAction?(!recentLink.isEmpty)
+        }
+    }
+    
     private(set) var weeklyLinkList: [WeeklyLinkModel] = [
         WeeklyLinkModel(toastId: 0,
                         toastTitle: "",
@@ -218,6 +231,31 @@ extension HomeViewModel {
             case .networkFail, .unAuthorized, .notFound:
                 self.unAuthorizedAction?()
             default: return
+            }
+        }
+    }
+    
+    // 최근 링크  -> GET
+    func fetchRecentLinkData() {
+        NetworkService.shared.toastService.getRecentLink { result in
+            switch result {
+            case .success(let response):
+                var list: [RecentLinkModel] = []
+                if let data = response?.data {
+                    for idx in 0..<data.count {
+                        list.append(RecentLinkModel(toastId: data[idx].toastId,
+                                                    toastTitle: data[idx].toastTitle,
+                                                    linkUrl: data[idx].linkUrl,
+                                                    isRead: data[idx].isRead,
+                                                    categoryTitle: data[idx].categoryTitle,
+                                                    thumbnailUrl: data[idx].thumbnailUrl))
+                    }
+                    self.recentLink = list
+                }
+            case .unAuthorized, .networkFail:
+                self.unAuthorizedAction?()
+            default:
+                return
             }
         }
     }

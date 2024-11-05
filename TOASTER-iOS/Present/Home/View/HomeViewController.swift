@@ -14,6 +14,7 @@ final class HomeViewController: UIViewController {
     // MARK: - UI Properties
     
     private let viewModel = HomeViewModel()
+    private let clipViewModel = DetailClipViewModel()
     private let homeView = HomeView()
     
     private let addClipBottomSheetView = AddClipBottomSheetView()
@@ -40,6 +41,7 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         homeView.backgroundColor = .toasterBackground
+        
         setupHierarchy()
         setupLayout()
         createCollectionView()
@@ -55,6 +57,7 @@ final class HomeViewController: UIViewController {
         viewModel.fetchWeeklyLinkData()
         viewModel.fetchRecommendSiteData()
         viewModel.getPopupInfoAPI()
+        viewModel.fetchRecentLinkData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -69,12 +72,13 @@ extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.section {
         case 1:
-            let data = viewModel.mainInfoList.mainCategoryListDto
+            let data = viewModel.recentLink
             if indexPath.item < data.count {
-                let nextVC = DetailClipViewController()
-                nextVC.setupCategory(id: data[indexPath.item].categoryId,
-                                     name: data[indexPath.item].categroyTitle)
+                let nextVC = LinkWebViewController()
                 nextVC.hidesBottomBarWhenPushed = true
+                nextVC.setupDataBind(linkURL: viewModel.recentLink[indexPath.item].linkUrl,
+                                     isRead: viewModel.recentLink[indexPath.item].isRead,
+                                     id: viewModel.recentLink[indexPath.item].toastId)
                 self.navigationController?.pushViewController(nextVC, animated: true)
             } else {
                 addClipCellTapped()
@@ -110,8 +114,8 @@ extension HomeViewController: UICollectionViewDataSource {
         case 0:
             return 1
         case 1:
-            let count = viewModel.mainInfoList.mainCategoryListDto.count
-            return min(count + 1, 4)
+            let count = viewModel.recentLink.count
+            return count == 0 ? 1 : min(count, 3)
         case 2:
             return viewModel.weeklyLinkList.count
         case 3:
@@ -132,8 +136,8 @@ extension HomeViewController: UICollectionViewDataSource {
             cell.bindData(forModel: model)
             return cell
         case 1:
-            let lastIndex = viewModel.mainInfoList.mainCategoryListDto.count
-            if indexPath.item == lastIndex && lastIndex < 4 {
+            let lastIndex = viewModel.recentLink.count
+            if lastIndex == 0 {
                 guard let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: UserClipEmptyCollectionViewCell.className,
                     for: indexPath
@@ -141,16 +145,12 @@ extension HomeViewController: UICollectionViewDataSource {
                 return cell
             } else {
                 guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: UserClipCollectionViewCell.className,
+                    withReuseIdentifier: DetailClipListCollectionViewCell.className,
                     for: indexPath
-                ) as? UserClipCollectionViewCell else { return UICollectionViewCell() }
-                let model = viewModel.mainInfoList.mainCategoryListDto
-                if indexPath.item == 0 {
-                    cell.bindData(forModel: model[indexPath.item],
-                                  icon: .icAllClip24.withTintColor(.black900))
-                } else {
-                    cell.bindData(forModel: model[indexPath.item],
-                                  icon: .icClipFull24)
+                ) as? DetailClipListCollectionViewCell else { return UICollectionViewCell() }
+                if indexPath.item < lastIndex {
+                    let model = viewModel.recentLink
+                    cell.configureCell(forModel: model[indexPath.item], isClipHidden: false)
                 }
                 return cell
             }
@@ -191,6 +191,7 @@ extension HomeViewController: UICollectionViewDataSource {
                 let nickName = viewModel.mainInfoList.nickname
                 header.configureHeader(forTitle: nickName,
                                        num: indexPath.section)
+                header.arrowButton.addTarget(self, action: #selector(arrowButtonTapped), for: .touchUpInside)
             case 2:
                 header.configureHeader(forTitle: "이주의 링크",
                                        num: indexPath.section)
@@ -248,14 +249,14 @@ private extension HomeViewController {
         homeCollectionView.do {
             $0.register(MainCollectionViewCell.self,
                         forCellWithReuseIdentifier: MainCollectionViewCell.className)
-            $0.register(UserClipCollectionViewCell.self,
-                        forCellWithReuseIdentifier: UserClipCollectionViewCell.className)
             $0.register(WeeklyLinkCollectionViewCell.self,
                         forCellWithReuseIdentifier: WeeklyLinkCollectionViewCell.className)
             $0.register(WeeklyRecommendCollectionViewCell.self,
                         forCellWithReuseIdentifier: WeeklyRecommendCollectionViewCell.className)
             $0.register(UserClipEmptyCollectionViewCell.self,
                         forCellWithReuseIdentifier: UserClipEmptyCollectionViewCell.className)
+            $0.register(DetailClipListCollectionViewCell.self,
+                        forCellWithReuseIdentifier: DetailClipListCollectionViewCell.className)
             
             // header
             $0.register(HomeHeaderCollectionView.self,
@@ -379,6 +380,13 @@ private extension HomeViewController {
         settingVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(settingVC, animated: true)
     }
+    
+    @objc
+    func arrowButtonTapped() {
+        let detailClipViewController = DetailClipViewController()
+        detailClipViewController.setupCategory(id: 0, name: "전체 클립")
+        navigationController?.pushViewController(detailClipViewController, animated: true)
+    }
 }
 
 // MARK: - AddClipBottomSheetViewDelegate
@@ -405,7 +413,7 @@ extension HomeViewController: AddClipBottomSheetViewDelegate {
 
 extension HomeViewController: UserClipCollectionViewCellDelegate {
     func addClipCellTapped() {
-        addClipBottom.setupSheetPresentation(bottomHeight: 198)
-        self.present(addClipBottom, animated: true)
+        let nextVC = AddLinkViewController()
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
 }
