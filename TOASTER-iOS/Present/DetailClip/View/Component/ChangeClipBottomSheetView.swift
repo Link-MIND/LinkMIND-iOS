@@ -105,7 +105,15 @@ private extension ChangeClipBottomSheetView {
     }
     
     @objc func completeBottomuttonTapped(_ sender: UIButton) {
-        delegate?.completButtonTap()
+        completeBottomButton.loadingButtonTapped(
+            loadingTitle: "이동 중...",
+            loadingAnimationSize: 16,
+            task: { _ in
+                DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) {
+                    self.delegate?.completButtonTap()
+                }
+            }
+        )
     }
 }
 
