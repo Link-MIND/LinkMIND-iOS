@@ -22,6 +22,8 @@
 		3913B0B02BCECFC80031A3EB /* UpdateAlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3913B0AF2BCECFC80031A3EB /* UpdateAlertType.swift */; };
 		391908422B56CFE4006F978A /* PatchEditPriorityCategoryRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391908412B56CFE4006F978A /* PatchEditPriorityCategoryRequestDTO.swift */; };
 		391908442B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391908432B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift */; };
+		396D7ECB2C855F5F0034A14E /* LinkWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396D7ECA2C855F5F0034A14E /* LinkWebViewModel.swift */; };
+		396D7ECD2C880F1F0034A14E /* LinkWebToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396D7ECC2C880F1F0034A14E /* LinkWebToolBarView.swift */; };
 		396DCDF42CA19EC600FEF7C8 /* PatchPopupHiddenResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396DCDF32CA19EC600FEF7C8 /* PatchPopupHiddenResponseDTO.swift */; };
 		396DCDF52CA19EC600FEF7C8 /* PatchPopupHiddenResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396DCDF32CA19EC600FEF7C8 /* PatchPopupHiddenResponseDTO.swift */; };
 		396DCDF72CA19EFD00FEF7C8 /* PopupAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396DCDF62CA19EFD00FEF7C8 /* PopupAPIService.swift */; };
@@ -33,6 +35,11 @@
 		396DCE002CA19F5C00FEF7C8 /* GetPopupInfoResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396DCDFF2CA19F5C00FEF7C8 /* GetPopupInfoResponseDTO.swift */; };
 		396DCE012CA19F5C00FEF7C8 /* GetPopupInfoResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396DCDFF2CA19F5C00FEF7C8 /* GetPopupInfoResponseDTO.swift */; };
 		396DCE032CA26C6600FEF7C8 /* PopupInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396DCE022CA26C6600FEF7C8 /* PopupInfoModel.swift */; };
+		397215542CA8CF07009DF1F9 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397215532CA8CF07009DF1F9 /* CancelBag.swift */; };
+		397215592CA8D15F009DF1F9 /* Publisher+UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397215582CA8D15F009DF1F9 /* Publisher+UIControl.swift */; };
+		3972155B2CA8DB1A009DF1F9 /* Publisher+UIGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3972155A2CA8DB1A009DF1F9 /* Publisher+UIGesture.swift */; };
+		3972155D2CA9007B009DF1F9 /* Publisher+UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3972155C2CA9007B009DF1F9 /* Publisher+UIBarButtonItem.swift */; };
+		397586EC2CAA312C004FB095 /* Publisher+Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397586EB2CAA312C004FB095 /* Publisher+Driver.swift */; };
 		398ACFDC2B5E77FA00D5EE77 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 398ACFDB2B5E77FA00D5EE77 /* Colors.xcassets */; };
 		398BE7F32B456367001595E0 /* ToasterToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398BE7F22B456367001595E0 /* ToasterToastMessageView.swift */; };
 		398BE7F62B456AF9001595E0 /* BottomType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398BE7F52B456AF9001595E0 /* BottomType.swift */; };
@@ -43,6 +50,10 @@
 		39A843CA2B74512B007A4D75 /* DetailClipViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A843C92B74512B007A4D75 /* DetailClipViewModel.swift */; };
 		39A843CE2B745B3A007A4D75 /* DetailClipPropertyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A843CD2B745B3A007A4D75 /* DetailClipPropertyType.swift */; };
 		39A843D12B746420007A4D75 /* EditClipViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A843D02B746420007A4D75 /* EditClipViewModel.swift */; };
+		39AE73C72CB3D41E00F89793 /* ToasterLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AE73C62CB3D41E00F89793 /* ToasterLoadingView.swift */; };
+		39AE73C92CB41DF200F89793 /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AE73C82CB41DF200F89793 /* UIButton+.swift */; };
+		39AE73CC2CB4EADB00F89793 /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AE73C82CB41DF200F89793 /* UIButton+.swift */; };
+		39AE73CD2CB4EBC300F89793 /* ToasterLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AE73C62CB3D41E00F89793 /* ToasterLoadingView.swift */; };
 		39B54E732B53C50300538DAE /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B54E722B53C50300538DAE /* SettingViewController.swift */; };
 		39B54E7A2B53D49900538DAE /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B54E792B53D49900538DAE /* SettingTableViewCell.swift */; };
 		39BC5B0B2B400602004024E6 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 39BC5B0A2B400602004024E6 /* .swiftlint.yml */; };
@@ -55,7 +66,7 @@
 		39BE4BB62B4ABA97002B471D /* DetailClipListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BE4BB52B4ABA97002B471D /* DetailClipListCollectionViewCell.swift */; };
 		39BE4BBE2B4ABB7C002B471D /* DetailClipSegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BE4BBD2B4ABB7C002B471D /* DetailClipSegmentedControlView.swift */; };
 		39BE4BC02B4ABB9E002B471D /* DetailClipEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BE4BBF2B4ABB9E002B471D /* DetailClipEmptyView.swift */; };
-		39BE4BC22B4ABBB0002B471D /* DeleteLinkBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BE4BC12B4ABBB0002B471D /* DeleteLinkBottomSheetView.swift */; };
+		39BE4BC22B4ABBB0002B471D /* LinkOptionBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BE4BC12B4ABBB0002B471D /* LinkOptionBottomSheetView.swift */; };
 		39C3926B2B491F47005B2B0F /* NSObject+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C3926A2B491F47005B2B0F /* NSObject+.swift */; };
 		39E794F92B479C8600F16A38 /* ClipEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E794F82B479C8600F16A38 /* ClipEmptyView.swift */; };
 		39EF95FF2B501BD600F301FC /* EditClipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EF95FE2B501BD600F301FC /* EditClipViewController.swift */; };
@@ -141,6 +152,14 @@
 		3F7D91812BA1A0D9004A022F /* SUIT-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 39BC5B102B410EF2004024E6 /* SUIT-SemiBold.otf */; };
 		3F7D91822BA1A0DC004A022F /* SUIT-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 39BC5B122B410EF3004024E6 /* SUIT-Regular.otf */; };
 		3F7D91832BA1A0DE004A022F /* SUIT-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 39BC5B0F2B410EF2004024E6 /* SUIT-Medium.otf */; };
+		3F82C30F2CA92AAB00492EEE /* ShareViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F82C30E2CA92AAB00492EEE /* ShareViewModel.swift */; };
+		3F82C3212CADA19300492EEE /* Publisher+UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F82C3202CADA19300492EEE /* Publisher+UIButton.swift */; };
+		3F82C3222CADA1EF00492EEE /* Publisher+UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F82C3202CADA19300492EEE /* Publisher+UIButton.swift */; };
+		3F82C3232CADA1F400492EEE /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397215532CA8CF07009DF1F9 /* CancelBag.swift */; };
+		3F82C3242CADA1F700492EEE /* Publisher+Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397586EB2CAA312C004FB095 /* Publisher+Driver.swift */; };
+		3F82C3252CADA1F900492EEE /* Publisher+UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397215582CA8D15F009DF1F9 /* Publisher+UIControl.swift */; };
+		3F82C3262CADA1FC00492EEE /* Publisher+UIGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3972155A2CA8DB1A009DF1F9 /* Publisher+UIGesture.swift */; };
+		3F82C3272CADA1FE00492EEE /* Publisher+UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3972155C2CA9007B009DF1F9 /* Publisher+UIBarButtonItem.swift */; };
 		3FA56CD72B85C76B00B9FCFE /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA56CD62B85C76B00B9FCFE /* OnboardingViewController.swift */; };
 		3FA8654F2BBD799600A9DB8F /* PostTokenHealthResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA8654E2BBD799600A9DB8F /* PostTokenHealthResponseDTO.swift */; };
 		3FACF9B82B4FE306007E5A8F /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FACF9B72B4FE306007E5A8F /* KeyChainService.swift */; };
@@ -151,6 +170,13 @@
 		3FE00F0C2BC632A500CC821E /* NetworkResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE6DA352B5059CE008B06FA /* NetworkResult.swift */; };
 		3FE28DC22B879B1400B6AED8 /* OnboardingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE28DC12B879B1400B6AED8 /* OnboardingType.swift */; };
 		3FE828352B54E58E00F10732 /* APIInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE828342B54E58E00F10732 /* APIInterceptor.swift */; };
+		3FEA674B2CB51BBC00675805 /* PatchChangeCategoryRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA674A2CB51BBC00675805 /* PatchChangeCategoryRequestDTO.swift */; };
+		3FEA674D2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA674C2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift */; };
+		3FEA674E2CB51E6D00675805 /* PatchChangeCategoryRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA674A2CB51BBC00675805 /* PatchChangeCategoryRequestDTO.swift */; };
+		3FEA67502CB6522F00675805 /* ChangeClipBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA674F2CB6522F00675805 /* ChangeClipBottomSheetView.swift */; };
+		3FEA67522CB663B100675805 /* ChangeClipViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA67512CB663B100675805 /* ChangeClipViewModel.swift */; };
+		3FEA67532CB677A400675805 /* PatchChangeCategoryResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA674C2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift */; };
+		3FF02B302CAFE6600074332E /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8334CF9F2CA6E2D200319922 /* ViewModelType.swift */; };
 		3FF2BF092BA17492001D7DC1 /* ToasterShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3FF2BEFF2BA17492001D7DC1 /* ToasterShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3FF2BF0E2BA188AE001D7DC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B6AE6572B3FF103000E2366 /* Assets.xcassets */; };
 		3FF2BF0F2BA188B9001D7DC1 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 398ACFDB2B5E77FA00D5EE77 /* Colors.xcassets */; };
@@ -337,12 +363,20 @@
 		3913B0AF2BCECFC80031A3EB /* UpdateAlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateAlertType.swift; sourceTree = "<group>"; };
 		391908412B56CFE4006F978A /* PatchEditPriorityCategoryRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchEditPriorityCategoryRequestDTO.swift; sourceTree = "<group>"; };
 		391908432B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchEditNameCategoryRequestDTO.swift; sourceTree = "<group>"; };
+		396D7EC72C855F180034A14E /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
+		396D7ECA2C855F5F0034A14E /* LinkWebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkWebViewModel.swift; sourceTree = "<group>"; };
+		396D7ECC2C880F1F0034A14E /* LinkWebToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkWebToolBarView.swift; sourceTree = "<group>"; };
 		396DCDF32CA19EC600FEF7C8 /* PatchPopupHiddenResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchPopupHiddenResponseDTO.swift; sourceTree = "<group>"; };
 		396DCDF62CA19EFD00FEF7C8 /* PopupAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupAPIService.swift; sourceTree = "<group>"; };
 		396DCDF92CA19F2000FEF7C8 /* PopupTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupTargetType.swift; sourceTree = "<group>"; };
 		396DCDFC2CA19F4500FEF7C8 /* PatchPopupHiddenRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchPopupHiddenRequestDTO.swift; sourceTree = "<group>"; };
 		396DCDFF2CA19F5C00FEF7C8 /* GetPopupInfoResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPopupInfoResponseDTO.swift; sourceTree = "<group>"; };
 		396DCE022CA26C6600FEF7C8 /* PopupInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupInfoModel.swift; sourceTree = "<group>"; };
+		397215532CA8CF07009DF1F9 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
+		397215582CA8D15F009DF1F9 /* Publisher+UIControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+UIControl.swift"; sourceTree = "<group>"; };
+		3972155A2CA8DB1A009DF1F9 /* Publisher+UIGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+UIGesture.swift"; sourceTree = "<group>"; };
+		3972155C2CA9007B009DF1F9 /* Publisher+UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+UIBarButtonItem.swift"; sourceTree = "<group>"; };
+		397586EB2CAA312C004FB095 /* Publisher+Driver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Driver.swift"; sourceTree = "<group>"; };
 		398ACFDB2B5E77FA00D5EE77 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		398BE7F22B456367001595E0 /* ToasterToastMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToasterToastMessageView.swift; sourceTree = "<group>"; };
 		398BE7F52B456AF9001595E0 /* BottomType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomType.swift; sourceTree = "<group>"; };
@@ -353,6 +387,8 @@
 		39A843C92B74512B007A4D75 /* DetailClipViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailClipViewModel.swift; sourceTree = "<group>"; };
 		39A843CD2B745B3A007A4D75 /* DetailClipPropertyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailClipPropertyType.swift; sourceTree = "<group>"; };
 		39A843D02B746420007A4D75 /* EditClipViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClipViewModel.swift; sourceTree = "<group>"; };
+		39AE73C62CB3D41E00F89793 /* ToasterLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToasterLoadingView.swift; sourceTree = "<group>"; };
+		39AE73C82CB41DF200F89793 /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
 		39B54E722B53C50300538DAE /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		39B54E792B53D49900538DAE /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		39BC5B0A2B400602004024E6 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -365,7 +401,7 @@
 		39BE4BB52B4ABA97002B471D /* DetailClipListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailClipListCollectionViewCell.swift; sourceTree = "<group>"; };
 		39BE4BBD2B4ABB7C002B471D /* DetailClipSegmentedControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailClipSegmentedControlView.swift; sourceTree = "<group>"; };
 		39BE4BBF2B4ABB9E002B471D /* DetailClipEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailClipEmptyView.swift; sourceTree = "<group>"; };
-		39BE4BC12B4ABBB0002B471D /* DeleteLinkBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteLinkBottomSheetView.swift; sourceTree = "<group>"; };
+		39BE4BC12B4ABBB0002B471D /* LinkOptionBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkOptionBottomSheetView.swift; sourceTree = "<group>"; };
 		39C3926A2B491F47005B2B0F /* NSObject+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+.swift"; sourceTree = "<group>"; };
 		39E794F82B479C8600F16A38 /* ClipEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipEmptyView.swift; sourceTree = "<group>"; };
 		39EF95FE2B501BD600F301FC /* EditClipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClipViewController.swift; sourceTree = "<group>"; };
@@ -385,6 +421,8 @@
 		3F617CB72B4ECB6000956E69 /* MypageUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageUserModel.swift; sourceTree = "<group>"; };
 		3F6CD49C2B86229A00DEC113 /* CustomPageIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPageIndicatorView.swift; sourceTree = "<group>"; };
 		3F7D91712BA18C93004A022F /* ToasterShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ToasterShareExtension.entitlements; sourceTree = "<group>"; };
+		3F82C30E2CA92AAB00492EEE /* ShareViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewModel.swift; sourceTree = "<group>"; };
+		3F82C3202CADA19300492EEE /* Publisher+UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+UIButton.swift"; sourceTree = "<group>"; };
 		3FA56CD62B85C76B00B9FCFE /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		3FA8654E2BBD799600A9DB8F /* PostTokenHealthResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTokenHealthResponseDTO.swift; sourceTree = "<group>"; };
 		3FACF9B72B4FE306007E5A8F /* KeyChainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainService.swift; sourceTree = "<group>"; };
@@ -394,6 +432,10 @@
 		3FE00F0A2BC6328900CC821E /* MoyaPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoyaPlugin.swift; sourceTree = "<group>"; };
 		3FE28DC12B879B1400B6AED8 /* OnboardingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingType.swift; sourceTree = "<group>"; };
 		3FE828342B54E58E00F10732 /* APIInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIInterceptor.swift; sourceTree = "<group>"; };
+		3FEA674A2CB51BBC00675805 /* PatchChangeCategoryRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchChangeCategoryRequestDTO.swift; sourceTree = "<group>"; };
+		3FEA674C2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchChangeCategoryResponseDTO.swift; sourceTree = "<group>"; };
+		3FEA674F2CB6522F00675805 /* ChangeClipBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeClipBottomSheetView.swift; sourceTree = "<group>"; };
+		3FEA67512CB663B100675805 /* ChangeClipViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeClipViewModel.swift; sourceTree = "<group>"; };
 		3FF2BEFF2BA17492001D7DC1 /* ToasterShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ToasterShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FF2BF062BA17492001D7DC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B0E85D82B564913001BC15F /* RemindTimerAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindTimerAddViewModel.swift; sourceTree = "<group>"; };
@@ -562,8 +604,9 @@
 			isa = PBXGroup;
 			children = (
 				3909A0692B6236FE005A4546 /* Model */,
-				390925C92B4F047500487AA3 /* View */,
 				39A843D72B7485DF007A4D75 /* ViewController */,
+				390925C92B4F047500487AA3 /* View */,
+				396D7EC92C855F4F0034A14E /* ViewModel */,
 			);
 			path = LinkWeb;
 			sourceTree = "<group>";
@@ -580,6 +623,7 @@
 			isa = PBXGroup;
 			children = (
 				390925CA2B4F049800487AA3 /* LinkWebNavigationView.swift */,
+				396D7ECC2C880F1F0034A14E /* LinkWebToolBarView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -625,6 +669,14 @@
 			path = UpdateAlert;
 			sourceTree = "<group>";
 		};
+		396D7EC92C855F4F0034A14E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				396D7ECA2C855F5F0034A14E /* LinkWebViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		396DCDE22CA199E800FEF7C8 /* Popup */ = {
 			isa = PBXGroup;
 			children = (
@@ -643,6 +695,49 @@
 				396DCDF32CA19EC600FEF7C8 /* PatchPopupHiddenResponseDTO.swift */,
 			);
 			path = DTO;
+			sourceTree = "<group>";
+		};
+		397215502CA8CDFF009DF1F9 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				396D7EC72C855F180034A14E /* ViewModelType.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		397215552CA8D0A1009DF1F9 /* UIKit+ */ = {
+			isa = PBXGroup;
+			children = (
+				6B6AE6AB2B3FF6F7000E2366 /* UIColor+.swift */,
+				6B6AE6A92B3FF6EA000E2366 /* UIStackView+.swift */,
+				6B6AE6A72B3FF6D5000E2366 /* UITextField+.swift */,
+				6B6AE6A52B3FF6BD000E2366 /* UIView+.swift */,
+				6B6AE6A32B3FF6B0000E2366 /* UIViewController+.swift */,
+				830517AF2B4D9A3B009FFB60 /* UILabel+.swift */,
+				39AE73C82CB41DF200F89793 /* UIButton+.swift */,
+			);
+			path = "UIKit+";
+			sourceTree = "<group>";
+		};
+		397215562CA8D0B1009DF1F9 /* Foundation+ */ = {
+			isa = PBXGroup;
+			children = (
+				39C3926A2B491F47005B2B0F /* NSObject+.swift */,
+			);
+			path = "Foundation+";
+			sourceTree = "<group>";
+		};
+		397215572CA8D0CA009DF1F9 /* Combine+ */ = {
+			isa = PBXGroup;
+			children = (
+				397215532CA8CF07009DF1F9 /* CancelBag.swift */,
+				397586EB2CAA312C004FB095 /* Publisher+Driver.swift */,
+				397215582CA8D15F009DF1F9 /* Publisher+UIControl.swift */,
+				3972155A2CA8DB1A009DF1F9 /* Publisher+UIGesture.swift */,
+				3972155C2CA9007B009DF1F9 /* Publisher+UIBarButtonItem.swift */,
+				3F82C3202CADA19300492EEE /* Publisher+UIButton.swift */,
+			);
+			path = "Combine+";
 			sourceTree = "<group>";
 		};
 		398ACFDA2B5E77C500D5EE77 /* Assets */ = {
@@ -713,6 +808,7 @@
 			children = (
 				39A843C92B74512B007A4D75 /* DetailClipViewModel.swift */,
 				39A843CD2B745B3A007A4D75 /* DetailClipPropertyType.swift */,
+				3FEA67512CB663B100675805 /* ChangeClipViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -722,8 +818,9 @@
 			children = (
 				39BE4BBD2B4ABB7C002B471D /* DetailClipSegmentedControlView.swift */,
 				39BE4BBF2B4ABB9E002B471D /* DetailClipEmptyView.swift */,
-				39BE4BC12B4ABBB0002B471D /* DeleteLinkBottomSheetView.swift */,
+				39BE4BC12B4ABBB0002B471D /* LinkOptionBottomSheetView.swift */,
 				8388E98D2BC8FC6700858C5C /* EditLinkBottomSheetView.swift */,
+				3FEA674F2CB6522F00675805 /* ChangeClipBottomSheetView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -750,6 +847,14 @@
 				390925C32B4EF64100487AA3 /* LinkWebViewController.swift */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		39AE73C52CB3D3DF00F89793 /* ToasterLoadingView */ = {
+			isa = PBXGroup;
+			children = (
+				39AE73C62CB3D41E00F89793 /* ToasterLoadingView.swift */,
+			);
+			path = ToasterLoadingView;
 			sourceTree = "<group>";
 		};
 		39B54E712B53C4F100538DAE /* Setting */ = {
@@ -833,6 +938,7 @@
 				3FF2BF062BA17492001D7DC1 /* Info.plist */,
 				3F1F26252BAAC231004F75CE /* ShareViewController.swift */,
 				3FE00F0A2BC6328900CC821E /* MoyaPlugin.swift */,
+				3F82C30E2CA92AAB00492EEE /* ShareViewModel.swift */,
 			);
 			path = ToasterShareExtension;
 			sourceTree = "<group>";
@@ -861,6 +967,7 @@
 				3FF2BF002BA17492001D7DC1 /* ToasterShareExtension */,
 				6B6AE64C2B3FF101000E2366 /* Products */,
 				390925C52B4EF66C00487AA3 /* Frameworks */,
+				397215502CA8CDFF009DF1F9 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -931,13 +1038,9 @@
 		6B6AE6812B3FF50A000E2366 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				6B6AE6AB2B3FF6F7000E2366 /* UIColor+.swift */,
-				6B6AE6A92B3FF6EA000E2366 /* UIStackView+.swift */,
-				6B6AE6A72B3FF6D5000E2366 /* UITextField+.swift */,
-				6B6AE6A52B3FF6BD000E2366 /* UIView+.swift */,
-				6B6AE6A32B3FF6B0000E2366 /* UIViewController+.swift */,
-				39C3926A2B491F47005B2B0F /* NSObject+.swift */,
-				830517AF2B4D9A3B009FFB60 /* UILabel+.swift */,
+				397215572CA8D0CA009DF1F9 /* Combine+ */,
+				397215552CA8D0A1009DF1F9 /* UIKit+ */,
+				397215562CA8D0B1009DF1F9 /* Foundation+ */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -954,6 +1057,7 @@
 		6B6AE6832B3FF514000E2366 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				39AE73C52CB3D3DF00F89793 /* ToasterLoadingView */,
 				6BC493662B45D78F00544249 /* ToasterNavigationController */,
 				398BE7F42B456ACF001595E0 /* ToasterBottomSheet */,
 				398BE7F12B45628F001595E0 /* ToasterToastMessage */,
@@ -1431,6 +1535,7 @@
 				6BE6DA812B545786008B06FA /* PostSaveLinkRequestDTO.swift */,
 				390247A92B58016C00F9A86A /* PatchOpenLinkRequestDTO.swift */,
 				8388E98B2BC8FAB200858C5C /* PatchEditLinkTitleRequestDTO.swift */,
+				3FEA674A2CB51BBC00675805 /* PatchChangeCategoryRequestDTO.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -1442,6 +1547,7 @@
 				6BE6DA8B2B546CA9008B06FA /* GetWeeksLinkResponseDTO.swift */,
 				8364220B2BE7BFB2005C4085 /* PatchEditLinkTitleResponseDTO.swift */,
 				83D80DCF2CC10D8C00DD5410 /* GetRecentLinkResponseDTO.swift */,
+				3FEA674C2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1828,15 +1934,19 @@
 			files = (
 				3F3ED28A2BA1A456004E79F0 /* AuthTargetType.swift in Sources */,
 				396DCDFD2CA19F4500FEF7C8 /* PatchPopupHiddenRequestDTO.swift in Sources */,
+				3F82C3222CADA1EF00492EEE /* Publisher+UIButton.swift in Sources */,
 				3F3ED28B2BA1A456004E79F0 /* PostSocialLoginResponseDTO.swift in Sources */,
 				3F1F261D2BAA98C8004F75CE /* RemindClipModel.swift in Sources */,
 				3F3ED28C2BA1A456004E79F0 /* PostRefreshTokenResponseDTO.swift in Sources */,
 				3F3ED28D2BA1A456004E79F0 /* AuthAPIService.swift in Sources */,
+				3F82C30F2CA92AAB00492EEE /* ShareViewModel.swift in Sources */,
 				3F3ED2892BA1A453004E79F0 /* PostSocialLoginRequestDTO.swift in Sources */,
 				3F3ED27B2BA1A298004E79F0 /* BaseTargetType.swift in Sources */,
 				3F3ED28E2BA1A45C004E79F0 /* PatchPushAlarmRequestDTO.swift in Sources */,
 				3F3ED2782BA1A246004E79F0 /* KeyChainService.swift in Sources */,
 				3F1F26202BAAB34B004F75CE /* SelectClipModel.swift in Sources */,
+				3F82C3272CADA1FE00492EEE /* Publisher+UIBarButtonItem.swift in Sources */,
+				3F82C3242CADA1F700492EEE /* Publisher+Driver.swift in Sources */,
 				3F1F261F2BAAAED7004F75CE /* ToastStatus.swift in Sources */,
 				3F3ED2792BA1A258004E79F0 /* Config.swift in Sources */,
 				3F7D917A2BA1A05F004A022F /* UIView+.swift in Sources */,
@@ -1866,24 +1976,30 @@
 				3F3ED2A12BA1A478004E79F0 /* GetDetailTimerResponseDTO.swift in Sources */,
 				3F3ED2942BA1A45F004E79F0 /* GetMainPageResponseDTO.swift in Sources */,
 				3F3ED2B42BA1D5FF004E79F0 /* NSObject+.swift in Sources */,
+				3F82C3232CADA1F400492EEE /* CancelBag.swift in Sources */,
 				3F3ED2862BA1A400004E79F0 /* PatchEditNameCategoryRequestDTO.swift in Sources */,
 				3F3ED2972BA1A46E004E79F0 /* GetWeeksLinkResponseDTO.swift in Sources */,
 				3F3ED29B2BA1A475004E79F0 /* PatchEditTimerRequestDTO.swift in Sources */,
 				3F3ED29C2BA1A475004E79F0 /* PatchEditTimerTitleRequestDTO.swift in Sources */,
 				3F3ED29D2BA1A475004E79F0 /* PostCreateTimerRequestDTO.swift in Sources */,
+				3FEA674E2CB51E6D00675805 /* PatchChangeCategoryRequestDTO.swift in Sources */,
 				3F1F26262BAAC231004F75CE /* ShareViewController.swift in Sources */,
+				3FEA67532CB677A400675805 /* PatchChangeCategoryResponseDTO.swift in Sources */,
 				3F1F26222BAAB395004F75CE /* ToasterToastMessageView.swift in Sources */,
 				3F3ED2992BA1A46E004E79F0 /* PatchOpenLinkResponseDTO.swift in Sources */,
 				3F3ED2872BA1A400004E79F0 /* PostAddCategoryRequestDTO.swift in Sources */,
 				3F3ED2B52BA1D645004E79F0 /* ClipModel.swift in Sources */,
+				3FF02B302CAFE6600074332E /* ViewModelType.swift in Sources */,
 				83474A6A2BED06EB009B9C48 /* ToasterTargetType.swift in Sources */,
 				3F3ED2952BA1A46B004E79F0 /* PatchOpenLinkRequestDTO.swift in Sources */,
 				3F3ED2A92BA1AAB4004E79F0 /* StringLiterals.swift in Sources */,
 				3F3ED2A22BA1A47E004E79F0 /* GetMainPageSearchResponseDTO.swift in Sources */,
 				3F3ED2A32BA1A47E004E79F0 /* SearchTargetType.swift in Sources */,
 				396DCDFB2CA19F2000FEF7C8 /* PopupTargetType.swift in Sources */,
+				3F82C3252CADA1F900492EEE /* Publisher+UIControl.swift in Sources */,
 				3F3ED2A42BA1A47E004E79F0 /* GetRecommendSiteResponseDTO.swift in Sources */,
 				3F3ED2A52BA1A47E004E79F0 /* SearchAPIService.swift in Sources */,
+				39AE73CD2CB4EBC300F89793 /* ToasterLoadingView.swift in Sources */,
 				3F3ED2962BA1A46B004E79F0 /* PostSaveLinkRequestDTO.swift in Sources */,
 				3F3ED2882BA1A400004E79F0 /* PatchEditPriorityCategoryRequestDTO.swift in Sources */,
 				3FE00F082BC5076200CC821E /* PostTokenHealthResponseDTO.swift in Sources */,
@@ -1892,12 +2008,14 @@
 				3F3ED2852BA1A3FD004E79F0 /* GetDetailCategoryResponseDTO.swift in Sources */,
 				3F3ED2802BA1A2B0004E79F0 /* APIInterceptor.swift in Sources */,
 				3F3ED27F2BA1A2A9004E79F0 /* NetworkService.swift in Sources */,
+				3F82C3262CADA1FC00492EEE /* Publisher+UIGesture.swift in Sources */,
 				3F1F26292BAADE01004F75CE /* Config.swift in Sources */,
 				3F3ED27C2BA1A29F004E79F0 /* BaseAPIService.swift in Sources */,
 				3F3ED2B32BA1D59D004E79F0 /* ClipListCollectionViewCell.swift in Sources */,
 				3F3ED2B72BA1D897004E79F0 /* SearchResultModel.swift in Sources */,
 				83D80DD12CC1113E00DD5410 /* GetRecentLinkResponseDTO.swift in Sources */,
 				3F3ED2812BA1A3F5004E79F0 /* ClipAPIService.swift in Sources */,
+				39AE73CC2CB4EADB00F89793 /* UIButton+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1963,7 +2081,7 @@
 				3909A0702B6239F8005A4546 /* ClipPriorityEditModel.swift in Sources */,
 				6BE6DA962B547037008B06FA /* PatchEditTimerRequestDTO.swift in Sources */,
 				39B54E732B53C50300538DAE /* SettingViewController.swift in Sources */,
-				39BE4BC22B4ABBB0002B471D /* DeleteLinkBottomSheetView.swift in Sources */,
+				39BE4BC22B4ABBB0002B471D /* LinkOptionBottomSheetView.swift in Sources */,
 				6BE6DA292B505433008B06FA /* AuthTargetType.swift in Sources */,
 				6BC4936C2B48633700544249 /* ToasterNavigationType.swift in Sources */,
 				6B6AE6992B3FF5C1000E2366 /* SearchViewController.swift in Sources */,
@@ -1973,6 +2091,8 @@
 				830517962B4D21BB009FFB60 /* CompositioinalFactory.swift in Sources */,
 				6BE6D9E82B4EA773008B06FA /* RemindCollectionFooterView.swift in Sources */,
 				39A843CA2B74512B007A4D75 /* DetailClipViewModel.swift in Sources */,
+				3FEA674D2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift in Sources */,
+				3FEA674B2CB51BBC00675805 /* PatchChangeCategoryRequestDTO.swift in Sources */,
 				83CFC3392B568BE700A2EB2B /* RecommendSiteModel.swift in Sources */,
 				391908442B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift in Sources */,
 				6BE6D9F42B4EF568008B06FA /* RemindTimerEditBottomSheetView.swift in Sources */,
@@ -1986,9 +2106,12 @@
 				39B54E7A2B53D49900538DAE /* SettingTableViewCell.swift in Sources */,
 				39A843C52B736039007A4D75 /* ClipViewModel.swift in Sources */,
 				6BE6DA392B50636B008B06FA /* BaseAPIService.swift in Sources */,
+				39AE73C72CB3D41E00F89793 /* ToasterLoadingView.swift in Sources */,
+				397215592CA8D15F009DF1F9 /* Publisher+UIControl.swift in Sources */,
 				6BE6DA572B50B44F008B06FA /* GetMyPageResponseDTO.swift in Sources */,
 				6BE6DA182B4FF285008B06FA /* TimerRepeatDate.swift in Sources */,
 				6BE6D9F22B4EEBC3008B06FA /* RemindViewModel.swift in Sources */,
+				39AE73C92CB41DF200F89793 /* UIButton+.swift in Sources */,
 				6B6AE64F2B3FF101000E2366 /* AppDelegate.swift in Sources */,
 				6BE6DA922B546F07008B06FA /* TimerTargetType.swift in Sources */,
 				6BE6DA1A2B4FF443008B06FA /* TimerRepeatBottomSheetView.swift in Sources */,
@@ -1997,6 +2120,7 @@
 				6BC4935E2B4414B400544249 /* ToasterPopupViewController.swift in Sources */,
 				39BE4BBE2B4ABB7C002B471D /* DetailClipSegmentedControlView.swift in Sources */,
 				6BE6DA6D2B50C109008B06FA /* GetDetailCategoryResponseDTO.swift in Sources */,
+				3972155B2CA8DB1A009DF1F9 /* Publisher+UIGesture.swift in Sources */,
 				6B6AE6A82B3FF6D5000E2366 /* UITextField+.swift in Sources */,
 				6BE6DA652B50BA4F008B06FA /* PostAddCategoryRequestDTO.swift in Sources */,
 				6BE6D9DE2B4E9054008B06FA /* AlarmOffStateButton.swift in Sources */,
@@ -2004,6 +2128,7 @@
 				8309F5882B8DCEAC00A1420A /* SelectClipViewModel.swift in Sources */,
 				39049C8F2B43F70400C9196E /* ToasterBottomSheetViewController.swift in Sources */,
 				6BE6DAB12B547BE1008B06FA /* GetMainPageSearchResponseDTO.swift in Sources */,
+				3FEA67502CB6522F00675805 /* ChangeClipBottomSheetView.swift in Sources */,
 				8315CD862B517DBF0061F377 /* AddLinkView.swift in Sources */,
 				8315CD912B5521F70061F377 /* SelectClipModel.swift in Sources */,
 				3FA8654F2BBD799600A9DB8F /* PostTokenHealthResponseDTO.swift in Sources */,
@@ -2011,6 +2136,7 @@
 				398BE7FE2B46C164001595E0 /* AddClipBottomSheetView.swift in Sources */,
 				6BE6DA012B4F2ACA008B06FA /* RemindSelectClipViewController.swift in Sources */,
 				6BE6DA592B50B45E008B06FA /* PatchPushAlarmResponseDTO.swift in Sources */,
+				397215542CA8CF07009DF1F9 /* CancelBag.swift in Sources */,
 				39BE4BB62B4ABA97002B471D /* DetailClipListCollectionViewCell.swift in Sources */,
 				3FE28DC22B879B1400B6AED8 /* OnboardingType.swift in Sources */,
 				3F617CB52B4EC2EE00956E69 /* MypageHeaderView.swift in Sources */,
@@ -2022,16 +2148,20 @@
 				3F2FA17D2B4928B700EDBF95 /* LoginUseCase.swift in Sources */,
 				6BE6DA9A2B54747B008B06FA /* TimerAPIService.swift in Sources */,
 				6BE6DA882B546B24008B06FA /* PatchOpenLinkResponseDTO.swift in Sources */,
+				396D7ECB2C855F5F0034A14E /* LinkWebViewModel.swift in Sources */,
 				6BE6DA752B50C373008B06FA /* GetCheckCategoryResponseDTO.swift in Sources */,
 				396DCE012CA19F5C00FEF7C8 /* GetPopupInfoResponseDTO.swift in Sources */,
 				6BE6D9EF2B4EE98D008B06FA /* RemindModel.swift in Sources */,
 				396DCDFE2CA19F4500FEF7C8 /* PatchPopupHiddenRequestDTO.swift in Sources */,
 				6BE6DA6B2B50BFED008B06FA /* NoneDataResponseDTO.swift in Sources */,
 				391908422B56CFE4006F978A /* PatchEditPriorityCategoryRequestDTO.swift in Sources */,
+				396D7ECD2C880F1F0034A14E /* LinkWebToolBarView.swift in Sources */,
 				6BE6DA732B50C33A008B06FA /* GetAllCategoryResponseDTO.swift in Sources */,
 				3F2FA1752B45C0AF00EDBF95 /* Config.swift in Sources */,
 				83D80DCC2CC1059000DD5410 /* RecentLinkModel.swift in Sources */,
+				3F82C3212CADA19300492EEE /* Publisher+UIButton.swift in Sources */,
 				6B6AE6AC2B3FF6F7000E2366 /* UIColor+.swift in Sources */,
+				3FEA67522CB663B100675805 /* ChangeClipViewModel.swift in Sources */,
 				6BC493682B45D7B100544249 /* ToasterNavigationController.swift in Sources */,
 				6BE6DA492B50ADC2008B06FA /* NetworkService.swift in Sources */,
 				6B6AE69C2B3FF5CC000E2366 /* HomeViewController.swift in Sources */,
@@ -2066,6 +2196,7 @@
 				398BE7FA2B467E4B001595E0 /* ClipListCollectionViewCell.swift in Sources */,
 				39A843D12B746420007A4D75 /* EditClipViewModel.swift in Sources */,
 				6BE6DA552B50B43E008B06FA /* GetSettingPageResponseDTO.swift in Sources */,
+				3972155D2CA9007B009DF1F9 /* Publisher+UIBarButtonItem.swift in Sources */,
 				830517B02B4D9A3B009FFB60 /* UILabel+.swift in Sources */,
 				390925C42B4EF64100487AA3 /* LinkWebViewController.swift in Sources */,
 				6B6AE6A42B3FF6B0000E2366 /* UIViewController+.swift in Sources */,
@@ -2078,6 +2209,7 @@
 				6BE6DA072B4F2FC5008B06FA /* RemindClipModel.swift in Sources */,
 				6B6AE69F2B3FF5D7000E2366 /* LoginViewController.swift in Sources */,
 				6BE6DA982B54709D008B06FA /* PatchEditTimerTitleRequestDTO.swift in Sources */,
+				397586EC2CAA312C004FB095 /* Publisher+Driver.swift in Sources */,
 				6BE6DA362B5059CE008B06FA /* NetworkResult.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

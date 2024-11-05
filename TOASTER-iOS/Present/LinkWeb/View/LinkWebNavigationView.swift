@@ -20,7 +20,7 @@ final class LinkWebNavigationView: UIView {
     // MARK: - UI Components
     
     private let popButton = UIButton()
-    private let addressLabel = UILabel()
+    private let addressLabel = UITextField()
     private let reloadButton = UIButton()
     
     // MARK: - Life Cycles
@@ -71,6 +71,7 @@ private extension LinkWebNavigationView {
             $0.font = .suitSemiBold(size: 14)
             $0.textColor = .black900
             $0.textAlignment = .center
+            $0.inputView = UIView()
         }
         
         reloadButton.do {
@@ -95,6 +96,7 @@ private extension LinkWebNavigationView {
             $0.centerY.equalTo(popButton)
             $0.leading.equalTo(popButton.snp.trailing).offset(13)
             $0.trailing.equalTo(reloadButton.snp.leading).inset(-13)
+            $0.height.equalTo(36)
         }
         
         reloadButton.snp.makeConstraints {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum NetworkResult<T> {
+enum NetworkResult<T>: Error {
     
     case success(T?)
     

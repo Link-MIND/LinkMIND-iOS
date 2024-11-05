@@ -235,25 +235,10 @@ private extension EditLinkBottomSheetView {
 // MARK: - UITextField Delegate
 
 extension EditLinkBottomSheetView: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let newText = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) ?? string
-        let currentText = textField.text ?? ""
-        let maxLength = 16
-        
-        // 길이가 16에서 15로 돌아갈 때
-        if currentText.count == maxLength && newText.count == 15 {
-            editLinkBottomSheetViewDelegate?.minusHeightBottom()
-        }
-        return (newText.count <= maxLength) || (newText.count < currentText.count)
-    }
-    
     func textFieldDidChangeSelection(_ textField: UITextField) {
         let currentText = textField.text ?? ""
         if currentText.isEmpty {
             changeTextField(addButton: false, border: false, error: false, clearButton: false)
-        } else if currentText.count > 15 {
-            changeTextField(addButton: false, border: true, error: true, clearButton: true)
-            setupMessage(message: "링크 제목은 최대 15자까지 입력 가능해요")
         } else {
             changeTextField(addButton: true, border: false, error: false, clearButton: true)
         }
