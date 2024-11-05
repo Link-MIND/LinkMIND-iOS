@@ -55,7 +55,7 @@ private extension UserClipEmptyCollectionViewCell {
         addClipLabel.do {
             $0.font = .suitBold(size: 14)
             $0.textColor = .gray200
-            $0.text = "클립 추가"
+            $0.text = "첫번째 링크를 저장해보세요"
         }
     }
     
@@ -66,13 +66,13 @@ private extension UserClipEmptyCollectionViewCell {
     func setupLayout() {
         addClipImage.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().inset(34)
+            $0.top.equalToSuperview().inset(17)
             $0.size.equalTo(42)
         }
         
         addClipLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(addClipImage.snp.bottom).offset(1)
+            $0.top.equalTo(addClipImage.snp.bottom).offset(5)
         }
     }
     

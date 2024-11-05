@@ -318,6 +318,9 @@
 		83CFC3372B564F1100A2EB2B /* WeeklyLinkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CFC3362B564F1100A2EB2B /* WeeklyLinkModel.swift */; };
 		83CFC3392B568BE700A2EB2B /* RecommendSiteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CFC3382B568BE700A2EB2B /* RecommendSiteModel.swift */; };
 		83CFC33B2B57324700A2EB2B /* SaveLinkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CFC33A2B57324700A2EB2B /* SaveLinkModel.swift */; };
+		83D80DCC2CC1059000DD5410 /* RecentLinkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D80DCB2CC1059000DD5410 /* RecentLinkModel.swift */; };
+		83D80DD02CC10D8C00DD5410 /* GetRecentLinkResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D80DCF2CC10D8C00DD5410 /* GetRecentLinkResponseDTO.swift */; };
+		83D80DD12CC1113E00DD5410 /* GetRecentLinkResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D80DCF2CC10D8C00DD5410 /* GetRecentLinkResponseDTO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -552,6 +555,8 @@
 		83CFC3362B564F1100A2EB2B /* WeeklyLinkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyLinkModel.swift; sourceTree = "<group>"; };
 		83CFC3382B568BE700A2EB2B /* RecommendSiteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendSiteModel.swift; sourceTree = "<group>"; };
 		83CFC33A2B57324700A2EB2B /* SaveLinkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveLinkModel.swift; sourceTree = "<group>"; };
+		83D80DCB2CC1059000DD5410 /* RecentLinkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentLinkModel.swift; sourceTree = "<group>"; };
+		83D80DCF2CC10D8C00DD5410 /* GetRecentLinkResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRecentLinkResponseDTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1541,6 +1546,7 @@
 				6BE6DA872B546B24008B06FA /* PatchOpenLinkResponseDTO.swift */,
 				6BE6DA8B2B546CA9008B06FA /* GetWeeksLinkResponseDTO.swift */,
 				8364220B2BE7BFB2005C4085 /* PatchEditLinkTitleResponseDTO.swift */,
+				83D80DCF2CC10D8C00DD5410 /* GetRecentLinkResponseDTO.swift */,
 				3FEA674C2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift */,
 			);
 			path = Response;
@@ -1651,6 +1657,7 @@
 				83CFC3362B564F1100A2EB2B /* WeeklyLinkModel.swift */,
 				83CFC3382B568BE700A2EB2B /* RecommendSiteModel.swift */,
 				396DCE022CA26C6600FEF7C8 /* PopupInfoModel.swift */,
+				83D80DCB2CC1059000DD5410 /* RecentLinkModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2006,6 +2013,7 @@
 				3F3ED27C2BA1A29F004E79F0 /* BaseAPIService.swift in Sources */,
 				3F3ED2B32BA1D59D004E79F0 /* ClipListCollectionViewCell.swift in Sources */,
 				3F3ED2B72BA1D897004E79F0 /* SearchResultModel.swift in Sources */,
+				83D80DD12CC1113E00DD5410 /* GetRecentLinkResponseDTO.swift in Sources */,
 				3F3ED2812BA1A3F5004E79F0 /* ClipAPIService.swift in Sources */,
 				39AE73CC2CB4EADB00F89793 /* UIButton+.swift in Sources */,
 			);
@@ -2019,6 +2027,7 @@
 				6BE6DAA42B547579008B06FA /* GetDetailTimerResponseDTO.swift in Sources */,
 				6BE6D9E22B4E9B58008B06FA /* CompleteTimerCollectionViewCell.swift in Sources */,
 				8334CFA02CA6E2D200319922 /* ViewModelType.swift in Sources */,
+				83D80DD02CC10D8C00DD5410 /* GetRecentLinkResponseDTO.swift in Sources */,
 				3F2FA1792B45C46F00EDBF95 /* KakaoAuthenticateAdapter.swift in Sources */,
 				6BE6DA342B50594B008B06FA /* MoyaPlugin.swift in Sources */,
 				396DCDFA2CA19F2000FEF7C8 /* PopupTargetType.swift in Sources */,
@@ -2149,6 +2158,7 @@
 				396D7ECD2C880F1F0034A14E /* LinkWebToolBarView.swift in Sources */,
 				6BE6DA732B50C33A008B06FA /* GetAllCategoryResponseDTO.swift in Sources */,
 				3F2FA1752B45C0AF00EDBF95 /* Config.swift in Sources */,
+				83D80DCC2CC1059000DD5410 /* RecentLinkModel.swift in Sources */,
 				3F82C3212CADA19300492EEE /* Publisher+UIButton.swift in Sources */,
 				6B6AE6AC2B3FF6F7000E2366 /* UIColor+.swift in Sources */,
 				3FEA67522CB663B100675805 /* ChangeClipViewModel.swift in Sources */,
