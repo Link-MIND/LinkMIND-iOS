@@ -74,6 +74,7 @@ extension AddLinkViewController {
         addLinkView.linkEmbedTextField.becomeFirstResponder()
         addLinkView.linkEmbedTextField.text = url   // 텍스트필드에 text 채우기
         viewModel.inputs.embedLinkText(url)         // 관리중 ViewModel에도 String 수정 -> UI 반영
+        UIPasteboard.general.url = nil
     }
 }
 
