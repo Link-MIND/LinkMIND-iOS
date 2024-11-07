@@ -20,7 +20,7 @@ final class LinkWebNavigationView: UIView {
     // MARK: - UI Components
     
     private let popButton = UIButton()
-    private let addressLabel = UITextField()
+    private(set) var addressLabel = UITextField()
     private let reloadButton = UIButton()
     
     // MARK: - Life Cycles

@@ -37,7 +37,7 @@ final class LinkOptionBottomSheetView: UIView {
     private let changeClipButton = UIButton()
     private let deleteButtonLabel = UILabel()
     private let editButtonLabel = UILabel()
-    private let changeClipButtonLabel = UILabel()
+    private(set) var changeClipButtonLabel = UILabel()
     
     // MARK: - Life Cycles
     

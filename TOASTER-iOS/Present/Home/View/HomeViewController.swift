@@ -22,6 +22,15 @@ final class HomeViewController: UIViewController {
                                                                       bottomTitle: "클립 추가",
                                                                       insertView: addClipBottomSheetView)
     
+    private var firstToolTip: ToasterTipView?
+    private lazy var secondToolTip: ToasterTipView? = {
+        guard let tabBarItems = tabBarController?.tabBar.items else { return nil }
+        let firstTabItem = tabBarItems[3]
+        let sourceItemFrame = firstTabItem.value(forKey: "view") as? UIView ?? UIView()
+        
+        return ToasterTipView(title: "검색이 더욱 편리해졌어요", type: .top, sourceItem: sourceItemFrame)
+    }()
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -44,6 +53,11 @@ final class HomeViewController: UIViewController {
         viewModel.fetchRecommendSiteData()
         viewModel.getPopupInfoAPI()
         viewModel.fetchRecentLinkData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupToolTip()
     }
 }
 
@@ -173,6 +187,13 @@ extension HomeViewController: UICollectionViewDataSource {
                 header.configureHeader(forTitle: nickName,
                                        num: indexPath.section)
                 header.arrowButton.addTarget(self, action: #selector(arrowButtonTapped), for: .touchUpInside)
+                
+                // 컬뷰 헤더에 붙는 팁뷰
+                firstToolTip = ToasterTipView(
+                    title: "마지막으로 저장한 링크를\n확인하러 가보세요!",
+                    type: .left,
+                    sourceItem: header.arrowButton
+                )
             case 2:
                 header.configureHeader(forTitle: "이주의 링크",
                                        num: indexPath.section)
@@ -264,6 +285,22 @@ private extension HomeViewController {
                                         editAction: addClipAction,
                                         moveAction: moveBottomAction,
                                         popupAction: showPopupAction)
+    }
+    
+    func setupToolTip() {
+        guard let secondToolTip else { return }
+        if UserDefaults.standard.value(forKey: TipUserDefaults.isShowHomeViewToolTip) == nil {
+            UserDefaults.standard.set(true, forKey: TipUserDefaults.isShowHomeViewToolTip)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()+1) { [weak self] in
+                guard let self else { return }
+                self.view.addSubview(self.firstToolTip ?? UIView())
+                self.firstToolTip?.showToolTipAndDismissAfterDelay(duration: 2) {
+                    self.view.addSubview(self.secondToolTip ?? UIView())
+                    self.secondToolTip?.showToolTipAndDismissAfterDelay(duration: 3)
+                }
+            }
+        }
     }
     
     func reloadCollectionView(isHidden: Bool) {

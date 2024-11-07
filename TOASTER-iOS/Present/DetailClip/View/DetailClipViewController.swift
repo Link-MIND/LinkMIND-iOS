@@ -38,6 +38,12 @@ final class DetailClipViewController: UIViewController {
                                                                        bottomTitle: "클립을 선택해 주세요",
                                                                        insertView: changeClipBottomSheetView)
     
+    private lazy var firstToolTip = ToasterTipView(
+        title: "링크를 다른 클립으로\n이동할 수 있어요!",
+        type: .right,
+        sourceItem: linkOptionBottomSheetView.changeClipButtonLabel
+    )
+    
     private let changeClipSubject = PassthroughSubject<Void, Never>()
     private let selectedClipSubject = PassthroughSubject<Int, Never>()
     private let completeButtonSubject = PassthroughSubject<Void, Never>()
@@ -165,8 +171,27 @@ private extension DetailClipViewController {
         output.clipData
             .receive(on: DispatchQueue.main)
             .sink { [weak self] clipData in
-                self?.changeClipBottomSheetView.dataSourceHandler = { clipData }
-                self?.changeClipBottomSheetView.reloadChangeClipBottom()
+                guard let self else { return }
+                
+                self.dismiss(animated: true) {
+                    // 이동할 클립이 2개 이상일 때 (전체클립 제외)
+                    if let data = clipData {
+                        self.dismiss(animated: true) {
+                            self.changeClipBottom.setupSheetPresentation(bottomHeight: self.changeClipViewModel.collectionViewHeight + 180)
+                            self.present(self.changeClipBottom, animated: true)
+                        }
+                        
+                        self.changeClipBottomSheetView.dataSourceHandler = { data }
+                        self.changeClipBottomSheetView.reloadChangeClipBottom()
+                        
+                    } else { // 현재 클립이 1개 존재할 때 (전체클립 제외)
+                        DispatchQueue.main.asyncAfter(deadline: .now()) {
+                            self.showToastMessage(width: 284,
+                                                  status: .warning,
+                                                  message: "이동할 클립을 하나 이상 생성해 주세요")
+                        }
+                    }
+                }
             }
             .store(in: cancelBag)
         
@@ -200,6 +225,16 @@ private extension DetailClipViewController {
                 }
             }
             .store(in: cancelBag)
+    }
+    
+    func setupToolTip() {
+        if UserDefaults.standard.value(forKey: TipUserDefaults.isShowDetailClipViewToolTip) == nil {
+            UserDefaults.standard.set(true, forKey: TipUserDefaults.isShowDetailClipViewToolTip)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.linkOptionBottomSheetView.addSubview(self?.firstToolTip ?? UIView())
+                self?.firstToolTip.showToolTipAndDismissAfterDelay(duration: 4)
+            }
+        }
     }
 }
 
@@ -235,11 +270,6 @@ extension DetailClipViewController: UICollectionViewDataSource {
         // "클립이동" 클릭 시
         linkOptionBottomSheetView.setupChangeClipBottomSheetButtonAction {
             self.changeClipSubject.send()
-            
-            self.dismiss(animated: true) {
-                self.changeClipBottom.setupSheetPresentation(bottomHeight: self.changeClipViewModel.collectionViewHeight + 185)
-                self.present(self.changeClipBottom, animated: true)
-            }
         }
         
         // "삭제" 클릭 시
@@ -350,6 +380,7 @@ extension DetailClipViewController: DetailClipListCollectionViewCellDelegate {
         changeClipViewModel.setupToastId(toastId)
         optionBottom.setupSheetPresentation(bottomHeight: viewModel.categoryId == 0 ? 226 : 280)
         present(optionBottom, animated: true)
+        if viewModel.categoryId != 0 { setupToolTip() }
     }
 }
 
