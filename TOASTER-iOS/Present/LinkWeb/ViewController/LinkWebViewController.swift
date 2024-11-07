@@ -28,6 +28,18 @@ final class LinkWebViewController: UIViewController {
     private let webView = WKWebView()
     private let toolBar = LinkWebToolBarView()
     
+    private lazy var firstToolTip = ToasterTipView(
+        title: "직접 복사할 수 있어요",
+        type: .bottom,
+        sourceItem: navigationView.addressLabel
+    )
+    
+    private lazy var secondToolTip = ToasterTipView(
+        title: "열람 버튼을 클릭해보세요!",
+        type: .top,
+        sourceItem: toolBar.readLinkCheckButton
+    )
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -39,6 +51,7 @@ final class LinkWebViewController: UIViewController {
         setupLayout()
         setupNavigationBarAction()
         setupToolBarAction()
+        setupToolTip()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -183,6 +196,21 @@ private extension LinkWebViewController {
         /// 툴바 사파리 버튼 클릭 액션 클로저
         toolBar.safariButtonTapped {
             if let url = self.webView.url { UIApplication.shared.open(url) }
+        }
+    }
+    
+    func setupToolTip() {
+        if UserDefaults.standard.value(forKey: TipUserDefaults.isShowLinkWebViewToolTip) == nil {
+            UserDefaults.standard.set(true, forKey: TipUserDefaults.isShowLinkWebViewToolTip)
+    
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                guard let self else { return }
+                self.view.addSubview(self.secondToolTip)
+                self.secondToolTip.showToolTipAndDismissAfterDelay(duration: 2) {
+                    self.view.addSubview(self.firstToolTip)
+                    self.firstToolTip.showToolTipAndDismissAfterDelay(duration: 3)
+                }
+            }
         }
     }
 }

@@ -48,7 +48,7 @@ final class LinkWebToolBarView: UIView {
     private let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     private let backButton = UIBarButtonItem()
     private let forwardButton = UIBarButtonItem()
-    private let readLinkCheckButton = UIBarButtonItem()
+    private(set) var readLinkCheckButton = UIBarButtonItem()
     private let shareLinkButton = UIBarButtonItem()
     private let safariButton = UIBarButtonItem()
       
