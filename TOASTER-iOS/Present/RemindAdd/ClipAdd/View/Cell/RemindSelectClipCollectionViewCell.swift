@@ -80,6 +80,8 @@ extension RemindSelectClipCollectionViewCell {
     func configureCell(forModel: RemindClipModel, icon: UIImage, isRounded: Bool) {
         clipTitleLabel.text = forModel.title
         clipCountLabel.text = "\(forModel.clipCount)개"
+        clipTitleLabel.textColor = isSelected == true ? .toasterPrimary : .black850
+        clipCountLabel.textColor = isSelected == true ? .toasterPrimary : .gray600
         clipImageView.image = isSelected == true ? icon.withTintColor(.toasterPrimary) : icon
         self.isRounded = isRounded
     }
