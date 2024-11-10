@@ -64,7 +64,7 @@ final class ChangeClipViewModel: ViewModelType {
         
         /// 완료 버튼이 눌렸을때 동작
         let changeCategoryResult = input.completeButtonTap
-            .combineLatest(input.selectedClip) { _, selectedClip in
+            .zip(input.selectedClip) { _, selectedClip in
                 return selectedClip
             }
             .flatMap { [weak self] selectedClip -> AnyPublisher<Bool, Never> in

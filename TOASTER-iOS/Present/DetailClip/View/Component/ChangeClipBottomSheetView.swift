@@ -108,9 +108,10 @@ private extension ChangeClipBottomSheetView {
         completeBottomButton.loadingButtonTapped(
             loadingTitle: "이동 중...",
             loadingAnimationSize: 16,
-            task: { _ in
+            task: { completion in
                 DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) {
                     self.delegate?.completButtonTap()
+                    completion()
                 }
             }
         )

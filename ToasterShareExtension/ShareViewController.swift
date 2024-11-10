@@ -58,6 +58,16 @@ class ShareViewController: UIViewController {
         super.viewDidAppear(animated)
         print("viewDidAppear View height: \(self.view.frame.size.height)")
         
+        clipSelectCollectionView.selectItem(
+            at: IndexPath(row: 0, section: 0),
+            animated: false,
+            scrollPosition: .top
+        )
+        collectionView(
+            clipSelectCollectionView,
+            didSelectItemAt: IndexPath(row: 0, section: 0)
+        )
+
         if isUseShareExtension {
             // 상단 Title 높이 + 데이터 개수 * cell 높이 + 하단 버튼 + SafeArea
             let calculateBottomSheetHeight = titleHeight + (viewModel.clipData.count) * 54 + 116
