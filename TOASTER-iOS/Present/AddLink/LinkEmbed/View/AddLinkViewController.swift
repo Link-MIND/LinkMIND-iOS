@@ -5,6 +5,7 @@
 //  Created by 김다예 on 12/30/23.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
@@ -30,22 +31,19 @@ final class AddLinkViewController: UIViewController {
     private weak var delegate: AddLinkViewControllerPopDelegate?
     private weak var urldelegate: SelectClipViewControllerDelegate?
     
-    // MARK: - UI Components
-    
     private var addLinkView = AddLinkView()
     private var viewModel = AddLinkViewModel()
+    private var cancelBag = CancelBag()
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bindViewModels()
         setupStyle()
         setupAddLinkVew()
         hideKeyboard()
-        
-        setupBinding()
-        updateUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,7 +71,7 @@ extension AddLinkViewController {
     func embedURL(url: String) {
         addLinkView.linkEmbedTextField.becomeFirstResponder()
         addLinkView.linkEmbedTextField.text = url   // 텍스트필드에 text 채우기
-        viewModel.inputs.embedLinkText(url)         // 관리중 ViewModel에도 String 수정 -> UI 반영
+        addLinkView.linkEmbedTextField.sendActions(for: .editingChanged)
         UIPasteboard.general.url = nil
     }
 }
@@ -135,31 +133,52 @@ private extension AddLinkViewController {
     
 }
 
-// ViewModel
 extension AddLinkViewController {
-    private func setupBinding() {
-        addLinkView.linkEmbedTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-    }
-    
-    @objc private func textFieldDidChange(_ textField: UITextField) {
-        viewModel.inputs.embedLinkText(textField.text ?? "")
-        updateUI()
-    }
-    
-    private func updateUI() {
-        addLinkView.clearButton.isHidden = viewModel.outputs.isClearButtonHidden
-        addLinkView.nextTopButton.isEnabled = viewModel.outputs.isNextButtonEnabled
-        addLinkView.nextTopButton.backgroundColor = viewModel.outputs.nextButtonBackgroundColor
-        addLinkView.nextBottomButton.isEnabled = viewModel.outputs.isNextButtonEnabled
-        addLinkView.nextBottomButton.backgroundColor = viewModel.outputs.nextButtonBackgroundColor
-        addLinkView.linkEmbedTextField.layer.borderColor = viewModel.outputs.textFieldBorderColor.cgColor
-        addLinkView.linkEmbedTextField.layer.borderWidth = 1
+    private func bindViewModels() {
+        let embedLinkText = addLinkView.linkEmbedTextField
+            .publisher(for: .editingChanged)
+            .compactMap { [weak self] _ in self?.addLinkView.linkEmbedTextField.text ?? "" }
+            .eraseToAnyPublisher()
         
-        if let errorMessage = viewModel.outputs.linkEffectivenessMessage {
-            addLinkView.isValidLinkError(errorMessage)
-        } else {
-            addLinkView.resetError()
-        }
+        let input = AddLinkViewModel.Input(embedLinkText: embedLinkText)
+        let output = viewModel.transform(input, cancelBag: cancelBag)
+        
+        output.isClearButtonHidden
+            .sink { isHidden in
+                self.addLinkView.clearButton.isHidden = isHidden
+            }
+            .store(in: cancelBag)
+        
+        output.isNextButtonEnabled
+            .sink { isEnabled in
+                self.addLinkView.nextTopButton.isEnabled = isEnabled
+                self.addLinkView.nextBottomButton.isEnabled = isEnabled
+            }
+            .store(in: cancelBag)
+        
+        output.nextButtonBackgroundColor
+            .sink { color in
+                self.addLinkView.nextTopButton.backgroundColor = color
+                self.addLinkView.nextBottomButton.backgroundColor = color
+            }
+            .store(in: cancelBag)
+        
+        output.linkEffectivenessMessage
+            .sink { message in
+                if let errorMessage = message {
+                    self.addLinkView.isValidLinkError(errorMessage)
+                } else {
+                    self.addLinkView.resetError()
+                }
+            }
+            .store(in: cancelBag)
+        
+        output.textFieldBorderColor
+            .sink { color in
+                self.addLinkView.linkEmbedTextField.layer.borderColor = color.cgColor
+                self.addLinkView.linkEmbedTextField.layer.borderWidth = 1
+            }
+            .store(in: cancelBag)
     }
 }
 
