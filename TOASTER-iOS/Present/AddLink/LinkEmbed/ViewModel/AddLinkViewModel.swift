@@ -14,6 +14,7 @@ final class AddLinkViewModel: ViewModelType {
     
     struct Input {
         let embedLinkText: AnyPublisher<String, Never>
+        let clearButtonTapped: AnyPublisher<Void, Never>
     }
     
     struct Output {
@@ -27,23 +28,26 @@ final class AddLinkViewModel: ViewModelType {
     func transform(_ input: Input, cancelBag: CancelBag) -> Output {
         let output = Output()
         
-        input.embedLinkText
+        let inputText = input.embedLinkText
+            .merge(with: input.clearButtonTapped.map { "" })
+            .eraseToAnyPublisher()
+        
+        inputText
             .map { $0.isEmpty }
             .sink { isHidden in
                 output.isClearButtonHidden.send(isHidden)
             }
             .store(in: cancelBag)
         
-        let isValid = input.embedLinkText
+        let isValid = inputText
             .map { self.isValidURL($0) }
             .share()
             .eraseToAnyPublisher()
         
         isValid
-            .combineLatest(input.embedLinkText.map { !$0.isEmpty })
+            .combineLatest(inputText.map { !$0.isEmpty })
             .map { $0 && $1 }
             .sink { isEnabled in
-                print("활성화 유무 : ", isEnabled)
                 output.isNextButtonEnabled.send(isEnabled)
                 output.nextButtonBackgroundColor.send(isEnabled ? .black850 : .gray200)
             }

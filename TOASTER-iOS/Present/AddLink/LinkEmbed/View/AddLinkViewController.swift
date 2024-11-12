@@ -140,7 +140,11 @@ extension AddLinkViewController {
             .compactMap { [weak self] _ in self?.addLinkView.linkEmbedTextField.text ?? "" }
             .eraseToAnyPublisher()
         
-        let input = AddLinkViewModel.Input(embedLinkText: embedLinkText)
+        let clearButtonTapped = addLinkView.clearButton.publisher(for: .touchUpInside)
+            .map { _ in }
+            .eraseToAnyPublisher()
+        
+        let input = AddLinkViewModel.Input(embedLinkText: embedLinkText, clearButtonTapped: clearButtonTapped)
         let output = viewModel.transform(input, cancelBag: cancelBag)
         
         output.isClearButtonHidden
