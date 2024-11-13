@@ -12,6 +12,8 @@ final class AddLinkViewModel: ViewModelType {
     
     private var cancelBag: CancelBag = CancelBag()
     
+    let embedLinkText = PassthroughSubject<String, Never>()
+    
     struct Input {
         let embedLinkText: AnyPublisher<String, Never>
         let clearButtonTapped: AnyPublisher<Void, Never>

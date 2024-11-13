@@ -70,8 +70,13 @@ extension AddLinkViewController {
     /// 클립보드 붙여넣기 Alert -> 붙여넣기 허용 클릭 후 자동 링크 임베드를 위한 함수
     func embedURL(url: String) {
         addLinkView.linkEmbedTextField.becomeFirstResponder()
-        addLinkView.linkEmbedTextField.text = url   // 텍스트필드에 text 채우기
-        addLinkView.linkEmbedTextField.sendActions(for: .editingChanged)
+        addLinkView.linkEmbedTextField.text = url
+        viewModel.embedLinkText.send(url)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.addLinkView.linkEmbedTextField.sendActions(for: .editingChanged)
+        }
+        
         UIPasteboard.general.url = nil
     }
 }
