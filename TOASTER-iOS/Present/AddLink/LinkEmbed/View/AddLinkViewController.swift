@@ -141,8 +141,7 @@ extension AddLinkViewController {
             .eraseToAnyPublisher()
         
         let clearButtonTapped = addLinkView.clearButton.publisher(for: .touchUpInside)
-            .map { _ in }
-            .eraseToAnyPublisher()
+            .mapVoid()
         
         let input = AddLinkViewModel.Input(embedLinkText: embedLinkText, clearButtonTapped: clearButtonTapped)
         let output = viewModel.transform(input, cancelBag: cancelBag)
