@@ -20,7 +20,6 @@ final class AddLinkViewModel: ViewModelType {
     struct Output {
         let isClearButtonHidden = PassthroughSubject<Bool, Never>()
         let isNextButtonEnabled = CurrentValueSubject<Bool, Never>(false)
-        let nextButtonBackgroundColor = CurrentValueSubject<UIColor, Never>(.gray200)
         let textFieldBorderColor = PassthroughSubject<UIColor, Never>()
         let linkEffectivenessMessage = PassthroughSubject<String?, Never>()
     }
@@ -49,14 +48,6 @@ final class AddLinkViewModel: ViewModelType {
             .map { $0 && $1 }
             .sink { isEnabled in
                 output.isNextButtonEnabled.send(isEnabled)
-                output.nextButtonBackgroundColor.send(isEnabled ? .black850 : .gray200)
-            }
-            .store(in: cancelBag)
-        
-        isValid
-            .map { $0 ? .clear : UIColor.toasterError }
-            .sink { color in
-                output.textFieldBorderColor.send(color)
             }
             .store(in: cancelBag)
         

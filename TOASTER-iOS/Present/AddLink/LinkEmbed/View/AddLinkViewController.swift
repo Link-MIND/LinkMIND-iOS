@@ -155,14 +155,9 @@ extension AddLinkViewController {
         output.isNextButtonEnabled
             .sink { [weak self] isEnabled in
                 self?.addLinkView.nextTopButton.isEnabled = isEnabled
+                self?.addLinkView.nextTopButton.backgroundColor = isEnabled ? .black850 : .gray200
                 self?.addLinkView.nextBottomButton.isEnabled = isEnabled
-            }
-            .store(in: cancelBag)
-        
-        output.nextButtonBackgroundColor
-            .sink { [weak self] color in
-                self?.addLinkView.nextTopButton.backgroundColor = color
-                self?.addLinkView.nextBottomButton.backgroundColor = color
+                self?.addLinkView.nextBottomButton.backgroundColor = isEnabled ? .black850 : .gray200
             }
             .store(in: cancelBag)
         
@@ -170,16 +165,12 @@ extension AddLinkViewController {
             .sink { [weak self] message in
                 if let errorMessage = message {
                     self?.addLinkView.isValidLinkError(errorMessage)
+                    self?.addLinkView.linkEmbedTextField.layer.borderColor = UIColor.toasterError.cgColor
+                    self?.addLinkView.linkEmbedTextField.layer.borderWidth = 1
                 } else {
                     self?.addLinkView.resetError()
+                    self?.addLinkView.linkEmbedTextField.layer.borderColor = UIColor.clear.cgColor
                 }
-            }
-            .store(in: cancelBag)
-        
-        output.textFieldBorderColor
-            .sink { [weak self] color in
-                self?.addLinkView.linkEmbedTextField.layer.borderColor = color.cgColor
-                self?.addLinkView.linkEmbedTextField.layer.borderWidth = 1
             }
             .store(in: cancelBag)
     }
