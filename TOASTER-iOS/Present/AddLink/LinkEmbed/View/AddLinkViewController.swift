@@ -148,39 +148,39 @@ extension AddLinkViewController {
         let output = viewModel.transform(input, cancelBag: cancelBag)
         
         output.isClearButtonHidden
-            .sink { isHidden in
-                self.addLinkView.clearButton.isHidden = isHidden
+            .sink { [weak self] isHidden in
+                self?.addLinkView.clearButton.isHidden = isHidden
             }
             .store(in: cancelBag)
         
         output.isNextButtonEnabled
-            .sink { isEnabled in
-                self.addLinkView.nextTopButton.isEnabled = isEnabled
-                self.addLinkView.nextBottomButton.isEnabled = isEnabled
+            .sink { [weak self] isEnabled in
+                self?.addLinkView.nextTopButton.isEnabled = isEnabled
+                self?.addLinkView.nextBottomButton.isEnabled = isEnabled
             }
             .store(in: cancelBag)
         
         output.nextButtonBackgroundColor
-            .sink { color in
-                self.addLinkView.nextTopButton.backgroundColor = color
-                self.addLinkView.nextBottomButton.backgroundColor = color
+            .sink { [weak self] color in
+                self?.addLinkView.nextTopButton.backgroundColor = color
+                self?.addLinkView.nextBottomButton.backgroundColor = color
             }
             .store(in: cancelBag)
         
         output.linkEffectivenessMessage
-            .sink { message in
+            .sink { [weak self] message in
                 if let errorMessage = message {
-                    self.addLinkView.isValidLinkError(errorMessage)
+                    self?.addLinkView.isValidLinkError(errorMessage)
                 } else {
-                    self.addLinkView.resetError()
+                    self?.addLinkView.resetError()
                 }
             }
             .store(in: cancelBag)
         
         output.textFieldBorderColor
-            .sink { color in
-                self.addLinkView.linkEmbedTextField.layer.borderColor = color.cgColor
-                self.addLinkView.linkEmbedTextField.layer.borderWidth = 1
+            .sink { [weak self] color in
+                self?.addLinkView.linkEmbedTextField.layer.borderColor = color.cgColor
+                self?.addLinkView.linkEmbedTextField.layer.borderWidth = 1
             }
             .store(in: cancelBag)
     }
