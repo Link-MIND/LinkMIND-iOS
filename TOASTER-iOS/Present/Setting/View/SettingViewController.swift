@@ -14,10 +14,12 @@ final class SettingViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let settingList = ["알림 설정", "1:1 문의", "이용약관", "로그아웃"]
+    private let userInfoView = MypageHeaderView()
+    private let settingView = SettingView()
+
     private var isToggle: Bool? = UserDefaults.standard.object(forKey: "isAppAlarmOn") as? Bool {
         didSet {
-            settingTableView.reloadData()            
+            settingView.settingTableView.reloadData()
             setupWarningView()
             UserDefaults.standard.set(isToggle, forKey: "isAppAlarmOn")
         }
@@ -25,18 +27,10 @@ final class SettingViewController: UIViewController {
     
     private var userName: String = "" {
         didSet {
-            settingTableView.reloadData()
+            settingView.settingTableView.reloadData()
         }
     }
-    
-    // MARK: - UI Properties
-    
-    private let alertWarningView = UIView()
-    private let warningStackView = UIStackView()
-    private let warningImage = UIImageView()
-    private let warningLabel = UILabel()
-    private let settingTableView = UITableView(frame: .zero, style: .grouped)
-    
+
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -45,13 +39,16 @@ final class SettingViewController: UIViewController {
         setupStyle()
         setupHierarchy()
         setupLayout()
+        setupDelegate()
         setupWarningView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         setupNavigationBar()
         fetchMysettings()
+        fetchMypageInformation()
     }
 }
 
@@ -59,68 +56,32 @@ final class SettingViewController: UIViewController {
 
 private extension SettingViewController {
     func setupStyle() {
-        view.backgroundColor = .toasterBackground
-        
-        alertWarningView.do {
-            $0.backgroundColor = .gray50
-            $0.makeRounded(radius: 12)
-        }
-        
-        warningStackView.do {
-            $0.spacing = 5
-        }
-        
-        warningImage.do {
-            $0.image = .icAlert18Dark
-            $0.contentMode = .scaleAspectFit
-        }
-        
-        warningLabel.do {
-            $0.text = "알림 설정을 끄면 타이머 기능을 이용할 수 없어요"
-            $0.font = .suitBold(size: 12)
-            $0.textColor = .gray400
-        }
-        
-        settingTableView.do {
-            $0.backgroundColor = .toasterBackground
-            $0.isScrollEnabled = false
-            $0.separatorStyle = .none
-            $0.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.className)
-            $0.dataSource = self
-            $0.delegate = self
-        }
+        self.view.backgroundColor = .toasterBackground
     }
-    
+
     func setupHierarchy() {
-        view.addSubviews(alertWarningView, settingTableView)
-        alertWarningView.addSubview(warningStackView)
-        warningStackView.addArrangedSubviews(warningImage, warningLabel)
+        view.addSubviews(userInfoView, settingView)
     }
     
     func setupLayout() {
-        alertWarningView.snp.makeConstraints {
+        userInfoView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(20)
             $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(42)
         }
         
-        warningStackView.snp.makeConstraints {
-            $0.center.equalToSuperview()
+        userInfoView.seperatorView.snp.makeConstraints {
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
         }
         
-        warningImage.snp.makeConstraints {
-            $0.centerY.leading.equalToSuperview()
-            $0.size.equalTo(18)
+        settingView.snp.makeConstraints {
+            $0.top.equalTo(userInfoView.seperatorView.snp.bottom)
+            $0.horizontalEdges.bottom.equalToSuperview()
         }
-        
-        warningLabel.snp.makeConstraints {
-            $0.centerY.trailing.equalToSuperview()
-        }
-        
-        settingTableView.snp.makeConstraints {
-            $0.top.equalTo(alertWarningView.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
-        }
+    }
+    
+    func setupDelegate() {
+        settingView.settingTableView.dataSource = self
+        settingView.settingTableView.delegate = self
     }
     
     func setupNavigationBar() {
@@ -138,13 +99,13 @@ private extension SettingViewController {
     func setupWarningView() {
         if let isToggle {
             if isToggle {
-                settingTableView.snp.remakeConstraints {
-                    $0.top.equalTo(view.safeAreaLayoutGuide)
+                settingView.settingTableView.snp.remakeConstraints {
+                    $0.top.equalTo(userInfoView.seperatorView.snp.bottom)
                     $0.leading.trailing.bottom.equalToSuperview()
                 }
             } else {
-                settingTableView.snp.remakeConstraints {
-                    $0.top.equalTo(alertWarningView.snp.bottom)
+                settingView.settingTableView.snp.remakeConstraints {
+                    $0.top.equalTo(settingView.alertWarningView.snp.bottom)
                     $0.leading.trailing.bottom.equalToSuperview()
                 }
             }
@@ -209,9 +170,31 @@ private extension SettingViewController {
             switch result {
             case .success(let response):
                 self.isToggle = response?.data?.isAllowed
+                self.setupWarningView()
             case .notFound, .networkFail:
                 self.changeViewController(viewController: LoginViewController())
             default: break
+            }
+        }
+    }
+    
+    func fetchMypageInformation() {
+        NetworkService.shared.userService.getMyPage { [weak self] result in
+            switch result {
+            case .success(let response):
+                if let responseData = response?.data {
+                    DispatchQueue.main.async { [weak self] in
+                        self?.userInfoView.bindModel(model: MypageUserModel(nickname: responseData.nickname,
+                                                                                profile: responseData.profile,
+                                                                                allReadToast: responseData.allReadToast,
+                                                                                thisWeekendRead: responseData.thisWeekendRead,
+                                                                                thisWeekendSaved: responseData.thisWeekendSaved))
+                    }
+                }
+            case .unAuthorized, .networkFail:
+                self?.changeViewController(viewController: LoginViewController())
+            default:
+                print("default Fail")
             }
         }
     }
@@ -252,7 +235,7 @@ extension SettingViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 {
+        if indexPath.section == 0 {
             switch indexPath.row {
             case 1:
                 let urlString = "https://open.kakao.com/o/sfN9Fr4f"
@@ -271,7 +254,7 @@ extension SettingViewController: UITableViewDelegate {
             default:
                 return
             }
-        } else if indexPath.section == 2 {
+        } else if indexPath.section == 1 {
             self.showPopup(forMainText: "정말로 탈퇴하시겠어요?", forSubText: "회원 탈퇴 시 지금까지\n저장한 모든 링크가 사라져요.", forLeftButtonTitle: "네, 탈퇴할래요", forRightButtonTitle: "더 써볼래요", forLeftButtonHandler: self.popupDeleteButtonTapped, forRightButtonHandler: nil)
         }
     }
@@ -281,14 +264,12 @@ extension SettingViewController: UITableViewDelegate {
 
 extension SettingViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 1
-        case 1:
             return 4
         default:
             return 1
@@ -300,9 +281,7 @@ extension SettingViewController: UITableViewDataSource {
         cell.selectionStyle = .none
         switch indexPath.section {
         case 0:
-            cell.configureCell(name: userName, sectionNumber: indexPath.section)
-        case 1:
-            cell.configureCell(name: settingList[indexPath.row], sectionNumber: indexPath.section)
+            cell.configureCell(name: settingView.settingList[indexPath.row], sectionNumber: indexPath.section)
             if indexPath.row == 0 {
                 cell.showSwitch()
                 cell.setSwitchValueChangedHandler { isOn in
@@ -310,6 +289,7 @@ extension SettingViewController: UITableViewDataSource {
                 }
             }
         default:
+            cell.hiddenSwitch()
             cell.configureCell(name: "탈퇴하기", sectionNumber: indexPath.section)
         }
         return cell

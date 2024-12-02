@@ -12,16 +12,15 @@ import Then
 
 final class AddLinkView: UIView {
     
-    // MARK: - Properties
-    
-    private var timer: Timer?
+    // MARK: - Property
+
     private var keyboardHeight: CGFloat = 100
     
     // MARK: - UI Components
     
     private let descriptLabel = UILabel()
-    var linkEmbedTextField = UITextField()
-    private let clearButton = UIButton()
+    private(set) var linkEmbedTextField = UITextField()
+    let clearButton = UIButton()
     
     let nextBottomButton = UIButton()
     let nextTopButton = UIButton()
@@ -36,7 +35,7 @@ final class AddLinkView: UIView {
         super.init(frame: frame)
         
         setLinkEmbedTextField()
-        setView()
+        setupView()
     }
     
     @available(*, unavailable)
@@ -46,14 +45,13 @@ final class AddLinkView: UIView {
     
     // MARK: - Make View
     
-    func setView() {
+    func setupView() {
         setupStyle()
         setupHierarchy()
         setupLayout()
     }
     
     func setLinkEmbedTextField() {
-        linkEmbedTextField.delegate = self
         linkEmbedTextField.resignFirstResponder()
     }
     
@@ -89,6 +87,7 @@ private extension AddLinkView {
         clearButton.do {
             $0.setImage(.icCancle24, for: .normal)
             $0.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+            $0.isHidden = true
         }
         
         nextBottomButton.do {
@@ -112,7 +111,6 @@ private extension AddLinkView {
     
     func setupHierarchy() {
         addSubviews(descriptLabel, linkEmbedTextField, nextBottomButton, clearButton)
-        clearButton.isHidden = true
         accessoryView.addSubview(nextTopButton)
     }
     
@@ -155,7 +153,8 @@ private extension AddLinkView {
         }
     }
     
-    @objc func cancelButtonTapped() {
+    @objc 
+    func cancelButtonTapped() {
         linkEmbedTextField.text = ""
         linkEmbedTextField.becomeFirstResponder()
     }
@@ -163,110 +162,18 @@ private extension AddLinkView {
 
 // MARK: - Extension
 
-extension AddLinkView: UITextFieldDelegate {
-    
-    // MARK: - Timer Check
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        // 텍스트 필드에 입력이 시작될 때 호출되는 메서드
-        clearButton.isHidden = false
-        nextTopButton.backgroundColor = .black850
-        linkEmbedTextField.placeholder = nil
-        
-        // 여기서 타이머를 시작하고, 0.5초 후에 텍스트를 확인 후 텍스트필드 에러 처리
-        if textField.text?.count ?? 0 > 1 {
-            startTimer()
-        }
-    }
-    
-    func textField(_ textField: UITextField, 
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
-        
-        // 입력이 발생할 때마다 호출되는 메서드
-        // 여기서 타이머를 재시작
-        restartTimer()
-        return true
-    }
-    
-    func startTimer() {
-        // 0.5초 후에 checkTextField 메서드 호출
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
-            // URL 유효 여부 판단 후 처리
-            if let urlText = self?.linkEmbedTextField.text {
-                if (urlText.prefix(8) == "https://") || (urlText.prefix(7) == "http://") {
-                    self?.resetError()
-                } else {
-                    self?.isValidLinkError()
-                }
-            }
-        }
-    }
-    
-    func restartTimer() {
-        // 타이머 재시작
-        stopTimer()
-        startTimer()
-    }
-    
-    func stopTimer() {
-        // 타이머를 정지, 테두리 초기화
-        timer?.invalidate()
-        linkEmbedTextField.layer.borderColor = UIColor.clear.cgColor
-    }
-    
-    // MARK: - Text Field Error
-    
-    // 링크를 입력하는 텍스트필드가 비어 있을 경우 error 처리
-    func emptyError() {
-        linkEmbedTextField.layer.borderColor = UIColor.toasterError.cgColor
-        linkEmbedTextField.layer.borderWidth = 1
-        
-        // Button 비활성화
-        nextTopButton.backgroundColor = .gray200
-        nextBottomButton.backgroundColor = .gray200
-        nextTopButton.isEnabled = false
-        nextBottomButton.isEnabled = false
-        
-        errorLabel.text = "링크를 입력해주세요"
+extension AddLinkView {
+    func isValidLinkError(_ message: String) {
+        errorLabel.text = message
+        errorLabel.isHidden = false
         addSubview(errorLabel)
         errorLabel.snp.makeConstraints {
             $0.top.equalTo(linkEmbedTextField.snp.bottom).offset(6)
             $0.leading.equalTo(linkEmbedTextField.snp.leading)
         }
-        errorLabel.isHidden = false
     }
     
-    // 링크가 유효하지 않을 경우 error 처리
-    func isValidLinkError() {
-        linkEmbedTextField.layer.borderColor = UIColor.toasterError.cgColor
-        linkEmbedTextField.layer.borderWidth = 1
-        
-        // Button 비활성화
-        nextTopButton.backgroundColor = .gray200
-        nextBottomButton.backgroundColor = .gray200
-        nextTopButton.isEnabled = false
-        nextBottomButton.isEnabled = false
-        
-        errorLabel.text = "유효하지 않은 형식의 링크입니다"
-        addSubview(errorLabel)
-        errorLabel.snp.makeConstraints {
-            $0.top.equalTo(linkEmbedTextField.snp.bottom).offset(6)
-            $0.leading.equalTo(linkEmbedTextField.snp.leading)
-        }
-        errorLabel.isHidden = false
-    }
-    
-    // 링크가 유효할 경우, error reset
     func resetError() {
-        linkEmbedTextField.layer.borderColor = UIColor.clear.cgColor
-        
-        // Button 활성화
-        nextTopButton.backgroundColor = .black850
-        nextBottomButton.backgroundColor = .black850
-        nextTopButton.isEnabled = true
-        nextBottomButton.isEnabled = true
-        
         errorLabel.isHidden = true
     }
 }

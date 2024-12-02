@@ -44,16 +44,16 @@ extension SettingTableViewCell {
         switch sectionNumber {
         case 0:
             settingLabel.do {
-                $0.text = "\(name)님"
-                $0.font = .suitMedium(size: 18)
-                $0.asFont(targetString: name, font: .suitBold(size: 18))
-                $0.textColor = .black900
-            }
-        case 1:
-            settingLabel.do {
                 $0.text = name
                 $0.font = .suitMedium(size: 18)
                 $0.textColor = .black900
+            }
+            if name == "알림 설정" {
+                if let isOn = UserDefaults.standard.object(forKey: "isAppAlarmOn") as? Bool {
+                    settingSwitch.isOn = isOn
+                } else {
+                    settingSwitch.isOn = false
+                }
             }
         default:
             settingLabel.do {
@@ -66,6 +66,10 @@ extension SettingTableViewCell {
     
     func showSwitch() {
         settingSwitch.isHidden = false
+    }
+    
+    func hiddenSwitch() {
+        settingSwitch.isHidden = true
     }
     
     func setSwitchValueChangedHandler(_ handler: @escaping (Bool) -> Void) {
@@ -111,5 +115,6 @@ private extension SettingTableViewCell {
     @objc
     func switchValueChanged(_ sender: UISwitch) {
         switchValueChangedHandler?(sender.isOn)
+        UserDefaults.standard.set(sender.isOn, forKey: "isAppAlarmOn")
     }
 }

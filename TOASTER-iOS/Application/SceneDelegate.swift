@@ -63,25 +63,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
-        if let pasteboardString = UIPasteboard.general.url {
+        if let pasteboardUrl = UIPasteboard.general.url {
             if appDelegate.isLogin {
                 guard let rootVC = window?.rootViewController as? ToasterNavigationController else { return }
                 let addLinkViewController = AddLinkViewController()
                 rootVC.pushViewController(addLinkViewController, animated: true)
-                addLinkViewController.embedURL(url: UIPasteboard.general.string ?? "")
+                addLinkViewController.embedURL(url: pasteboardUrl.absoluteString)
                                 
                 if let presentedVC = rootVC.presentedViewController {
                     presentedVC.dismiss(animated: false)
                 }
             }
         }
-        UIPasteboard.general.string = nil
     }
     
     func sceneDidEnterBackground(_ scene: UIScene) {
-        // Called as the scene transitions from the foreground to the background.
-        // Use this method to save data, release shared resources, and store enough scene-specific state information
-        // to restore the scene back to its current state.
+        UIPasteboard.general.url = nil
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

@@ -17,7 +17,7 @@ enum CompositionalFactory {
             case 0:
                 section = createMainSection()
             case 1:
-                section = createUserClipSection()
+                section = createUserRecentLinkSection()
             case 2:
                 section = createWeeklyLinkSection()
             case 3:
@@ -46,7 +46,7 @@ enum CompositionalFactory {
         
         // group
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .estimated(224))
+                                               heightDimension: .estimated(158))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
                                                        subitems: [item])
         
@@ -68,22 +68,22 @@ enum CompositionalFactory {
     
     // MARK: - User Clip 에 대한 Layout
     
-    static func createUserClipSection() -> NSCollectionLayoutSection {
-        let itemFractionalWidthFraction = 1.0 / 2.0
-        let itemInset: CGFloat = 7
+    static func createUserRecentLinkSection() -> NSCollectionLayoutSection {
+        let itemFractionalWidthFraction = 1.0 / 1.0
+        let itemInset: CGFloat = 8
         
         // item
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(itemFractionalWidthFraction),
-                                              heightDimension: .absolute(150))
+                                              heightDimension: .absolute(104))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: itemInset,
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0,
                                                      leading: itemInset,
                                                      bottom: itemInset,
                                                      trailing: itemInset)
         
         // group
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .absolute(150))
+                                               heightDimension: .absolute(104))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
                                                        subitems: [item])
         
@@ -101,7 +101,7 @@ enum CompositionalFactory {
                                                         elementKind: UICollectionView.elementKindSectionHeader, 
                                                         alignment: .top),
             NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                          heightDimension: .absolute(17)),
+                                                                          heightDimension: .absolute(9)),
                                                         elementKind: UICollectionView.elementKindSectionFooter, 
                                                         alignment: .bottom)]
         return section

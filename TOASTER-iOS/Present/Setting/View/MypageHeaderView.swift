@@ -25,12 +25,14 @@ final class MypageHeaderView: UIView {
     private let readLinkCountLabel = UILabel()
     private let readLinkCountUnitLabel = UILabel()
     
-    private let weakLinkDataView = UIView()
+    let weakLinkDataView = UIView()
     private let weakLinkDivider = UIView()
     private let openLinkLabel = UILabel()
     private let saveLinkLabel = UILabel()
     private let thisWeakOpenLinkCountLabel = UILabel()
     private let thisWeakSaveLinkCountLabel = UILabel()
+    
+    let seperatorView = UIView()
     
     // MARK: - Life Cycles
     
@@ -131,10 +133,14 @@ private extension MypageHeaderView {
                 $0.text = "nn"
             }
         }
+        
+        seperatorView.do {
+            $0.backgroundColor = .gray50
+        }
     }
     
     func setupHierarchy() {
-        addSubviews(profileImageView, subTitleStackView, weakLinkDataView, readLinkCountLabel, readLinkCountUnitLabel)
+        addSubviews(profileImageView, subTitleStackView, weakLinkDataView, readLinkCountLabel, readLinkCountUnitLabel, seperatorView)
         
         subTitleStackView.addArrangedSubviews(topSubTitleLabel, bottomSubTitleLabel)
         
@@ -194,6 +200,12 @@ private extension MypageHeaderView {
         readLinkCountUnitLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(22)
             $0.trailing.equalToSuperview()
+        }
+        
+        seperatorView.snp.makeConstraints {
+            $0.top.equalTo(weakLinkDataView.snp.bottom).offset(24)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(4)
         }
     }
     

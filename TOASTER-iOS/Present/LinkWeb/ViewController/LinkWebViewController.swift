@@ -15,25 +15,10 @@ final class LinkWebViewController: UIViewController {
     
     // MARK: - Properties
     
-    private var canGoBack: Bool = false {
-        didSet {
-            backButton.isEnabled = canGoBack
-            backButton.tintColor = canGoBack ? .gray700 : .gray150
-        }
-    }
+    private var viewModel = LinkWebViewModel()
+    private var cancelBag = CancelBag()
     
-    private var canGoForward: Bool = false {
-        didSet {
-            forwardButton.isEnabled = canGoForward
-            forwardButton.tintColor = canGoForward ? .gray700 : .gray150
-        }
-    }
-    
-    private var isRead: Bool = false {
-        didSet {
-            readLinkCheckButton.tintColor = isRead ? .gray700 : .gray150
-        }
-    }
+    private var progressObservation: NSKeyValueObservation?
     private var toastId: Int?
     
     // MARK: - UI Properties
@@ -41,23 +26,32 @@ final class LinkWebViewController: UIViewController {
     private let navigationView = LinkWebNavigationView()
     private let progressView = UIProgressView()
     private let webView = WKWebView()
-    private let toolBar = UIToolbar()
+    private let toolBar = LinkWebToolBarView()
     
-    private let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-    private lazy var backButton = UIBarButtonItem(image: .icArrow2Back24, style: .plain, target: self, action: #selector(goBackInWeb))
-    private lazy var forwardButton = UIBarButtonItem(image: .icArrow2Forward24, style: .plain, target: self, action: #selector(goForwardInWeb))
-    private lazy var readLinkCheckButton = UIBarButtonItem(image: .icRead, style: .plain, target: self, action: #selector(checkReadInWeb))
-    private lazy var safariButton = UIBarButtonItem(image: .icSafari24, style: .plain, target: self, action: #selector(openInSafari))
+    private lazy var firstToolTip = ToasterTipView(
+        title: "직접 복사할 수 있어요",
+        type: .bottom,
+        sourceItem: navigationView.addressLabel
+    )
+    
+    private lazy var secondToolTip = ToasterTipView(
+        title: "열람 버튼을 클릭해보세요!",
+        type: .top,
+        sourceItem: toolBar.readLinkCheckButton
+    )
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bindViewModels()
         setupStyle()
         setupHierarchy()
         setupLayout()
         setupNavigationBarAction()
+        setupToolBarAction()
+        setupToolTip()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,45 +67,53 @@ final class LinkWebViewController: UIViewController {
     }
     
     deinit {
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
+        progressObservation?.invalidate()
     }
 }
 
 // MARK: - Extensions
 
 extension LinkWebViewController {
-    func setupDataBind(linkURL: String, isRead: Bool, id: Int) {
+    func setupDataBind(linkURL: String, isRead: Bool? = nil, id: Int? = nil) {
         if let url = URL(string: linkURL) {
             let request = URLRequest(url: url)
             webView.load(request)
         }
-        self.isRead = isRead
+        guard let isRead, let id else { return }
+        toolBar.updateIsRead(isRead)
         self.toastId = id
-        toolBar.setItems([backButton, flexibleSpace, forwardButton, flexibleSpace, readLinkCheckButton, flexibleSpace, safariButton], animated: false)
-    }
-    
-    func setupDataBind(linkURL: String) {
-        if let url = URL(string: linkURL) {
-            let request = URLRequest(url: url)
-            webView.load(request)
-        }
-        toolBar.setItems([backButton, flexibleSpace, forwardButton, flexibleSpace, safariButton], animated: false)
-    }
-    
-    /// KVO를 사용하여 estimatedProgress가 변경될 때 호출되는 메서드
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == "estimatedProgress" {
-            if let newProgress = change?[.newKey] as? NSNumber {
-                let progress = Float(truncating: newProgress)
-                progressView.progress = progress
-            }
-        }
     }
 }
 
 // MARK: - Private Extensions
 
 private extension LinkWebViewController {
+    func bindViewModels() {
+        let readLinkButtonTapped = toolBar.readLinkButtonTap
+            .map { _ in
+                LinkReadEditModel(toastId: self.toastId ?? 0, isRead: !self.toolBar.isRead)
+            }
+            .eraseToAnyPublisher()
+        
+        let input = LinkWebViewModel.Input(
+            readLinkButtonTapped: readLinkButtonTapped
+        )
+        
+        let output = viewModel.transform(input, cancelBag: cancelBag)
+        
+        output.isRead
+            .sink { [weak self] isRead in
+                let mesage = isRead ? StringLiterals.ToastMessage.completeReadLink : StringLiterals.ToastMessage.cancelReadLink
+                self?.showToastMessage(width: 152, status: .check, message: mesage)
+                self?.toolBar.updateIsRead(isRead)
+            }.store(in: cancelBag)
+        
+        output.navigateToLogin
+            .sink { [weak self] _ in
+                self?.changeViewController(viewController: LoginViewController())
+            }.store(in: cancelBag)
+    }
+    
     func setupStyle() {
         view.bringSubviewToFront(progressView)
         view.backgroundColor = .toasterWhite
@@ -123,17 +125,12 @@ private extension LinkWebViewController {
         
         webView.do {
             $0.navigationDelegate = self
-            $0.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
-        }
-        
-        toolBar.do {
-            $0.backgroundColor = .toasterWhite
-            $0.setBackgroundImage(UIImage(), forToolbarPosition: .bottom, barMetrics: .default)
-            $0.setShadowImage(UIImage(), forToolbarPosition: .bottom)
-        }
-        
-        [backButton, forwardButton, safariButton].forEach {
-            $0.tintColor = .gray700
+            progressObservation = $0.observe(
+                \.estimatedProgress,
+                 options: [.new]) { [weak self] object, _ in
+                     let progress = Float(object.estimatedProgress)
+                     self?.progressView.progress = progress
+                 }
         }
     }
     
@@ -175,38 +172,45 @@ private extension LinkWebViewController {
         }
         
         /// 네비게이션바 새로고침 버튼 클릭 액션 클로저
-        navigationView.reloadButtonTapped {
-            self.webView.reload()
+        navigationView.reloadButtonTapped { self.webView.reload() }
+    }
+    
+    func setupToolBarAction() {
+        /// 툴바 뒤로가기 버튼 클릭 액션 클로저
+        toolBar.backButtonTapped {
+            if self.webView.canGoBack { self.webView.goBack() }
+        }
+        
+        /// 툴바 앞으로가기 버튼 클릭 액션 클로저
+        toolBar.forwardButtonTapped {
+            if self.webView.canGoForward { self.webView.goForward() }
+        }
+        
+        /// 툴바 공유 버튼 클릭 액션 클로저
+        toolBar.shareButtonTapped {
+            guard let url = self.webView.url else { return }
+            let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            self.present(activityViewController, animated: true, completion: nil)
+        }
+        
+        /// 툴바 사파리 버튼 클릭 액션 클로저
+        toolBar.safariButtonTapped {
+            if let url = self.webView.url { UIApplication.shared.open(url) }
         }
     }
     
-    /// 툴바 뒤로가기 버튼 클릭 시
-    @objc func goBackInWeb() {
-        if webView.canGoBack {
-            webView.goBack()
-            canGoBack = webView.canGoBack
-        }
-    }
+    func setupToolTip() {
+        if UserDefaults.standard.value(forKey: TipUserDefaults.isShowLinkWebViewToolTip) == nil {
+            UserDefaults.standard.set(true, forKey: TipUserDefaults.isShowLinkWebViewToolTip)
     
-    /// 툴바 앞으로가기 버튼 클릭 시
-    @objc func goForwardInWeb() {
-        if webView.canGoForward {
-            webView.goForward()
-            canGoForward = webView.canGoForward
-        }
-    }
-    
-    /// 툴바 링크 확인 완료 버튼 클릭 시
-    @objc func checkReadInWeb() {
-        if let toastId {
-            patchOpenLinkAPI(requestBody: LinkReadEditModel(toastId: toastId, isRead: !isRead))
-        }
-    }
-    
-    /// 툴바 사파리 버튼 클릭 시
-    @objc func openInSafari() {
-        if let url = webView.url {
-            UIApplication.shared.open(url)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                guard let self else { return }
+                self.view.addSubview(self.secondToolTip)
+                self.secondToolTip.showToolTipAndDismissAfterDelay(duration: 2) {
+                    self.view.addSubview(self.firstToolTip)
+                    self.firstToolTip.showToolTipAndDismissAfterDelay(duration: 3)
+                }
+            }
         }
     }
 }
@@ -219,8 +223,8 @@ extension LinkWebViewController: WKNavigationDelegate {
         if let url = webView.url?.absoluteString {
             navigationView.setupLinkAddress(link: url)
         }
-        canGoBack = webView.canGoBack
-        canGoForward = webView.canGoForward
+        toolBar.updateCanGoBack(webView.canGoBack)
+        toolBar.updateCanGoForward(webView.canGoForward)
     }
     
     /// 웹 페이지 로딩이 완료되었을 때 호출
@@ -231,27 +235,5 @@ extension LinkWebViewController: WKNavigationDelegate {
     /// 웹 페이지 로딩이 시작할 때 호출
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         progressView.isHidden = false
-    }
-}
-
-// MARK: - Network
-
-extension LinkWebViewController {
-    func patchOpenLinkAPI(requestBody: LinkReadEditModel) {
-        NetworkService.shared.toastService.patchOpenLink(requestBody: PatchOpenLinkRequestDTO(toastId: requestBody.toastId,
-                                                                                              isRead: requestBody.isRead)) { result in
-            switch result {
-            case .success:
-                if !self.isRead {
-                    self.showToastMessage(width: 152, status: .check, message: StringLiterals.ToastMessage.completeReadLink)
-                } else {
-                    self.showToastMessage(width: 152, status: .check, message: StringLiterals.ToastMessage.cancelReadLink)
-                }
-                self.isRead = !self.isRead
-            case .unAuthorized, .networkFail, .notFound:
-                self.changeViewController(viewController: LoginViewController())
-            default: return
-            }
-        }
     }
 }

@@ -21,7 +21,7 @@ enum StringLiterals {
         static let home = "HOME"
         static let clip = "CLIP"
         static let timer = "TIMER"
-        static let my = "MY"
+        static let search = "SEARCH"
     }
     
     enum Button {
