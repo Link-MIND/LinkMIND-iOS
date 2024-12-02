@@ -15,6 +15,8 @@ final class ClipViewController: UIViewController {
     // MARK: - UI Properties
     
     private let viewModel = ClipViewModel()
+    private let cancelBag = CancelBag()
+    
     private let clipEmptyView = ClipEmptyView()
     private let addClipBottomSheetView = AddClipBottomSheetView()
     private lazy var addClipBottom = ToasterBottomSheetViewController(bottomType: .white, 
@@ -28,25 +30,71 @@ final class ClipViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bindViewModels()
         setupStyle()
         setupHierarchy()
         setupLayout()
         setupRegisterCell()
         setupDelegate()
-        setupViewModel()
+        // setupViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         setupNavigationBar()
-        viewModel.getAllCategoryAPI()
+        //viewModel.getAllCategoryAPI()
     }
 }
 
 // MARK: - Private Extensions
 
 private extension ClipViewController {
+    func bindViewModels() {
+        let textFieldValueChanged = addClipBottomSheetView.textFieldValueChanged
+            .map { ($0.object as? UITextField)?.text }
+            .compactMap { $0 }
+            .asDriver()
+        
+        let addClipButtonTapped = addClipBottomSheetView.addClipButtonTap
+            .combineLatest(textFieldValueChanged)
+            .map { $1 }
+            .asDriver()
+        
+        let input = ClipViewModel.Input(
+            viewDidLoad: Driver.just(()),
+            clipNameChanged: textFieldValueChanged,
+            addClipButtonTapped: addClipButtonTapped
+        )
+        
+        let output = viewModel.transform(input, cancelBag: cancelBag)
+        
+        output.needToReload
+            .sink { [weak self] clipList in
+                self?.clipListCollectionView.reloadData()
+                self?.clipEmptyView.isHidden = ((self?.viewModel.clipList.clips.isEmpty) != nil)
+            }.store(in: cancelBag)
+        
+        output.addClipResult
+            .sink { [weak self] isSuccess in
+                self?.dismiss(animated: true) {
+                    self?.addClipBottomSheetView.resetTextField()
+                }
+                self?.showToastMessage(width: 157, status: .check, message: StringLiterals.ToastMessage.completeAddClip)
+            }.store(in: cancelBag)
+        
+        output.duplicateClipName
+            .sink { [weak self] isDuplicate in
+                if isDuplicate {
+                    self?.addHeightBottom()
+                    self?.addClipBottomSheetView.changeTextField(addButton: false, border: true, error: true, clearButton: true)
+                    self?.addClipBottomSheetView.setupMessage(message: "이미 같은 이름의 클립이 있어요")
+                } else {
+                    self?.minusHeightBottom()
+                }
+            }.store(in: cancelBag)
+    }
+    
     func setupStyle() {
         clipListCollectionView.backgroundColor = .toasterBackground
     }
@@ -77,38 +125,38 @@ private extension ClipViewController {
         addClipBottomSheetView.addClipBottomSheetViewDelegate = self
     }
     
-    func setupViewModel() {
-        viewModel.setupDataChangeAction(changeAction: reloadCollectionView,
-                                        forUnAuthorizedAction: unAuthorizedAction,
-                                        editAction: addClipAction,
-                                        moveAction: moveBottomAction)
-    }
+//    func setupViewModel() {
+//        viewModel.setupDataChangeAction(changeAction: reloadCollectionView,
+//                                        forUnAuthorizedAction: unAuthorizedAction,
+//                                        editAction: addClipAction,
+//                                        moveAction: moveBottomAction)
+//    }
     
-    func reloadCollectionView(isHidden: Bool) {
-        clipListCollectionView.reloadData()
-        clipEmptyView.isHidden = isHidden
-    }
+//    func reloadCollectionView(isHidden: Bool) {
+//        clipListCollectionView.reloadData()
+//        clipEmptyView.isHidden = isHidden
+//    }
     
-    func unAuthorizedAction() {
-        changeViewController(viewController: LoginViewController())
-    }
+//    func unAuthorizedAction() {
+//        changeViewController(viewController: LoginViewController())
+//    }
     
-    func addClipAction() {
-        dismiss(animated: true) {
-            self.addClipBottomSheetView.resetTextField()
-        }
-        showToastMessage(width: 157, status: .check, message: StringLiterals.ToastMessage.completeAddClip)
-    }
+//    func addClipAction() {
+//        dismiss(animated: true) {
+//            self.addClipBottomSheetView.resetTextField()
+//        }
+//        showToastMessage(width: 157, status: .check, message: StringLiterals.ToastMessage.completeAddClip)
+//    }
     
-    func moveBottomAction(isDuplicated: Bool) {
-        if isDuplicated {
-            addHeightBottom()
-            addClipBottomSheetView.changeTextField(addButton: false, border: true, error: true, clearButton: true)
-            addClipBottomSheetView.setupMessage(message: "이미 같은 이름의 클립이 있어요")
-        } else {
-            minusHeightBottom()
-        }
-    }
+//    func moveBottomAction(isDuplicated: Bool) {
+//        if isDuplicated {
+//            addHeightBottom()
+//            addClipBottomSheetView.changeTextField(addButton: false, border: true, error: true, clearButton: true)
+//            addClipBottomSheetView.setupMessage(message: "이미 같은 이름의 클립이 있어요")
+//        } else {
+//            minusHeightBottom()
+//        }
+//    }
     
     func setupNavigationBar() {
         let type: ToasterNavigationType = ToasterNavigationType(hasBackButton: false,
@@ -221,11 +269,11 @@ extension ClipViewController: AddClipBottomSheetViewDelegate {
         addClipBottom.setupSheetHeightChanges(bottomHeight: 198)
     }
     
-    func dismissButtonTapped(title: String) {
-        viewModel.postAddCategoryAPI(requestBody: title)
-    }
+//    func dismissButtonTapped(title: String) {
+//        viewModel.postAddCategoryAPI(requestBody: title)
+//    }
     
-    func callCheckAPI(text: String) {
-        viewModel.getCheckCategoryAPI(categoryTitle: text)
-    }
+//    func callCheckAPI(text: String) {
+//        viewModel.getCheckCategoryAPI(categoryTitle: text)
+//    }
 }

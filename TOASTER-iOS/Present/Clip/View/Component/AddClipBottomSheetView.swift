@@ -11,10 +11,10 @@ import SnapKit
 import Then
 
 protocol AddClipBottomSheetViewDelegate: AnyObject {
-    func dismissButtonTapped(title: String)
+    // func dismissButtonTapped(title: String)
     func addHeightBottom()
     func minusHeightBottom()
-    func callCheckAPI(text: String)
+    // func callCheckAPI(text: String)
 }
 
 final class AddClipBottomSheetView: UIView {
@@ -54,6 +54,10 @@ final class AddClipBottomSheetView: UIView {
     private let addClipButton = UIButton()
     private let errorMessage = UILabel()
     private let clearButton = UIButton()
+    
+    lazy var textFieldValueChanged = NotificationCenter.default
+        .publisher(for: UITextField.textDidChangeNotification, object: self.addClipTextField)
+    lazy var addClipButtonTap = addClipButton.publisher(for: .touchUpInside)
     
     // MARK: - Life Cycles
     
@@ -123,7 +127,7 @@ private extension AddClipBottomSheetView {
             $0.setTitle(StringLiterals.Button.okay, for: .normal)
             $0.setTitleColor(.toasterWhite, for: .normal)
             $0.titleLabel?.font = .suitBold(size: 16)
-            $0.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+            // $0.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         }
         
         errorMessage.do {
@@ -216,7 +220,7 @@ private extension AddClipBottomSheetView {
     func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { [weak self] _ in
             if let urlText = self?.addClipTextField.text {
-                self?.addClipBottomSheetViewDelegate?.callCheckAPI(text: urlText)
+                // self?.addClipBottomSheetViewDelegate?.callCheckAPI(text: urlText)
             }
         }
     }
@@ -227,10 +231,10 @@ private extension AddClipBottomSheetView {
         startTimer()
     }
     
-    @objc
-    func buttonTapped() {
-        addClipBottomSheetViewDelegate?.dismissButtonTapped(title: addClipTextField.text ?? "")
-    }
+//    @objc
+//    func buttonTapped() {
+//        addClipBottomSheetViewDelegate?.dismissButtonTapped(title: addClipTextField.text ?? "")
+//    }
     
     @objc
     func clearButtonTapped() {
