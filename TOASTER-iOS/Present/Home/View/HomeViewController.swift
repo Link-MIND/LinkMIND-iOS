@@ -288,7 +288,6 @@ private extension HomeViewController {
     }
     
     func setupToolTip() {
-        guard let secondToolTip else { return }
         if UserDefaults.standard.value(forKey: TipUserDefaults.isShowHomeViewToolTip) == nil {
             UserDefaults.standard.set(true, forKey: TipUserDefaults.isShowHomeViewToolTip)
             
