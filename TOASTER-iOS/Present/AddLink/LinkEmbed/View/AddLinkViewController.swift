@@ -184,9 +184,6 @@ extension AddLinkViewController {
 extension AddLinkViewController: SaveLinkButtonDelegate {
     func saveLinkButtonTapped() {
         delegate?.changeTabBarIndex()
-        navigationController?.showToastMessage(width: 157,
-                                               status: .check,
-                                               message: "링크 저장 완료!")
     }
     
     func cancleLinkButtonTapped() {

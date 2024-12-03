@@ -14,12 +14,10 @@ final class HomeViewModel {
     typealias DataChangeAction = (Bool) -> Void
     private var dataChangeAction: DataChangeAction?
     private var dataEmptyAction: DataChangeAction?
-    private var moveBottomAction: DataChangeAction?
     private var showPopupAction: DataChangeAction?
     
     typealias NormalChangeAction = () -> Void
     private var unAuthorizedAction: NormalChangeAction?
-    private var textFieldEditAction: NormalChangeAction?
     
     // MARK: - Data
     
@@ -82,13 +80,9 @@ extension HomeViewModel {
     
     func setupDataChangeAction(changeAction: @escaping DataChangeAction,
                                forUnAuthorizedAction: @escaping NormalChangeAction,
-                               editAction: @escaping NormalChangeAction,
-                               moveAction: @escaping DataChangeAction,
                                popupAction: @escaping DataChangeAction) {
         dataChangeAction = changeAction
         unAuthorizedAction = forUnAuthorizedAction
-        textFieldEditAction = editAction
-        moveBottomAction = moveAction
         showPopupAction = popupAction
     }
     
@@ -161,37 +155,6 @@ extension HomeViewModel {
                 self.unAuthorizedAction?()
             default:
                 return
-            }
-        }
-    }
-    
-    func getCheckCategoryAPI(categoryTitle: String) {
-        NetworkService.shared.clipService.getCheckCategory(categoryTitle: categoryTitle) { result in
-            switch result {
-            case .success(let response):
-                if let data = response?.data.isDupicated {
-                    if categoryTitle.count != 16 {
-                        self.moveBottomAction?(data)
-                    }
-                }
-            case .unAuthorized, .networkFail, .notFound:
-                self.unAuthorizedAction?()
-            default: return
-            }
-        }
-    }
-    
-    func postAddCategoryAPI(requestBody: String) {
-        NetworkService.shared.clipService.postAddCategory(requestBody: PostAddCategoryRequestDTO(categoryTitle: requestBody)) { result in
-            switch result {
-            case .success:
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    self.textFieldEditAction?()
-                }
-                self.fetchMainPageData()
-            case .networkFail, .unAuthorized, .notFound:
-                self.unAuthorizedAction?()
-            default: return
             }
         }
     }
