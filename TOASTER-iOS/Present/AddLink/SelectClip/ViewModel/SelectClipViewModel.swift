@@ -46,6 +46,8 @@ final class SelectClipViewModel: ViewModelType {
             }.store(in: cancelBag)
         
         input.clipNameChanged
+            .debounce(for: 0.2, scheduler: RunLoop.main)
+            .removeDuplicates()
             .networkFlatMap(self) { context, clipTitle in
                 context.getCheckCategoryAPI(categoryTitle: clipTitle)
             }
