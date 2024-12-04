@@ -31,23 +31,14 @@ final class LinkWebViewModel: ViewModelType {
         let output = Output()
         
         input.readLinkButtonTapped
-            .flatMap { [weak self] model in
-                self?.performLinkReadRequest(model, output) ?? Driver.empty()
+            .networkFlatMap(self) { context, model in
+                context.patchOpenLinkAPI(requestBody: model)
             }
             .sink { isRead in
                 output.isRead.send(!isRead)
             }.store(in: cancelBag)
         
         return output
-    }
-    
-    func performLinkReadRequest(_ model: LinkReadEditModel, _ output: Output) -> Driver<Bool> {
-        return patchOpenLinkAPI(requestBody: model)
-            .handleEvents(receiveCompletion: { completion in
-                if case .failure = completion {
-                    output.navigateToLogin.send()
-                }
-            }).asDriver()
     }
 }
 

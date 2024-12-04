@@ -35,12 +35,8 @@ final class ClipViewModel: ViewModelType {
         let output = Output()
         
         input.requestClipList
-            .flatMap { [weak self] _ -> AnyPublisher<ClipModel, Never> in
-                guard let self else { return Empty().eraseToAnyPublisher() }
-                return self.getAllCategoryAPI()
-                    .catch { _ -> AnyPublisher<ClipModel, Never> in
-                        return Empty().eraseToAnyPublisher()
-                    }.eraseToAnyPublisher()
+            .networkFlatMap(self) { context, _ in
+                context.getAllCategoryAPI()
             }
             .sink { [weak self] clipList in
                 self?.clipList = clipList
@@ -48,26 +44,16 @@ final class ClipViewModel: ViewModelType {
             }.store(in: cancelBag)
                 
         input.clipNameChanged
-            .flatMap { [weak self] clipTitle -> AnyPublisher<Bool, Never> in
-                guard let self else { return Empty().eraseToAnyPublisher() }
-                return self.getCheckCategoryAPI(categoryTitle: clipTitle)
-                    .catch { _ -> AnyPublisher<Bool, Never> in
-                        return Empty().eraseToAnyPublisher()
-                    }
-                    .eraseToAnyPublisher()
+            .networkFlatMap(self) { context, clipTitle in
+                context.getCheckCategoryAPI(categoryTitle: clipTitle)
             }
             .sink { isDuplicate in
                 output.duplicateClipName.send(isDuplicate)
             }.store(in: cancelBag)
         
         input.addClipButtonTapped
-            .flatMap { [weak self] clipTitle -> AnyPublisher<Bool, Never> in
-                guard let self else { return Empty().eraseToAnyPublisher() }
-                return self.postAddCategoryAPI(requestBody: clipTitle)
-                    .catch { _ -> AnyPublisher<Bool, Never> in
-                        return Empty().eraseToAnyPublisher()
-                    }
-                    .eraseToAnyPublisher()
+            .networkFlatMap(self) { context, clipTitle in
+                context.postAddCategoryAPI(requestBody: clipTitle)
             }
             .sink { isSuccess in
                 output.addClipResult.send(isSuccess)

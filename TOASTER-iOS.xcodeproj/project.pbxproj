@@ -42,6 +42,8 @@
 		3972155B2CA8DB1A009DF1F9 /* Publisher+UIGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3972155A2CA8DB1A009DF1F9 /* Publisher+UIGesture.swift */; };
 		3972155D2CA9007B009DF1F9 /* Publisher+UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3972155C2CA9007B009DF1F9 /* Publisher+UIBarButtonItem.swift */; };
 		397586EC2CAA312C004FB095 /* Publisher+Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397586EB2CAA312C004FB095 /* Publisher+Driver.swift */; };
+		39788C762CFF2A1300956A92 /* Publisher+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39788C752CFF2A1300956A92 /* Publisher+Operator.swift */; };
+		39788C772CFF2A1300956A92 /* Publisher+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39788C752CFF2A1300956A92 /* Publisher+Operator.swift */; };
 		398ACFDC2B5E77FA00D5EE77 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 398ACFDB2B5E77FA00D5EE77 /* Colors.xcassets */; };
 		398BE7F32B456367001595E0 /* ToasterToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398BE7F22B456367001595E0 /* ToasterToastMessageView.swift */; };
 		398BE7F62B456AF9001595E0 /* BottomType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398BE7F52B456AF9001595E0 /* BottomType.swift */; };
@@ -384,6 +386,7 @@
 		3972155A2CA8DB1A009DF1F9 /* Publisher+UIGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+UIGesture.swift"; sourceTree = "<group>"; };
 		3972155C2CA9007B009DF1F9 /* Publisher+UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+UIBarButtonItem.swift"; sourceTree = "<group>"; };
 		397586EB2CAA312C004FB095 /* Publisher+Driver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Driver.swift"; sourceTree = "<group>"; };
+		39788C752CFF2A1300956A92 /* Publisher+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Operator.swift"; sourceTree = "<group>"; };
 		398ACFDB2B5E77FA00D5EE77 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		398BE7F22B456367001595E0 /* ToasterToastMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToasterToastMessageView.swift; sourceTree = "<group>"; };
 		398BE7F52B456AF9001595E0 /* BottomType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomType.swift; sourceTree = "<group>"; };
@@ -745,6 +748,7 @@
 				3972155A2CA8DB1A009DF1F9 /* Publisher+UIGesture.swift */,
 				3972155C2CA9007B009DF1F9 /* Publisher+UIBarButtonItem.swift */,
 				3F82C3202CADA19300492EEE /* Publisher+UIButton.swift */,
+				39788C752CFF2A1300956A92 /* Publisher+Operator.swift */,
 			);
 			path = "Combine+";
 			sourceTree = "<group>";
@@ -1952,6 +1956,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39788C772CFF2A1300956A92 /* Publisher+Operator.swift in Sources */,
 				3F3ED28A2BA1A456004E79F0 /* AuthTargetType.swift in Sources */,
 				396DCDFD2CA19F4500FEF7C8 /* PatchPopupHiddenRequestDTO.swift in Sources */,
 				3F82C3222CADA1EF00492EEE /* Publisher+UIButton.swift in Sources */,
@@ -2198,6 +2203,7 @@
 				6BE6D9E62B4EA499008B06FA /* RemindCollectionHeaderView.swift in Sources */,
 				6BE6DA5F2B50B734008B06FA /* ClipTargetType.swift in Sources */,
 				3F2FA17B2B4928A200EDBF95 /* LoginError.swift in Sources */,
+				39788C762CFF2A1300956A92 /* Publisher+Operator.swift in Sources */,
 				6BE6DA7E2B54572B008B06FA /* ToasterAPIService.swift in Sources */,
 				830517A72B4D7225009FFB60 /* HomeView.swift in Sources */,
 				6B0E85D92B564913001BC15F /* RemindTimerAddViewModel.swift in Sources */,

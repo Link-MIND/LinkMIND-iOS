@@ -37,12 +37,8 @@ final class SelectClipViewModel: ViewModelType {
         let output = Output()
         
         input.requestClipList
-            .flatMap { [weak self] _ -> AnyPublisher<[RemindClipModel], Never> in
-                guard let self else { return Empty().eraseToAnyPublisher() }
-                return self.fetchClipData()
-                    .catch { _ -> AnyPublisher<[RemindClipModel], Never> in
-                        return Empty().eraseToAnyPublisher()
-                    }.eraseToAnyPublisher()
+            .networkFlatMap(self) { context, _ in
+                context.fetchClipData()
             }
             .sink { [weak self] clipDataList in
                 self?.selectedClip = clipDataList
@@ -50,26 +46,16 @@ final class SelectClipViewModel: ViewModelType {
             }.store(in: cancelBag)
         
         input.clipNameChanged
-            .flatMap { [weak self] clipTitle -> AnyPublisher<Bool, Never> in
-                guard let self else { return Empty().eraseToAnyPublisher() }
-                return self.getCheckCategoryAPI(categoryTitle: clipTitle)
-                    .catch { _ -> AnyPublisher<Bool, Never> in
-                        return Empty().eraseToAnyPublisher()
-                    }
-                    .eraseToAnyPublisher()
+            .networkFlatMap(self) { context, clipTitle in
+                context.getCheckCategoryAPI(categoryTitle: clipTitle)
             }
             .sink { isDuplicate in
                 output.duplicateClipName.send(isDuplicate)
             }.store(in: cancelBag)
         
         input.addClipButtonTapped
-            .flatMap { [weak self] clipTitle -> AnyPublisher<Bool, Never> in
-                guard let self else { return Empty().eraseToAnyPublisher() }
-                return self.postAddCategoryAPI(requestBody: clipTitle)
-                    .catch { _ -> AnyPublisher<Bool, Never> in
-                        return Empty().eraseToAnyPublisher()
-                    }
-                    .eraseToAnyPublisher()
+            .networkFlatMap(self) { context, clipTitle in
+                context.postAddCategoryAPI(requestBody: clipTitle)
             }
             .sink { isSuccess in
                 output.addClipResult.send(isSuccess)
@@ -79,12 +65,8 @@ final class SelectClipViewModel: ViewModelType {
             }.store(in: cancelBag)
         
         input.completeButtonTapped
-            .flatMap { [weak self] (url, category) -> AnyPublisher<Bool, Never> in
-                guard let self else { return Empty().eraseToAnyPublisher() }
-                return self.postSaveLink(url: url, category: category)
-                    .catch { _ -> AnyPublisher<Bool, Never> in
-                        return Empty().eraseToAnyPublisher()
-                    }.eraseToAnyPublisher()
+            .networkFlatMap(self) { context, body in
+                context.postSaveLink(url: body.0, category: body.1)
             }
             .sink { result in
                 output.saveLinkResult.send(result)
