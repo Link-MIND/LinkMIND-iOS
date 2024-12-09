@@ -4,6 +4,7 @@
 //
 //  Created by 김다예 on 12/30/23.
 //
+
 import UIKit
 
 import SnapKit
@@ -16,11 +17,6 @@ final class HomeViewController: UIViewController {
     private let viewModel = HomeViewModel()
     private let clipViewModel = DetailClipViewModel()
     private let homeView = HomeView()
-    
-    private let addClipBottomSheetView = AddClipBottomSheetView()
-    private lazy var addClipBottom = ToasterBottomSheetViewController(bottomType: .white,
-                                                                      bottomTitle: "클립 추가",
-                                                                      insertView: addClipBottomSheetView)
     
     private var firstToolTip: ToasterTipView?
     private lazy var secondToolTip: ToasterTipView? = {
@@ -270,7 +266,6 @@ private extension HomeViewController {
                         forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
                         withReuseIdentifier: HomeFooterCollectionView.className)
         }
-        addClipBottomSheetView.addClipBottomSheetViewDelegate = self
     }
     
     func setupDelegate() {
@@ -282,13 +277,10 @@ private extension HomeViewController {
     func setupViewModel() {
         viewModel.setupDataChangeAction(changeAction: reloadCollectionView,
                                         forUnAuthorizedAction: unAuthorizedAction,
-                                        editAction: addClipAction,
-                                        moveAction: moveBottomAction,
                                         popupAction: showPopupAction)
     }
     
     func setupToolTip() {
-        guard let secondToolTip else { return }
         if UserDefaults.standard.value(forKey: TipUserDefaults.isShowHomeViewToolTip) == nil {
             UserDefaults.standard.set(true, forKey: TipUserDefaults.isShowHomeViewToolTip)
             
@@ -309,28 +301,6 @@ private extension HomeViewController {
     
     func unAuthorizedAction() {
         changeViewController(viewController: LoginViewController())
-    }
-    
-    func moveBottomAction(isDuplicated: Bool) {
-        if isDuplicated {
-            addHeightBottom()
-            addClipBottomSheetView.changeTextField(addButton: false,
-                                                   border: true,
-                                                   error: true,
-                                                   clearButton: true)
-            addClipBottomSheetView.setupMessage(message: "이미 같은 이름의 클립이 있어요")
-        } else {
-            minusHeightBottom()
-        }
-    }
-    
-    func addClipAction() {
-        dismiss(animated: true) {
-            self.addClipBottomSheetView.resetTextField()
-            self.showToastMessage(width: 157,
-                                  status: .check,
-                                  message: StringLiterals.ToastMessage.completeAddClip)
-        }
     }
         
     func showPopupAction(isShow: Bool) {
@@ -385,26 +355,6 @@ private extension HomeViewController {
         let detailClipViewController = DetailClipViewController()
         detailClipViewController.setupCategory(id: 0, name: "전체 클립")
         navigationController?.pushViewController(detailClipViewController, animated: true)
-    }
-}
-
-// MARK: - AddClipBottomSheetViewDelegate
-
-extension HomeViewController: AddClipBottomSheetViewDelegate {
-    func callCheckAPI(text: String) {
-        viewModel.getCheckCategoryAPI(categoryTitle: text)
-    }
-    
-    func addHeightBottom() {
-        addClipBottom.setupSheetHeightChanges(bottomHeight: 219)
-    }
-    
-    func minusHeightBottom() {
-        addClipBottom.setupSheetHeightChanges(bottomHeight: 198)
-    }
-    
-    func dismissButtonTapped(title: String) {
-        viewModel.postAddCategoryAPI(requestBody: title)
     }
 }
 

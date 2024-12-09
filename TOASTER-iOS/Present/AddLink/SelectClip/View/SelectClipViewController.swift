@@ -5,6 +5,7 @@
 //  Created by Gahyun Kim on 2024/01/15.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
@@ -20,7 +21,11 @@ final class SelectClipViewController: UIViewController {
     
     // MARK: - UI Properties
     
-    private var viewModel = SelectClipViewModel()
+    private let viewModel = SelectClipViewModel()
+    private let cancelBag = CancelBag()
+    private var requestClipList = PassthroughSubject<Void, Never>()
+    private var requestSaveLink = PassthroughSubject<Void, Never>()
+    
     private let clipSelectCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let completeButton: UIButton = UIButton()
     private let addClipBottomSheetView = AddClipBottomSheetView()
@@ -38,26 +43,92 @@ final class SelectClipViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        bindViewModels()
         setupStyle()
         setupHierarchy()
         setupLayout()
         setupDelegate()
-        
-        setupViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         setupNavigationBar()
-        viewModel.fetchClipData()
+        requestClipList.send()
     }
 }
 
 // MARK: - Private Extension
 
 private extension SelectClipViewController {
+    func bindViewModels() {
+        let textFieldValueChanged = addClipBottomSheetView.textFieldValueChanged
+            .compactMap { ($0.object as? UITextField)?.text }
+            .asDriver()
+        
+        let addClipButtonTapped = addClipBottomSheetView.addClipButtonTap
+            .compactMap { _ in self.addClipBottomSheetView.addClipTextField.text }
+            .asDriver()
+        
+        let completeButtonTapped = self.requestSaveLink
+            .map { (self.linkURL, self.categoryID) }
+            .asDriver()
+        
+        let input = SelectClipViewModel.Input(
+            requestClipList: requestClipList.asDriver(),
+            clipNameChanged: textFieldValueChanged,
+            addClipButtonTapped: addClipButtonTapped,
+            completeButtonTapped: completeButtonTapped
+        )
+        
+        let output = viewModel.transform(input, cancelBag: cancelBag)
+        
+        output.needToReload
+            .sink { [weak self] _ in
+                self?.clipSelectCollectionView.reloadData()
+            }.store(in: cancelBag)
+        
+        output.addClipResult
+            .sink { [weak self] _ in
+                self?.dismiss(animated: true) {
+                    self?.addClipBottomSheetView.resetTextField()
+                    self?.showToastMessage(
+                        width: 157,
+                        status: .check,
+                        message: StringLiterals.ToastMessage.completeAddClip
+                    )
+                    self?.requestClipList.send()
+                }
+            }.store(in: cancelBag)
+        
+        output.duplicateClipName
+            .sink { [weak self] isDuplicate in
+                if isDuplicate {
+                    self?.addHeightBottom()
+                    self?.addClipBottomSheetView.changeTextField(
+                        addButton: false,
+                        border: true,
+                        error: true,
+                        clearButton: true
+                    )
+                    self?.addClipBottomSheetView.setupMessage(message: "이미 같은 이름의 클립이 있어요")
+                } else {
+                    self?.minusHeightBottom()
+                }
+            }.store(in: cancelBag)
+        
+        output.saveLinkResult
+            .sink { [weak self] isSuccess in
+                self?.navigationController?.popToRootViewController(animated: true)
+                
+                let width: CGFloat = isSuccess ? 157 : 200
+                let status: ToastStatus = isSuccess ? .check : .warning
+                let message = isSuccess ? "링크 저장 완료!" : "링크 저장에 실패했어요!"
+                self?.navigationController?.showToastMessage(width: width, status: status, message: message)
+                
+                if isSuccess { self?.delegate?.saveLinkButtonTapped() }
+            }.store(in: cancelBag)
+    }
+    
     func setupStyle() {
         view.backgroundColor = .toasterBackground
         
@@ -107,58 +178,6 @@ private extension SelectClipViewController {
         addClipBottomSheetView.addClipBottomSheetViewDelegate = self
     }
     
-    func setupViewModel() {
-        viewModel.setupDataChangeAction(changeAction: reloadCollectionView,
-                                        forUnAuthorizedAction: unAuthorizedAction,
-                                        editAction: addClipAction,
-                                        moveAction: moveBottomAction,
-                                        saveAction: saveLinkAction,
-                                        failAction: saveFailAction)
-    }
-    
-    func reloadCollectionView(isHidden: Bool) {
-        clipSelectCollectionView.reloadData()
-        clipSelectCollectionView.isHidden = false
-    }
-    
-    func unAuthorizedAction() {
-        changeViewController(viewController: LoginViewController())
-    }
-    
-    func moveBottomAction(isDuplicated: Bool) {
-        if isDuplicated {
-            addHeightBottom()
-            addClipBottomSheetView.changeTextField(addButton: false,
-                                                   border: true,
-                                                   error: true,
-                                                   clearButton: true)
-            addClipBottomSheetView.setupMessage(message: "이미 같은 이름의 클립이 있어요")
-        } else {
-            minusHeightBottom()
-        }
-    }
-    
-    func addClipAction() {
-        dismiss(animated: true) {
-            self.addClipBottomSheetView.resetTextField()
-            self.showToastMessage(width: 157,
-                                  status: .check,
-                                  message: StringLiterals.ToastMessage.completeAddClip)
-        }
-    }
-    
-    func saveLinkAction() {
-        self.delegate?.saveLinkButtonTapped()
-        self.navigationController?.popToRootViewController(animated: true)
-    }
-    
-    func saveFailAction() {
-        self.navigationController?.popToRootViewController(animated: true)
-        self.navigationController?.showToastMessage(width: 200,
-                                                    status: .warning,
-                                                    message: "링크 저장에 실패했어요!")
-    }
-    
     func setupNavigationBar() {
         let type: ToasterNavigationType = ToasterNavigationType(hasBackButton: true,
                                                                 hasRightButton: true,
@@ -189,9 +208,9 @@ private extension SelectClipViewController {
         completeButton.loadingButtonTapped(
             loadingTitle: "저장 중...",
             loadingAnimationSize: 16,
-            task: { _ in
+            task: { [weak self] _ in
                 DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) {
-                    self.viewModel.postSaveLink(url: self.linkURL, category: self.categoryID)
+                    self?.requestSaveLink.send()
                 }
             }
         )
@@ -295,28 +314,11 @@ extension SelectClipViewController: SelectClipHeaderViewlDelegate {
 }
 
 extension SelectClipViewController: AddClipBottomSheetViewDelegate {
-    func dismissButtonTapped(title: String) {
-        viewModel.postAddCategoryAPI(requestBody: title)
-    }
-    
-    func callCheckAPI(text: String) {
-        viewModel.getCheckCategoryAPI(categoryTitle: text)
-    }
-    
     func addHeightBottom() {
         addClipBottom.setupSheetHeightChanges(bottomHeight: 219)
     }
     
     func minusHeightBottom() {
         addClipBottom.setupSheetHeightChanges(bottomHeight: 198)
-    }
-    
-    func dismissButtonTapped() {
-        dismiss(animated: true) {
-            self.showToastMessage(width: 157,
-                                  status: .check,
-                                  message: StringLiterals.ToastMessage.completeAddClip)
-            self.addClipBottomSheetView.resetTextField()
-        }
     }
 }

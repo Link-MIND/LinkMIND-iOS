@@ -5,121 +5,159 @@
 //  Created by Gahyun Kim on 2024/02/27.
 //
 
-import Foundation
+import Combine
+import UIKit
 
-final class SelectClipViewModel {
+final class SelectClipViewModel: ViewModelType {
     
-    // MARK: - Properties
+    private var cancelBag = CancelBag()
+    var selectedClip: [RemindClipModel] = []
     
-    typealias DataChangeAction = (Bool) -> Void
-    private var dataChangeAction: DataChangeAction?
-    private var dataEmptyAction: DataChangeAction?
-    private var moveBottomAction: DataChangeAction?
+    // MARK: - Input State
     
-    typealias NormalChangeAction = () -> Void
-    private var unAuthorizedAction: NormalChangeAction?
-    private var textFieldEditAction: NormalChangeAction?
-    private var saveLinkAction: NormalChangeAction?
-    private var saveFailAction: NormalChangeAction?
-    
-    // MARK: - Data
-    
-    private(set) var selectedClip: [RemindClipModel] = [] {
-        didSet {
-            dataChangeAction?(!selectedClip.isEmpty)
-        }
+    struct Input {
+        let requestClipList: Driver<Void>
+        let clipNameChanged: Driver<String>
+        let addClipButtonTapped: Driver<String>
+        let completeButtonTapped: Driver<(String, Int?)>
     }
     
-    init() {
-        fetchClipData()
+    // MARK: - Output State
+    
+    struct Output {
+        let needToReload = PassthroughSubject<Void, Never>()
+        let duplicateClipName = PassthroughSubject<Bool, Never>()
+        let addClipResult = PassthroughSubject<Bool, Never>()
+        let saveLinkResult = PassthroughSubject<Bool, Never>()
+    }
+    
+    // MARK: - Method
+    
+    func transform(_ input: Input, cancelBag: CancelBag) -> Output {
+        let output = Output()
+        
+        input.requestClipList
+            .networkFlatMap(self) { context, _ in
+                context.fetchClipData()
+            }
+            .sink { [weak self] clipDataList in
+                self?.selectedClip = clipDataList
+                output.needToReload.send()
+            }.store(in: cancelBag)
+        
+        input.clipNameChanged
+            .debounce(for: 0.2, scheduler: RunLoop.main)
+            .removeDuplicates()
+            .networkFlatMap(self) { context, clipTitle in
+                context.getCheckCategoryAPI(categoryTitle: clipTitle)
+            }
+            .sink { isDuplicate in
+                output.duplicateClipName.send(isDuplicate)
+            }.store(in: cancelBag)
+        
+        input.addClipButtonTapped
+            .networkFlatMap(self) { context, clipTitle in
+                context.postAddCategoryAPI(requestBody: clipTitle)
+            }
+            .sink { isSuccess in
+                output.addClipResult.send(isSuccess)
+                if isSuccess {
+                    output.needToReload.send()
+                }
+            }.store(in: cancelBag)
+        
+        input.completeButtonTapped
+            .networkFlatMap(self) { context, body in
+                context.postSaveLink(url: body.0, category: body.1)
+            }
+            .sink { result in
+                output.saveLinkResult.send(result)
+            }.store(in: cancelBag)
+        
+        return output
     }
 }
 
-// MARK: - extension
+// MARK: - Network
 
-extension SelectClipViewModel {
-    func setupDataChangeAction(changeAction: @escaping DataChangeAction,
-                               forUnAuthorizedAction: @escaping NormalChangeAction,
-                               editAction: @escaping NormalChangeAction,
-                               moveAction: @escaping DataChangeAction,
-                               saveAction: @escaping NormalChangeAction,
-                               failAction: @escaping NormalChangeAction) {
-        dataChangeAction = changeAction
-        unAuthorizedAction = forUnAuthorizedAction
-        textFieldEditAction = editAction
-        moveBottomAction = moveAction
-        saveLinkAction = saveAction
-        saveFailAction = failAction
-    }
-    
-    // 임베드한 링크, 선택한 클립 id - POST
-    func postSaveLink(url: String, category: Int?) {
-        let request = PostSaveLinkRequestDTO(linkUrl: url,
-                                             categoryId: category)
-        NetworkService.shared.toastService.postSaveLink(requestBody: request) { result in
-            switch result {
-            case .success:
-                self.saveLinkAction?()
-            case .networkFail, .unAuthorized, .notFound:
-                self.unAuthorizedAction?()
-            case .badRequest, .serverErr:
-                self.saveFailAction?()
-            default:
-                return
-            }
-        }
-    }
-    
-    // 클립 정보 - GET
-    func fetchClipData() {
-        NetworkService.shared.clipService.getAllCategory { result in
-            switch result {
-            case .success(let response):
-                var clipDataList: [RemindClipModel] = [RemindClipModel(id: nil,
-                                                                       title: "전체 클립",
-                                                                       clipCount: response?.data.toastNumberInEntire ?? 0)]
-                response?.data.categories.forEach {
-                    let clipData = RemindClipModel(id: $0.categoryId,
-                                                   title: $0.categoryTitle,
-                                                   clipCount: $0.toastNum)
-                    clipDataList.append(clipData)
+private extension SelectClipViewModel {
+    func postSaveLink(url: String, category: Int?) -> AnyPublisher<Bool, Error> {
+        return Future<Bool, Error> { promise in
+            let request = PostSaveLinkRequestDTO(linkUrl: url, categoryId: category)
+            NetworkService.shared.toastService.postSaveLink(requestBody: request) { result in
+                switch result {
+                case .success:
+                    promise(.success(true))
+                case .badRequest, .serverErr:
+                    promise(.success(false))
+                case .networkFail, .unAuthorized, .notFound:
+                    promise(.failure(NetworkResult<Error>.unAuthorized))
+                default:
+                    return
                 }
-                self.selectedClip = clipDataList
-            case .networkFail, .unAuthorized, .notFound:
-                self.unAuthorizedAction?()
-            default: break
             }
-        }
+        }.eraseToAnyPublisher()
     }
     
-    func postAddCategoryAPI(requestBody: String) {
-        NetworkService.shared.clipService.postAddCategory(requestBody: PostAddCategoryRequestDTO(categoryTitle: requestBody)) { result in
-            switch result {
-            case .success:
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    self.textFieldEditAction?()
-                }
-                self.fetchClipData()
-            case .networkFail, .unAuthorized, .notFound:
-                self.unAuthorizedAction?()
-            default: return
-            }
-        }
-    }
-    
-    func getCheckCategoryAPI(categoryTitle: String) {
-        NetworkService.shared.clipService.getCheckCategory(categoryTitle: categoryTitle) { result in
-            switch result {
-            case .success(let response):
-                if let data = response?.data.isDupicated {
-                    if categoryTitle.count != 16 {
-                        self.moveBottomAction?(data)
+    func fetchClipData() -> AnyPublisher<[RemindClipModel], Error> {
+        return Future<[RemindClipModel], Error> { promise in
+            NetworkService.shared.clipService.getAllCategory { result in
+                switch result {
+                case .success(let response):
+                    var clipDataList: [RemindClipModel] = [
+                        RemindClipModel(
+                            id: nil,
+                            title: "전체 클립",
+                            clipCount: response?.data.toastNumberInEntire ?? 0
+                        )
+                    ]
+                    response?.data.categories.forEach {
+                        let clipData = RemindClipModel(
+                            id: $0.categoryId,
+                            title: $0.categoryTitle,
+                            clipCount: $0.toastNum
+                        )
+                        clipDataList.append(clipData)
                     }
+                    promise(.success(clipDataList))
+                case .networkFail, .unAuthorized, .notFound:
+                    promise(.failure(NetworkResult<Error>.unAuthorized))
+                default:
+                    return
                 }
-            case .networkFail, .unAuthorized, .notFound:
-                self.unAuthorizedAction?()
-            default: return
             }
-        }
+        }.eraseToAnyPublisher()
+    }
+    
+    func getCheckCategoryAPI(categoryTitle: String) -> AnyPublisher<Bool, Error> {
+        return Future<Bool, Error> { promise in
+            NetworkService.shared.clipService.getCheckCategory(categoryTitle: categoryTitle) { result in
+                switch result {
+                case .success(let response):
+                    if let data = response?.data.isDupicated, categoryTitle.count < 16 {
+                        promise(.success(data))
+                    }
+                case .unAuthorized, .networkFail, .notFound:
+                    promise(.failure(NetworkResult<Error>.unAuthorized))
+                default:
+                    return
+                }
+            }
+        }.eraseToAnyPublisher()
+    }
+    
+    func postAddCategoryAPI(requestBody: String) -> AnyPublisher<Bool, Error> {
+        return Future<Bool, Error> { promise in
+            NetworkService.shared.clipService.postAddCategory(requestBody: PostAddCategoryRequestDTO(categoryTitle: requestBody)) { result in
+                switch result {
+                case .success:
+                    promise(.success(true))
+                case .unAuthorized, .networkFail, .notFound:
+                    promise(.failure(NetworkResult<Error>.unAuthorized))
+                default:
+                    return
+                }
+            }
+        }.eraseToAnyPublisher()
     }
 }

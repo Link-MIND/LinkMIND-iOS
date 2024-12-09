@@ -29,32 +29,18 @@ final class ChangeClipViewModel: ViewModelType {
     
     func transform(_ input: Input, cancelBag: CancelBag) -> Output {
         
-        /// 클립이동  버튼이 눌렸을때 동작
+        /// 클립이동 버튼이 눌렸을때 동작
         let clipDataPublisher = input.changeButtonTap
-            .flatMap { [weak self] _ -> AnyPublisher<[SelectClipModel]?, Never> in
-                guard let self else {
-                    return Just([]).eraseToAnyPublisher()
-                }
-                
-                return self.getAllCategoryAPI()
+            .networkFlatMap(self) { context, _ in
+                context.getAllCategoryAPI()
                     .map { [weak self] result -> [SelectClipModel]? in
                         guard let self = self else { return [] }
-                        
-                        // 2개 이하일 경우 nil 반환
-                        if result.count < 2 {
-                            return nil
-                        }
-                        
+                        if result.count < 2 { return nil }  // 2개 이하일 경우 nil 반환
                         let sortedResult = self.sortCurrentCategoryToTop(result)
                         self.collectionViewHeight = self.calculateCollectionViewHeight(numberOfItems: sortedResult.count)
                         return sortedResult
                     }
-                    .catch { error -> AnyPublisher<[SelectClipModel]?, Never> in
-                        print("Error: \(error)")
-                        return Just([]).eraseToAnyPublisher()
-                    }
-                    .eraseToAnyPublisher()
-            } .eraseToAnyPublisher()
+            }
         
         /// 이동할 클립을 선택 시 버튼의 UI 를 변경하는 동작
         let isCompleteButtonEnable = Publishers.Merge(
@@ -67,19 +53,9 @@ final class ChangeClipViewModel: ViewModelType {
             .zip(input.selectedClip) { _, selectedClip in
                 return selectedClip
             }
-            .flatMap { [weak self] selectedClip -> AnyPublisher<Bool, Never> in
-                guard let self else {
-                    return Just(false).eraseToAnyPublisher()
-                }
-                
-                return self.patchChagneCategory(categoryId: selectedClip)
-                    .catch { error -> AnyPublisher<Bool, Never> in
-                        print("Error: \(error)")
-                        return Just(false).eraseToAnyPublisher()
-                    }
-                    .eraseToAnyPublisher()
+            .networkFlatMap(self) { context, selectClip in
+                context.patchChagneCategory(categoryId: selectClip)
             }
-            .eraseToAnyPublisher()
         
         return Output(
             clipData: clipDataPublisher,
