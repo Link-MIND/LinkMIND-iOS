@@ -161,21 +161,6 @@ extension DetailClipViewModel {
     func setupToastId(_ id: Int) {
         currentToastId = id
     }
-    
-    func getViewModelProperty(dataType: DetailClipPropertyType) -> Any {
-        switch dataType {
-        case .toastId:
-            return currentToastId
-        case .categoryId:
-            return currentCategoryId
-        case .categoryName:
-            return currentCategoryName
-        case .segmentIndex:
-            return segmentIndex
-        case .linkTitle:
-            return linkTitle
-        }
-    }
 }
 
 // MARK: - private Extensions

@@ -172,20 +172,6 @@ private extension DetailClipViewController {
                 }
             }.store(in: cancelBag)
         
-        output.deleteToastComplete
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                setupToast()
-                self.dismiss(animated: true) { [weak self] in
-                    self?.showToastMessage(
-                        width: 152,
-                        status: .check,
-                        message: StringLiterals.ToastMessage.completeDeleteLink
-                    )
-                }
-            }.store(in: cancelBag)
-        
         output.isCompleteButtonEnable
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
@@ -198,8 +184,6 @@ private extension DetailClipViewController {
             .sink { [weak self] result in
                 guard let self else { return }
                 if result == true {
-                    let categoryFilter = DetailCategoryFilter.allCases[viewModel.getViewModelProperty(dataType: .segmentIndex) as? Int ?? 0]
-                    
                     self.changeClipBottom.dismiss(animated: true) {
                         self.setupToast()
                     }
@@ -214,6 +198,20 @@ private extension DetailClipViewController {
                 }
             }
             .store(in: cancelBag)
+        
+        output.deleteToastComplete
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                setupToast()
+                self.dismiss(animated: true) { [weak self] in
+                    self?.showToastMessage(
+                        width: 152,
+                        status: .check,
+                        message: StringLiterals.ToastMessage.completeDeleteLink
+                    )
+                }
+            }.store(in: cancelBag)
     }
     
     func setupStyle() {
@@ -333,14 +331,20 @@ extension DetailClipViewController: UICollectionViewDataSource {
         guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ClipCollectionHeaderView.className, for: indexPath) as? ClipCollectionHeaderView else { return UICollectionReusableView() }
         headerView.isDetailClipView(isHidden: true)
         if viewModel.segmentIndex == 0 {
-            headerView.setupDataBind(title: "전체",
-                                     count: viewModel.toastList.toastList.count)
+            headerView.setupDataBind(
+                title: "전체",
+                count: viewModel.toastList.toastList.count
+            )
         } else if viewModel.segmentIndex == 1 {
-            headerView.setupDataBind(title: "열람",
-                                     count: viewModel.toastList.toastList.count)
+            headerView.setupDataBind(
+                title: "열람",
+                count: viewModel.toastList.toastList.count
+            )
         } else {
-            headerView.setupDataBind(title: "미열람",
-                                     count: viewModel.toastList.toastList.count)
+            headerView.setupDataBind(
+                title: "미열람",
+                count: viewModel.toastList.toastList.count
+            )
         }
         return headerView
     }

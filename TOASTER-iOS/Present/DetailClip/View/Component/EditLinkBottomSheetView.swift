@@ -14,26 +14,11 @@ final class EditLinkBottomSheetView: UIView {
     
     // MARK: - Properties
     
-    // weak var editLinkBottomSheetViewDelegate: EditLinkBottomSheetViewDelegate?
-//    private var confirmBottomSheetViewButtonAction: (() -> Void)?
-    
     private var isButtonClicked: Bool = false {
         didSet {
             setupButtonColor()
         }
     }
-    
-//    private var isBorderColor: Bool = false {
-//        didSet {
-//            setupTextFieldBorder()
-//        }
-//    }
-    
-//    private var isError: Bool = false {
-//        didSet {
-//            setupErrorMessage()
-//        }
-//    }
     
     private var isClearButtonShow: Bool = true {
         didSet {
@@ -77,13 +62,11 @@ extension EditLinkBottomSheetView {
     func resetTextField() {
         editClipTitleTextField.text = nil
         editClipTitleTextField.becomeFirstResponder()
-        isButtonClicked = true
+        isButtonClicked = false
     }
     
-    func changeTextField(addButton: Bool, border: Bool, error: Bool, clearButton: Bool) {
+    func changeTextField(addButton: Bool, clearButton: Bool) {
         isButtonClicked = addButton
-//        isBorderColor = border
-//        isError = error
         isClearButtonShow = clearButton
     }
     
@@ -95,10 +78,6 @@ extension EditLinkBottomSheetView {
         editClipTitleTextField.text = message
         editClipTitleTextField.placeholder = message
     }
-    
-//    func setupConfirmBottomSheetButtonAction(_ action: (() -> Void)?) {
-//        confirmBottomSheetViewButtonAction = action
-//    }
 }
 
 // MARK: - Private Extensions
@@ -108,9 +87,13 @@ private extension EditLinkBottomSheetView {
         backgroundColor = .toasterWhite
         
         editClipTitleTextField.do {
-            $0.attributedPlaceholder = NSAttributedString(string: StringLiterals.Placeholder.addClip,
-                                                          attributes: [.foregroundColor: UIColor.gray400,
-                                                                       .font: UIFont.suitRegular(size: 16)])
+            $0.attributedPlaceholder = NSAttributedString(
+                string: StringLiterals.Placeholder.addClip,
+                attributes: [
+                    .foregroundColor: UIColor.gray400,
+                    .font: UIFont.suitRegular(size: 16)
+                ]
+            )
             $0.addPadding(left: 14, right: 44)
             $0.backgroundColor = .gray50
             $0.textColor = .black900
@@ -125,7 +108,6 @@ private extension EditLinkBottomSheetView {
             $0.setTitle(StringLiterals.Button.okay, for: .normal)
             $0.setTitleColor(.toasterWhite, for: .normal)
             $0.titleLabel?.font = .suitBold(size: 16)
-            // $0.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         }
         
         errorMessage.do {
@@ -187,26 +169,6 @@ private extension EditLinkBottomSheetView {
         }
     }
     
-//    func setupTextFieldBorder() {
-//        if isBorderColor {
-//            editClipTitleTextField.layer.borderColor = UIColor.toasterError.cgColor
-//            editClipTitleTextField.layer.borderWidth = 1.0
-//        } else {
-//            editClipTitleTextField.layer.borderColor = UIColor.clear.cgColor
-//            editClipTitleTextField.layer.borderWidth = 0.0
-//        }
-//    }
-    
-//    func setupErrorMessage() {
-//        if isError {
-//            editLinkBottomSheetViewDelegate?.addHeightBottom()
-//            errorMessage.isHidden = false
-//        } else {
-//            editLinkBottomSheetViewDelegate?.minusHeightBottom()
-//            errorMessage.isHidden = true
-//        }
-//    }
-    
     func setupClearButton() {
         if isClearButtonShow {
             clearButton.isHidden = false
@@ -214,12 +176,6 @@ private extension EditLinkBottomSheetView {
             clearButton.isHidden = true
         }
     }
-    
-//    @objc
-//    func buttonTapped() {
-//        confirmBottomSheetViewButtonAction?()
-//        editLinkBottomSheetViewDelegate?.dismissButtonTapped(title: editClipTitleTextField.text ?? "")
-//    }
     
     @objc
     func clearButtonTapped() {
@@ -233,9 +189,9 @@ extension EditLinkBottomSheetView: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         let currentText = textField.text ?? ""
         if currentText.isEmpty {
-            changeTextField(addButton: false, border: false, error: false, clearButton: false)
+            changeTextField(addButton: false, clearButton: false)
         } else {
-            changeTextField(addButton: true, border: false, error: false, clearButton: true)
+            changeTextField(addButton: true, clearButton: true)
         }
     }
 }
