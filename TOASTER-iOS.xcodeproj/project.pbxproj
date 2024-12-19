@@ -182,7 +182,6 @@
 		3FEA674D2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA674C2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift */; };
 		3FEA674E2CB51E6D00675805 /* PatchChangeCategoryRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA674A2CB51BBC00675805 /* PatchChangeCategoryRequestDTO.swift */; };
 		3FEA67502CB6522F00675805 /* ChangeClipBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA674F2CB6522F00675805 /* ChangeClipBottomSheetView.swift */; };
-		3FEA67522CB663B100675805 /* ChangeClipViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA67512CB663B100675805 /* ChangeClipViewModel.swift */; };
 		3FEA67532CB677A400675805 /* PatchChangeCategoryResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA674C2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift */; };
 		3FF02B302CAFE6600074332E /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8334CF9F2CA6E2D200319922 /* ViewModelType.swift */; };
 		3FF2BF092BA17492001D7DC1 /* ToasterShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3FF2BEFF2BA17492001D7DC1 /* ToasterShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -447,7 +446,6 @@
 		3FEA674A2CB51BBC00675805 /* PatchChangeCategoryRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchChangeCategoryRequestDTO.swift; sourceTree = "<group>"; };
 		3FEA674C2CB51BFC00675805 /* PatchChangeCategoryResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchChangeCategoryResponseDTO.swift; sourceTree = "<group>"; };
 		3FEA674F2CB6522F00675805 /* ChangeClipBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeClipBottomSheetView.swift; sourceTree = "<group>"; };
-		3FEA67512CB663B100675805 /* ChangeClipViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeClipViewModel.swift; sourceTree = "<group>"; };
 		3FF2BEFF2BA17492001D7DC1 /* ToasterShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ToasterShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FF2BF062BA17492001D7DC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B0E85D82B564913001BC15F /* RemindTimerAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindTimerAddViewModel.swift; sourceTree = "<group>"; };
@@ -831,7 +829,6 @@
 			children = (
 				39A843C92B74512B007A4D75 /* DetailClipViewModel.swift */,
 				39A843CD2B745B3A007A4D75 /* DetailClipPropertyType.swift */,
-				3FEA67512CB663B100675805 /* ChangeClipViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2191,7 +2188,6 @@
 				83D80DCC2CC1059000DD5410 /* RecentLinkModel.swift in Sources */,
 				3F82C3212CADA19300492EEE /* Publisher+UIButton.swift in Sources */,
 				6B6AE6AC2B3FF6F7000E2366 /* UIColor+.swift in Sources */,
-				3FEA67522CB663B100675805 /* ChangeClipViewModel.swift in Sources */,
 				6BC493682B45D7B100544249 /* ToasterNavigationController.swift in Sources */,
 				6BE6DA492B50ADC2008B06FA /* NetworkService.swift in Sources */,
 				6B6AE69C2B3FF5CC000E2366 /* HomeViewController.swift in Sources */,

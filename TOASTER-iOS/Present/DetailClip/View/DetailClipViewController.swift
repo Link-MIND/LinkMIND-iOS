@@ -14,7 +14,7 @@ import Then
 final class DetailClipViewController: UIViewController {
     
     // MARK: - Data Stream
-
+    
     private let viewModel = DetailClipViewModel()
     private var cancelBag = CancelBag()
     
@@ -162,9 +162,11 @@ private extension DetailClipViewController {
                         
                     } else { // 현재 클립이 1개 존재할 때 (전체클립 제외)
                         DispatchQueue.main.asyncAfter(deadline: .now()) {
-                            self.showToastMessage(width: 284,
-                                                  status: .warning,
-                                                  message: "이동할 클립을 하나 이상 생성해 주세요")
+                            self.showToastMessage(
+                                width: 284,
+                                status: .warning,
+                                message: "이동할 클립을 하나 이상 생성해 주세요"
+                            )
                         }
                     }
                 }
@@ -183,49 +185,45 @@ private extension DetailClipViewController {
                     )
                 }
             }.store(in: cancelBag)
-
-//        
-//        output.isCompleteButtonEnable
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] result in
-//                self?.changeClipBottomSheetView.updateCompleteButtonUI(result)
-//            }
-//            .store(in: cancelBag)
-//            
-//        output.changeCategoryResult
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] result in
-//                guard let self else { return }
-//                if result == true {
-//                    let categoryFilter = DetailCategoryFilter.allCases[viewModel.getViewModelProperty(dataType: .segmentIndex) as? Int ?? 0]
-//                    
-//                    self.changeClipBottom.dismiss(animated: true) {
-//                        if self.viewModel.categoryId == 0 {
-//                            self.viewModel.getDetailAllCategoryAPI(filter: categoryFilter)
-//                        } else {
-//                            self.viewModel.getDetailCategoryAPI(categoryID: self.viewModel.categoryId, filter: categoryFilter)
-//                        }
-//                    }
-//
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                        self.showToastMessage(width: 152,
-//                                              status: .check,
-//                                              message: "링크 이동 완료")
-//                    }
-//                }
-//            }
-//            .store(in: cancelBag)
+        
+        output.isCompleteButtonEnable
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                self?.changeClipBottomSheetView.updateCompleteButtonUI(result)
+            }
+            .store(in: cancelBag)
+        
+        output.changeCategoryResult
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                guard let self else { return }
+                if result == true {
+                    let categoryFilter = DetailCategoryFilter.allCases[viewModel.getViewModelProperty(dataType: .segmentIndex) as? Int ?? 0]
+                    
+                    self.changeClipBottom.dismiss(animated: true) {
+                        self.setupToast()
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.showToastMessage(
+                            width: 152,
+                            status: .check,
+                            message: "링크 이동 완료"
+                        )
+                    }
+                }
+            }
+            .store(in: cancelBag)
     }
     
     func setupStyle() {
         view.backgroundColor = .toasterBackground
         detailClipListCollectionView.backgroundColor = .toasterBackground
         detailClipEmptyView.isHidden = false
-        // editLinkBottomSheetView.editLinkBottomSheetViewDelegate = self
     }
     
     func setupHierarchy() {
-        view.addSubviews(detailClipSegmentedControlView, 
+        view.addSubviews(detailClipSegmentedControlView,
                          detailClipListCollectionView,
                          detailClipEmptyView)
     }
@@ -255,9 +253,7 @@ private extension DetailClipViewController {
     func setupDelegate() {
         detailClipListCollectionView.delegate = self
         detailClipListCollectionView.dataSource = self
-        
-        
-        // changeClipBottomSheetView.delegate = self
+        changeClipBottomSheetView.delegate = self
     }
     
     func setupNavigationBar() {
@@ -405,13 +401,12 @@ extension DetailClipViewController: DetailClipListCollectionViewCellDelegate {
     }
 }
 
-
-//extension DetailClipViewController: ChangeClipBottomSheetViewDelegate {
-//    func didSelectClip(selectClipId: Int) {
-//        selectedClipSubject.send(selectClipId)
-//    }
-//    
-//    func completButtonTap() {
-//        completeButtonSubject.send()
-//    }
-//}
+extension DetailClipViewController: ChangeClipBottomSheetViewDelegate {
+    func didSelectClip(selectClipId: Int) {
+        selectedClipSubject.send(selectClipId)
+    }
+    
+    func completButtonTap() {
+        completeButtonSubject.send()
+    }
+}

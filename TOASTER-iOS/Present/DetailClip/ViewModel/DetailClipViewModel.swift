@@ -42,6 +42,7 @@ final class DetailClipViewModel: ViewModelType {
         let toastNameChanged = PassthroughSubject<Bool, Never>()
         let loadToClipData = PassthroughSubject<[SelectClipModel]?, Never>()
         let isCompleteButtonEnable = PassthroughSubject<Bool, Never>()
+        let changeCategoryResult = PassthroughSubject<Bool, Never>()
         let deleteToastComplete = PassthroughSubject<Void, Never>()
     }
     
@@ -62,7 +63,7 @@ final class DetailClipViewModel: ViewModelType {
                 self?.toastList = toasts
                 output.loadToToastList.send(!toasts.toastList.isEmpty)
             }.store(in: cancelBag)
-
+        
         input.changeSegmentIndex
             .networkFlatMap(self) { context, index in
                 if self.currentCategoryId == 0 {
@@ -99,7 +100,7 @@ final class DetailClipViewModel: ViewModelType {
                 output.loadToToastList.send(self?.currentCategoryId == 0)
             }.store(in: cancelBag)
         
-        input.selectedClip
+        input.changeClipButtonTap
             .networkFlatMap(self) { context, _ in
                 context.getAllCategoryAPI()
                     .map { [weak self] result -> [SelectClipModel]? in
@@ -114,6 +115,14 @@ final class DetailClipViewModel: ViewModelType {
                 output.loadToClipData.send(model)
             }.store(in: cancelBag)
         
+        Publishers.Merge(
+            input.changeClipButtonTap.map { false },
+            input.selectedClip.map { _ in true }
+        )
+        .sink { isEnabled in
+            output.isCompleteButtonEnable.send(isEnabled)
+        }.store(in: cancelBag)
+        
         input.changeClipCompleteButtonTap
             .zip(input.selectedClip) { _, selectedClip in
                 return selectedClip
@@ -121,8 +130,8 @@ final class DetailClipViewModel: ViewModelType {
             .networkFlatMap(self) { context, selectClip in
                 context.patchChangeCategory(categoryId: selectClip)
             }
-            .sink { _ in
-                // output.loadToToastList.send()
+            .sink { result in
+                output.changeCategoryResult.send(result)
             }.store(in: cancelBag)
         
         input.deleteToastButtonTap
@@ -134,18 +143,13 @@ final class DetailClipViewModel: ViewModelType {
                 output.deleteToastComplete.send()
             }.store(in: cancelBag)
         
-        
-//        
-//        /// 이동할 클립을 선택 시 버튼의 UI 를 변경하는 동작
-//        let isCompleteButtonEnable = Publishers.Merge(
-//            input.changeButtonTap.map { false },  // bottomSheet 열릴 때 false
-//            input.selectedClip.map { _ in true }  // 클립 선택 시 true
-//        ).eraseToAnyPublisher()
-
-        
         return output
     }
-    
+}
+
+// MARK: - Extension Methods
+
+extension DetailClipViewModel {
     func setupCategory(_ id: Int) {
         currentCategoryId = id
     }
@@ -156,6 +160,21 @@ final class DetailClipViewModel: ViewModelType {
     
     func setupToastId(_ id: Int) {
         currentToastId = id
+    }
+    
+    func getViewModelProperty(dataType: DetailClipPropertyType) -> Any {
+        switch dataType {
+        case .toastId:
+            return currentToastId
+        case .categoryId:
+            return currentCategoryId
+        case .categoryName:
+            return currentCategoryName
+        case .segmentIndex:
+            return segmentIndex
+        case .linkTitle:
+            return linkTitle
+        }
     }
 }
 
@@ -332,156 +351,3 @@ private extension DetailClipViewModel {
         }.eraseToAnyPublisher()
     }
 }
-
-//import Foundation
-//
-//protocol PatchClipDelegate: AnyObject {
-//    func patchEnd()
-//}
-//
-//final class DetailClipViewModel: NSObject {
-//    
-//    // MARK: - Properties
-//    
-//    typealias DataChangeAction = (Bool) -> Void
-//    private var dataChangeAction: DataChangeAction?
-//    
-//    typealias NormalChangeAction = () -> Void
-//    private var unAuthorizedAction: NormalChangeAction?
-//    private var editLinkTitleAction: NormalChangeAction?
-//    
-//    weak var delegate: PatchClipDelegate?
-//    
-//    // MARK: - Data
-//    
-//    var toastId: Int = 0
-//    var categoryId: Int = 0
-//    var categoryName: String = ""
-//    var segmentIndex: Int = 0
-//    var linkTitle: String = ""
-//    
-//    private(set) var toastList: DetailClipModel = DetailClipModel(allToastCount: 0, toastList: []) {
-//        didSet {
-//            dataChangeAction?(!toastList.toastList.isEmpty)
-//        }
-//    }
-//}
-//
-//// MARK: - Extensions
-//
-//extension DetailClipViewModel {
-//    func setupDataChangeAction(changeAction: @escaping DataChangeAction,
-//                               forUnAuthorizedAction: @escaping NormalChangeAction,
-//                               editNameAction: @escaping NormalChangeAction) {
-//        dataChangeAction = changeAction
-//        unAuthorizedAction = forUnAuthorizedAction
-//        editLinkTitleAction = editNameAction
-//    }
-//    
-//    func getViewModelProperty(dataType: DetailClipPropertyType) -> Any {
-//        switch dataType {
-//        case .toastId:
-//            return toastId
-//        case .categoryId:
-//            return categoryId
-//        case .categoryName:
-//            return categoryName
-//        case .segmentIndex:
-//            return segmentIndex
-//        case .linkTitle:
-//            return linkTitle
-//        }
-//    }
-//    
-//    func getDetailAllCategoryAPI(filter: DetailCategoryFilter) {
-//        NetworkService.shared.clipService.getDetailAllCategory(filter: filter) { result in
-//            switch result {
-//            case .success(let response):
-//                let allToastCount = response?.data.allToastNum
-//                let toasts = response?.data.toastListDto.map {
-//                    ToastListModel(id: $0.toastId,
-//                                    title: $0.toastTitle,
-//                                    url: $0.linkUrl,
-//                                    isRead: $0.isRead,
-//                                    clipTitle: $0.categoryTitle,
-//                                    imageURL: $0.thumbnailUrl)
-//                }
-//                self.toastList = DetailClipModel(allToastCount: allToastCount ?? 0,
-//                                                 toastList: toasts ?? [])
-//            case .unAuthorized, .networkFail, .notFound:
-//                self.unAuthorizedAction?()
-//            default: return
-//            }
-//        }
-//    }
-//    
-//    func getDetailCategoryAPI(categoryID: Int, 
-//                              filter: DetailCategoryFilter,
-//                              completion: (() -> Void)? = nil) {
-//        NetworkService.shared.clipService.getDetailCategory(categoryID: categoryID, filter: filter) { result in
-//            switch result {
-//            case .success(let response):
-//                let allToastCount = response?.data.allToastNum
-//                let toasts = response?.data.toastListDto.map {
-//                    ToastListModel(id: $0.toastId,
-//                                    title: $0.toastTitle,
-//                                    url: $0.linkUrl,
-//                                    isRead: $0.isRead,
-//                                    clipTitle: $0.categoryTitle,
-//                                    imageURL: $0.thumbnailUrl)
-//                }
-//                self.toastList = DetailClipModel(allToastCount: allToastCount ?? 0,
-//                                                 toastList: toasts ?? [])
-//                completion?()
-//            case .unAuthorized, .networkFail, .notFound:
-//                self.unAuthorizedAction?()
-//            default: return
-//            }
-//        }
-//    }
-//    
-//    func deleteLinkAPI(toastId: Int) {
-//        NetworkService.shared.toastService.deleteLink(toastId: toastId) { result in
-//            switch result {
-//            case .success:
-//                if self.categoryId == 0 {
-//                    switch self.segmentIndex {
-//                    case 0: self.getDetailAllCategoryAPI(filter: .all)
-//                    case 1: self.getDetailAllCategoryAPI(filter: .read)
-//                    default: self.getDetailAllCategoryAPI(filter: .unread)
-//                    }
-//                } else {
-//                    switch self.segmentIndex {
-//                    case 0: self.getDetailCategoryAPI(categoryID: self.categoryId, filter: .all) {
-//                    }
-//                    case 1: self.getDetailCategoryAPI(categoryID: self.categoryId, filter: .read) {
-//                    }
-//                    default: self.getDetailCategoryAPI(categoryID: self.categoryId, filter: .unread) {
-//                    }
-//                    }
-//                }
-//            case .unAuthorized, .networkFail, .notFound:
-//                self.unAuthorizedAction?()
-//            default: return
-//            }
-//        }
-//    }
-//    
-//    func patchEditLinkTitleAPI(toastId: Int, title: String) {
-//        NetworkService.shared.toastService.patchEditLinkTitle(
-//            requestBody: PatchEditLinkTitleRequestDTO(
-//                toastId: toastId,
-//                title: title)) { result in
-//            switch result {
-//            case .success:
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                    self.editLinkTitleAction?()
-//                }
-//                self.delegate?.patchEnd()
-//            case .unAuthorized, .networkFail, .notFound:
-//                self.unAuthorizedAction?()
-//            default: return
-//            }
-//        }
-//    }
-//}
