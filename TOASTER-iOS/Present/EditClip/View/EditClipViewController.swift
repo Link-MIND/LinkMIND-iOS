@@ -218,7 +218,7 @@ extension EditClipViewController: UICollectionViewDataSource {
                 )
             }
             cell.changeTitleButtonTapped {
-                self.viewModel.cellIndex = indexPath.item - 1
+                self.viewModel.setupCellIndex(indexPath.item - 1)
                 self.editClipBottom.setupSheetPresentation(bottomHeight: 198)
                 self.present(self.editClipBottom, animated: true)
                 self.editClipBottomSheetView.setupTextField(message: self.viewModel.clipList.clips[indexPath.item - 1].title)

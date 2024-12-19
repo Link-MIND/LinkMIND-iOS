@@ -11,7 +11,8 @@ import UIKit
 final class EditClipViewModel: ViewModelType {
     
     private var cancelBag = CancelBag()
-    var cellIndex: Int = 0
+    
+    private(set) var cellIndex: Int = 0
     var clipList: ClipModel = ClipModel(allClipToastCount: 0, clips: [])
     
     // MARK: - Input State
@@ -87,6 +88,14 @@ final class EditClipViewModel: ViewModelType {
             }.store(in: cancelBag)
         
         return output
+    }
+}
+
+// MARK: - Extension
+
+extension EditClipViewModel {
+    func setupCellIndex(_ index: Int) {
+        cellIndex = index
     }
 }
 
