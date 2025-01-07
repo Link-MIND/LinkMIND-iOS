@@ -22,7 +22,7 @@ final class RemindViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let viewModel = RemindViewModel()
+    private let viewModel: RemindViewModel!
     
     private var selectedTimerID: Int?
     private var viewType: RemindViewType?
@@ -36,6 +36,15 @@ final class RemindViewController: UIViewController {
                                                                       type: .normal)
     
     // MARK: - Life Cycle
+    
+    init(viewModel: RemindViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -218,7 +227,7 @@ private extension RemindViewController {
             switch viewType {
             case .deviceOnAppOff: break
             default:
-                let clipAddViewController = RemindSelectClipViewController()
+                let clipAddViewController = ViewControllerFactory.shared.makeRemindSelectClipVC()
                 clipAddViewController.hidesBottomBarWhenPushed = true
                 navigationController?.pushViewController(clipAddViewController, animated: true)
             }
@@ -236,7 +245,7 @@ private extension RemindViewController {
     }
     
     @objc func editAlarmButtonTapped() {
-        let settingVC = SettingViewController()
+        let settingVC = ViewControllerFactory.shared.makeSettingVC()
         settingVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(settingVC, animated: true)
         tabBarController?.selectedIndex = 0
@@ -263,7 +272,7 @@ extension RemindViewController: RemindEditViewDelegate {
         selectedTimerID = forID
         dismiss(animated: true)
         if let forID {
-            let editViewController = RemindTimerAddViewController()
+            let editViewController = ViewControllerFactory.shared.makeRemindTimerAddVC()
             editViewController.configureView(forTimerID: forID)
             navigationController?.pushViewController(editViewController, animated: true)
         }
@@ -284,7 +293,7 @@ extension RemindViewController: RemindEditViewDelegate {
 
 extension RemindViewController: UICollectionViewDelegate { 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let clipViewController = DetailClipViewController()
+        let clipViewController = ViewControllerFactory.shared.makeDetailClipVC()
         switch indexPath.section {
         case 0:
             let data = viewModel.timerData.completeTimerModelList[indexPath.item]

@@ -58,11 +58,11 @@ enum TabBarItem: CaseIterable {
     // 탭 별 전환될 화면 -> 나중에 하나씩 추가
     var targetViewController: UIViewController {
         switch self {
-        case .home: return HomeViewController()
-        case .clip: return ClipViewController()
+        case .home: return ViewControllerFactory.shared.makeHomeVC()
+        case .clip: return ViewControllerFactory.shared.makeClipVC()
         case .plus: return ViewController()
-        case .search: return SearchViewController()
-        case .timer: return RemindViewController()
+        case .search: return ViewControllerFactory.shared.makeSearchVC()
+        case .timer: return ViewControllerFactory.shared.makeRemindVC()
         }
     }
 }

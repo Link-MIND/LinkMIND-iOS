@@ -14,16 +14,27 @@ final class EditClipViewController: UIViewController {
     
     // MARK: - UI Properties
     
-    private let viewModel = EditClipViewModel()
+    private let viewModel: EditClipViewModel!
     private let editClipNoticeView = EditClipNoticeView()
     private let editClipCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     private let editClipBottomSheetView = AddClipBottomSheetView()
-    private lazy var editClipBottom = ToasterBottomSheetViewController(bottomType: .white,
-                                                                       bottomTitle: "클립 이름 수정",
-                                                                       insertView: editClipBottomSheetView)
+    private lazy var editClipBottom = ToasterBottomSheetViewController(
+        bottomType: .white,
+        bottomTitle: "클립 이름 수정",
+        insertView: editClipBottomSheetView
+    )
     
     // MARK: - Life Cycle
+    
+    init(viewModel: EditClipViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

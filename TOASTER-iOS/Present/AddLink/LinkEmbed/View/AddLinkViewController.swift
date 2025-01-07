@@ -32,10 +32,19 @@ final class AddLinkViewController: UIViewController {
     private weak var urldelegate: SelectClipViewControllerDelegate?
     
     private var addLinkView = AddLinkView()
-    private var viewModel = AddLinkViewModel()
+    private var viewModel: AddLinkViewModel!
     private var cancelBag = CancelBag()
     
     // MARK: - Life Cycle
+    
+    init(viewModel: AddLinkViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,7 +139,7 @@ private extension AddLinkViewController {
     }
     
     @objc func tappedNextBottomButton() {
-        let selectClipViewController = SelectClipViewController()
+        let selectClipViewController = ViewControllerFactory.shared.makeSelectClipVC()
         selectClipViewController.linkURL = addLinkView.linkEmbedTextField.text ?? ""
         selectClipViewController.delegate = self
         self.navigationController?.pushViewController(selectClipViewController, animated: true)

@@ -14,7 +14,7 @@ final class SearchViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let viewModel = SearchViewModel()
+    private let viewModel: SearchViewModel!
     
     private var isSearching: Bool = true {
         didSet {
@@ -36,6 +36,15 @@ final class SearchViewController: UIViewController {
     private let searchResultCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     // MARK: - Life Cycle
+    
+    init(viewModel: SearchViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -220,14 +229,14 @@ extension SearchViewController: UICollectionViewDelegate {
         switch indexPath.section {
         case 0:
             let data = viewModel.searchResultData.detailClipList[indexPath.item]
-            let webViewController = LinkWebViewController()
+            let webViewController = ViewControllerFactory.shared.makeLinkWebVC()
             webViewController.setupDataBind(linkURL: data.link,
                                             isRead: false,
                                             id: data.iD)
             navigationController?.pushViewController(webViewController, animated: true)
         case 1:
             let data = viewModel.searchResultData.clipList[indexPath.item]
-            let detailClipViewController = DetailClipViewController()
+            let detailClipViewController = ViewControllerFactory.shared.makeDetailClipVC()
             detailClipViewController.setupCategory(id: data.iD,
                                                    name: data.title)
             navigationController?.pushViewController(detailClipViewController, animated: true)

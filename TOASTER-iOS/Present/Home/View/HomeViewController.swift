@@ -14,8 +14,8 @@ final class HomeViewController: UIViewController {
     
     // MARK: - UI Properties
     
-    private let viewModel = HomeViewModel()
-    private let clipViewModel = DetailClipViewModel()
+    private let viewModel: HomeViewModel!
+    private let clipViewModel: DetailClipViewModel!
     private let homeView = HomeView()
     
     private var firstToolTip: ToasterTipView?
@@ -28,6 +28,19 @@ final class HomeViewController: UIViewController {
     }()
     
     // MARK: - Life Cycle
+    
+    init(
+        viewModel: HomeViewModel,
+        clipViewModel: DetailClipViewModel
+    ) {
+        self.viewModel = viewModel
+        self.clipViewModel = clipViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +78,7 @@ extension HomeViewController: UICollectionViewDelegate {
         case 1:
             let data = viewModel.recentLink
             if indexPath.item < data.count {
-                let nextVC = LinkWebViewController()
+                let nextVC = ViewControllerFactory.shared.makeLinkWebVC()
                 nextVC.hidesBottomBarWhenPushed = true
                 nextVC.setupDataBind(linkURL: viewModel.recentLink[indexPath.item].linkUrl,
                                      isRead: viewModel.recentLink[indexPath.item].isRead,
@@ -75,13 +88,13 @@ extension HomeViewController: UICollectionViewDelegate {
                 addClipCellTapped()
             }
         case 2:
-            let nextVC = LinkWebViewController()
+            let nextVC = ViewControllerFactory.shared.makeLinkWebVC()
             nextVC.hidesBottomBarWhenPushed = true
             let data = viewModel.weeklyLinkList[indexPath.item]
             nextVC.setupDataBind(linkURL: data.toastLink)
             self.navigationController?.pushViewController(nextVC, animated: true)
         case 3:
-            let nextVC = LinkWebViewController()
+            let nextVC = ViewControllerFactory.shared.makeLinkWebVC()
             nextVC.hidesBottomBarWhenPushed = true
             let data = viewModel.recommendSiteList[indexPath.item]
             if let url = data.siteUrl {
@@ -313,7 +326,7 @@ private extension HomeViewController {
                 centerButtonTitle: "참여하기",
                 bottomButtonTitle: "일주일간 보지 않기",
                 centerButtonHandler: {
-                    let nextVC = LinkWebViewController()
+                    let nextVC = ViewControllerFactory.shared.makeLinkWebVC()
                     nextVC.hidesBottomBarWhenPushed = true
                     nextVC.setupDataBind(linkURL: self.viewModel.popupInfoList?.first?.linkURL ?? "")
                     self.viewModel.patchEditPopupHiddenAPI(popupId: popupId, hideDate: 1)
@@ -345,14 +358,14 @@ private extension HomeViewController {
     }
     
     func rightButtonTapped() {
-        let settingVC = SettingViewController()
+        let settingVC = ViewControllerFactory.shared.makeSettingVC()
         settingVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(settingVC, animated: true)
     }
     
     @objc
     func arrowButtonTapped() {
-        let detailClipViewController = DetailClipViewController()
+        let detailClipViewController = ViewControllerFactory.shared.makeDetailClipVC()
         detailClipViewController.setupCategory(id: 0, name: "전체 클립")
         navigationController?.pushViewController(detailClipViewController, animated: true)
     }
@@ -362,7 +375,7 @@ private extension HomeViewController {
 
 extension HomeViewController: UserClipCollectionViewCellDelegate {
     func addClipCellTapped() {
-        let nextVC = AddLinkViewController()
+        let nextVC = ViewControllerFactory.shared.makeAddLinkVC()
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
 }

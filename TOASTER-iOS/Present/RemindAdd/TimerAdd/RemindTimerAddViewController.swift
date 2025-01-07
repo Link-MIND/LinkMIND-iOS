@@ -18,7 +18,7 @@ final class RemindTimerAddViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let viewModel = RemindTimerAddViewModel()
+    private let viewModel: RemindTimerAddViewModel!
     
     private let labelDateformatter = DateFormatter()
     private let networkDateformatter = DateFormatter()
@@ -60,6 +60,15 @@ final class RemindTimerAddViewController: UIViewController {
     private let completeButton: UIButton = UIButton()
     
     // MARK: - Life Cycle
+    
+    init(viewModel: RemindTimerAddViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

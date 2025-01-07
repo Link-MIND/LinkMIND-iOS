@@ -103,7 +103,7 @@ final class CustomTabBar: UITabBar {
 extension TabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if viewController == viewControllers?[2] {
-            let addLinkViewController = AddLinkViewController()
+            let addLinkViewController = ViewControllerFactory.shared.makeAddLinkVC()
             addLinkViewController.setupDelegate(forDelegate: self)
             navigationController?.pushViewController(addLinkViewController, animated: false)
             return false

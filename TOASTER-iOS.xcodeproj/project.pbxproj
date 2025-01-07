@@ -24,6 +24,10 @@
 		391908442B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391908432B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift */; };
 		392461802CD0D1FB00C0CBC4 /* TipUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3924617F2CD0D1FB00C0CBC4 /* TipUserDefaults.swift */; };
 		392461812CD0D1FB00C0CBC4 /* TipUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3924617F2CD0D1FB00C0CBC4 /* TipUserDefaults.swift */; };
+		3967F96A2D2CE6B200B0E9FF /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3967F9692D2CE6B200B0E9FF /* Coordinator.swift */; };
+		3967F96C2D2CE7BB00B0E9FF /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3967F96B2D2CE7BB00B0E9FF /* Router.swift */; };
+		3967F96E2D2CEB7100B0E9FF /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3967F96D2D2CEB7100B0E9FF /* BaseCoordinator.swift */; };
+		3967F9702D2CF03200B0E9FF /* ViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3967F96F2D2CF03200B0E9FF /* ViewControllerFactory.swift */; };
 		396D7ECB2C855F5F0034A14E /* LinkWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396D7ECA2C855F5F0034A14E /* LinkWebViewModel.swift */; };
 		396D7ECD2C880F1F0034A14E /* LinkWebToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396D7ECC2C880F1F0034A14E /* LinkWebToolBarView.swift */; };
 		396DCDF42CA19EC600FEF7C8 /* PatchPopupHiddenResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396DCDF32CA19EC600FEF7C8 /* PatchPopupHiddenResponseDTO.swift */; };
@@ -372,6 +376,10 @@
 		391908412B56CFE4006F978A /* PatchEditPriorityCategoryRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchEditPriorityCategoryRequestDTO.swift; sourceTree = "<group>"; };
 		391908432B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchEditNameCategoryRequestDTO.swift; sourceTree = "<group>"; };
 		3924617F2CD0D1FB00C0CBC4 /* TipUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipUserDefaults.swift; sourceTree = "<group>"; };
+		3967F9692D2CE6B200B0E9FF /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		3967F96B2D2CE7BB00B0E9FF /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		3967F96D2D2CEB7100B0E9FF /* BaseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
+		3967F96F2D2CF03200B0E9FF /* ViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerFactory.swift; sourceTree = "<group>"; };
 		396D7EC72C855F180034A14E /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		396D7ECA2C855F5F0034A14E /* LinkWebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkWebViewModel.swift; sourceTree = "<group>"; };
 		396D7ECC2C880F1F0034A14E /* LinkWebToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkWebToolBarView.swift; sourceTree = "<group>"; };
@@ -679,6 +687,17 @@
 				3913B0AF2BCECFC80031A3EB /* UpdateAlertType.swift */,
 			);
 			path = UpdateAlert;
+			sourceTree = "<group>";
+		};
+		3967F9682D2CE49F00B0E9FF /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				3967F9692D2CE6B200B0E9FF /* Coordinator.swift */,
+				3967F96D2D2CEB7100B0E9FF /* BaseCoordinator.swift */,
+				3967F96B2D2CE7BB00B0E9FF /* Router.swift */,
+				3967F96F2D2CF03200B0E9FF /* ViewControllerFactory.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		396D7EC92C855F4F0034A14E /* ViewModel */ = {
@@ -1018,6 +1037,7 @@
 		6B6AE67D2B3FF4EA000E2366 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				3967F9682D2CE49F00B0E9FF /* Coordinator */,
 				6B6AE64E2B3FF101000E2366 /* AppDelegate.swift */,
 				6B6AE6502B3FF101000E2366 /* SceneDelegate.swift */,
 			);
@@ -2066,7 +2086,9 @@
 				3913B0B02BCECFC80031A3EB /* UpdateAlertType.swift in Sources */,
 				6BE6DA5B2B50B46F008B06FA /* GetMainPageResponseDTO.swift in Sources */,
 				3F2FA1772B45C3E000EDBF95 /* AuthenticationAdapterProtocol.swift in Sources */,
+				3967F96E2D2CEB7100B0E9FF /* BaseCoordinator.swift in Sources */,
 				6BC493792B4D6FB300544249 /* SearchEmptyResultView.swift in Sources */,
+				3967F96C2D2CE7BB00B0E9FF /* Router.swift in Sources */,
 				39BC5B192B411037004024E6 /* FontLiterals.swift in Sources */,
 				39E794F92B479C8600F16A38 /* ClipEmptyView.swift in Sources */,
 				39BE4BC02B4ABB9E002B471D /* DetailClipEmptyView.swift in Sources */,
@@ -2156,6 +2178,7 @@
 				6BE6D9DE2B4E9054008B06FA /* AlarmOffStateButton.swift in Sources */,
 				390247AA2B58016C00F9A86A /* PatchOpenLinkRequestDTO.swift in Sources */,
 				8309F5882B8DCEAC00A1420A /* SelectClipViewModel.swift in Sources */,
+				3967F96A2D2CE6B200B0E9FF /* Coordinator.swift in Sources */,
 				39049C8F2B43F70400C9196E /* ToasterBottomSheetViewController.swift in Sources */,
 				6BE6DAB12B547BE1008B06FA /* GetMainPageSearchResponseDTO.swift in Sources */,
 				3FEA67502CB6522F00675805 /* ChangeClipBottomSheetView.swift in Sources */,
@@ -2217,6 +2240,7 @@
 				6BE6DAAD2B547A77008B06FA /* SearchTargetType.swift in Sources */,
 				6B6AE6512B3FF101000E2366 /* SceneDelegate.swift in Sources */,
 				3FACF9B82B4FE306007E5A8F /* KeyChainService.swift in Sources */,
+				3967F9702D2CF03200B0E9FF /* ViewControllerFactory.swift in Sources */,
 				396DCDF52CA19EC600FEF7C8 /* PatchPopupHiddenResponseDTO.swift in Sources */,
 				3F2FA1812B4A32A200EDBF95 /* LogoutUseCase.swift in Sources */,
 				6BE6D9D62B4E8935008B06FA /* RemindAlarmOffView.swift in Sources */,

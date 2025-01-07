@@ -15,7 +15,7 @@ final class LinkWebViewController: UIViewController {
     
     // MARK: - Properties
     
-    private var viewModel = LinkWebViewModel()
+    private var viewModel: LinkWebViewModel!
     private var cancelBag = CancelBag()
     
     private var progressObservation: NSKeyValueObservation?
@@ -41,6 +41,15 @@ final class LinkWebViewController: UIViewController {
     )
     
     // MARK: - Life Cycle
+    
+    init(viewModel: LinkWebViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

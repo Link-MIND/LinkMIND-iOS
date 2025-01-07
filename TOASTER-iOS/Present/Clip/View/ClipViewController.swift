@@ -15,20 +15,33 @@ final class ClipViewController: UIViewController {
     
     // MARK: - UI Properties
     
-    private let viewModel = ClipViewModel()
+    private let viewModel: ClipViewModel
     private let cancelBag = CancelBag()
     
     private var requestClipList = PassthroughSubject<Void, Never>()
     
     private let clipEmptyView = ClipEmptyView()
     private let addClipBottomSheetView = AddClipBottomSheetView()
-    private lazy var addClipBottom = ToasterBottomSheetViewController(bottomType: .white, 
-                                                                      bottomTitle: "클립 추가",
-                                                                      insertView: addClipBottomSheetView)
-    private let clipListCollectionView = UICollectionView(frame: .zero, 
-                                                          collectionViewLayout: UICollectionViewFlowLayout())
+    private lazy var addClipBottom = ToasterBottomSheetViewController(
+        bottomType: .white,
+        bottomTitle: "클립 추가",
+        insertView: addClipBottomSheetView
+    )
+    private let clipListCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout()
+    )
     
     // MARK: - Life Cycle
+    
+    init(viewModel: ClipViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -137,7 +150,7 @@ private extension ClipViewController {
     }
     
     func editButtonTapped() {
-        let editClipViewController = EditClipViewController()
+        let editClipViewController = ViewControllerFactory.shared.makeEditClipVC()
         editClipViewController.setupDataBind(clipModel: viewModel.clipList)
         editClipViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(editClipViewController, animated: false)
@@ -148,7 +161,7 @@ private extension ClipViewController {
 
 extension ClipViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let nextVC = DetailClipViewController()
+        let nextVC = ViewControllerFactory.shared.makeDetailClipVC()
         if indexPath.item == 0 {
             nextVC.setupCategory(id: 0, name: "전체 클립")
         } else {

@@ -17,7 +17,7 @@ final class DetailClipViewController: UIViewController {
     
     // MARK: - UI Properties
     
-    private let viewModel = DetailClipViewModel()
+    private let viewModel: DetailClipViewModel!
     private let changeClipViewModel = ChangeClipViewModel()
     private let detailClipSegmentedControlView = DetailClipSegmentedControlView()
     private let detailClipEmptyView = DetailClipEmptyView()
@@ -51,6 +51,15 @@ final class DetailClipViewController: UIViewController {
     private var cancelBag = CancelBag()
     
     // MARK: - Life Cycle
+    
+    init(viewModel: DetailClipViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -308,7 +317,7 @@ extension DetailClipViewController: UICollectionViewDataSource {
 extension DetailClipViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         indexNumber = indexPath.item
-        let nextVC = LinkWebViewController()
+        let nextVC = ViewControllerFactory.shared.makeLinkWebVC()
         nextVC.hidesBottomBarWhenPushed = true
         nextVC.setupDataBind(linkURL: viewModel.toastList.toastList[indexPath.item].url,
                              isRead: viewModel.toastList.toastList[indexPath.item].isRead,

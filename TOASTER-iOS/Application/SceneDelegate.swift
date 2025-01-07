@@ -26,7 +26,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
-        let rootViewController = appDelegate.isLogin ? TabBarController() : LoginViewController()
+        let rootViewController = appDelegate.isLogin
+        ? ViewControllerFactory.shared.makeTabBarVC()
+        : ViewControllerFactory.shared.makeLoginVC()
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
@@ -66,7 +68,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let pasteboardUrl = UIPasteboard.general.url {
             if appDelegate.isLogin {
                 guard let rootVC = window?.rootViewController as? ToasterNavigationController else { return }
-                let addLinkViewController = AddLinkViewController()
+                let addLinkViewController = ViewControllerFactory.shared.makeAddLinkVC()
                 rootVC.pushViewController(addLinkViewController, animated: true)
                 addLinkViewController.embedURL(url: pasteboardUrl.absoluteString)
                                 
