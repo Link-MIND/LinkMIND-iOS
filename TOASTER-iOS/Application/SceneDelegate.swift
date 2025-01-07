@@ -13,33 +13,31 @@ import KakaoSDKCommon
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
-    let updateAlertManager = UpdateAlertManager()
-    
-    func checkUpdate(rootViewController: UIViewController) async {
-        if let updateStatus = await updateAlertManager.checkUpdateAlertNeeded() {
-            updateAlertManager.showUpdateAlert(type: updateStatus,
-                                               on: rootViewController)
-        }
-    }
+    private var appCoordinator: AppCoordinator?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
-        let rootViewController = appDelegate.isLogin
-        ? ViewControllerFactory.shared.makeTabBarVC()
-        : ViewControllerFactory.shared.makeLoginVC()
-        
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        let navigationController = ToasterNavigationController(rootViewController: rootViewController)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let isUserLoggedIn = appDelegate.isLogin
+        
+        let navigationController = ToasterNavigationController()
+        let router = Router(navigationController: navigationController)
+        let viewControllerFactory = ViewControllerFactory.shared
+        
+        appCoordinator = AppCoordinator(
+            router: router,
+            viewControllerFactory: viewControllerFactory,
+            isLoggedIn: isUserLoggedIn
+        )
+                
         self.window = UIWindow(windowScene: windowScene)
         self.window?.overrideUserInterfaceStyle = .light
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
-        Task {
-            await checkUpdate(rootViewController: rootViewController)
-        }
+
+        appCoordinator?.start()
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -60,23 +58,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func sceneWillEnterForeground(_ scene: UIScene) {
-        // Called as the scene transitions from the background to the foreground.
-        // Use this method to undo the changes made on entering the background.
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
-        if let pasteboardUrl = UIPasteboard.general.url {
-            if appDelegate.isLogin {
-                guard let rootVC = window?.rootViewController as? ToasterNavigationController else { return }
-                let addLinkViewController = ViewControllerFactory.shared.makeAddLinkVC()
-                rootVC.pushViewController(addLinkViewController, animated: true)
-                addLinkViewController.embedURL(url: pasteboardUrl.absoluteString)
-                                
-                if let presentedVC = rootVC.presentedViewController {
-                    presentedVC.dismiss(animated: false)
-                }
-            }
-        }
+        appCoordinator?.handlePasteboardURL()
     }
     
     func sceneDidEnterBackground(_ scene: UIScene) {
