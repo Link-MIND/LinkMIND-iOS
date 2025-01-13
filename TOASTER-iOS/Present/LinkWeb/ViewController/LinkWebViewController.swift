@@ -13,6 +13,10 @@ import Then
 
 final class LinkWebViewController: UIViewController {
     
+    // MARK: - View Controllable
+    
+    var onBack: (() -> Void)?
+    
     // MARK: - Properties
     
     private var viewModel: LinkWebViewModel!
@@ -175,10 +179,7 @@ private extension LinkWebViewController {
     
     func setupNavigationBarAction() {
         /// 네비게이션바 뒤로가기 버튼 클릭 액션 클로저
-        navigationView.popButtonTapped {
-            self.navigationController?.popViewController(animated: true)
-            self.showNavigationBar()
-        }
+        navigationView.popButtonTapped { self.onBack?() }
         
         /// 네비게이션바 새로고침 버튼 클릭 액션 클로저
         navigationView.reloadButtonTapped { self.webView.reload() }

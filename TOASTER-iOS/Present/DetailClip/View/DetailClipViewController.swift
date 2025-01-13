@@ -13,6 +13,12 @@ import Then
 
 final class DetailClipViewController: UIViewController {
     
+    // MARK: - View Controllable
+    
+    var onLinkSelected: ((String, Bool, Int) -> Void)?
+    
+    // MARK: - Data Streams
+    
     private let viewModel: DetailClipViewModel!
     private var cancelBag = CancelBag()
     
@@ -366,14 +372,10 @@ extension DetailClipViewController: UICollectionViewDataSource {
 extension DetailClipViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         indexNumber = indexPath.item
-        let nextVC = ViewControllerFactory.shared.makeLinkWebVC()
-        nextVC.hidesBottomBarWhenPushed = true
-        nextVC.setupDataBind(
-            linkURL: viewModel.toastList.toastList[indexPath.item].url,
-            isRead: viewModel.toastList.toastList[indexPath.item].isRead,
-            id: viewModel.toastList.toastList[indexPath.item].id
-        )
-        self.navigationController?.pushViewController(nextVC, animated: true)
+        let linkURL = viewModel.toastList.toastList[indexPath.item].url
+        let isRead = viewModel.toastList.toastList[indexPath.item].isRead
+        let id = viewModel.toastList.toastList[indexPath.item].id
+        onLinkSelected?(linkURL, isRead, id)
     }
 }
 

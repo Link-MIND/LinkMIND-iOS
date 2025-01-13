@@ -51,6 +51,18 @@ private extension ClipCoordinator {
     func showDetailClipVC(id: Int, name: String) {
         let vc = viewControllerFactory.makeDetailClipVC()
         vc.setupCategory(id: id, name: name)
-        router.push(vc, animated: true)
+        vc.onLinkSelected = { [weak self] linkURL, isRead, id in
+            self?.showLinkWebVC(linkURL: linkURL, isRead: isRead, id: id)
+        }
+        router.push(vc, animated: true, hideBottomBarWhenPushed: true)
+    }
+    
+    func showLinkWebVC(linkURL: String, isRead: Bool, id: Int) {
+        let vc = viewControllerFactory.makeLinkWebVC()
+        vc.setupDataBind(linkURL: linkURL, isRead: isRead, id: id)
+        vc.onBack = { [weak self] in
+            self?.router.pop(animated: true)
+        }
+        router.push(vc, animated: true, hideBottomBarWhenPushed: true)
     }
 }
