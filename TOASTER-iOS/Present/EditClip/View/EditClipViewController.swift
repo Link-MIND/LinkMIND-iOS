@@ -15,7 +15,7 @@ final class EditClipViewController: UIViewController {
     
     // MARK: - Data Stream
         
-    private let viewModel = EditClipViewModel()
+    private let viewModel: EditClipViewModel
     private let cancelBag = CancelBag()
     
     private var requestClipList = PassthroughSubject<Void, Never>()

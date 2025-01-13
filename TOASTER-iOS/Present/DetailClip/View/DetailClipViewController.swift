@@ -13,8 +13,7 @@ import Then
 
 final class DetailClipViewController: UIViewController {
     
-    
-    private let viewModel = DetailClipViewModel()
+    private let viewModel: DetailClipViewModel!
     private var cancelBag = CancelBag()
     
     private var requestToastList = PassthroughSubject<Bool, Never>()
