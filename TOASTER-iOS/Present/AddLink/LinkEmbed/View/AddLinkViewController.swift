@@ -57,15 +57,13 @@ final class AddLinkViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         setupNavigationBar()
-        navigationBarHidden(forHidden: true)
+        self.navigationController?.isNavigationBarHidden = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        navigationBarHidden(forHidden: false)
+        self.navigationController?.isNavigationBarHidden = true
     }
 }
 
@@ -109,19 +107,17 @@ private extension AddLinkViewController {
    }
     
     func setupNavigationBar() {
-        let type: ToasterNavigationType = ToasterNavigationType(hasBackButton: false,
-                                                                hasRightButton: true,
-                                                                mainTitle: StringOrImageType.string("링크 저장"),
-                                                                rightButton: StringOrImageType.image(.icClose24),
-                                                                rightButtonAction: closeButtonTapped)
+        let type: ToasterNavigationType = ToasterNavigationType(
+            hasBackButton: false,
+            hasRightButton: true,
+            mainTitle: StringOrImageType.string("링크 저장"),
+            rightButton: StringOrImageType.image(.icClose24),
+            rightButtonAction: closeButtonTapped
+        )
         
         if let navigationController = navigationController as? ToasterNavigationController {
             navigationController.setupNavigationBar(forType: type)
         }
-    }
-    
-    func navigationBarHidden(forHidden: Bool) {
-        tabBarController?.tabBar.isHidden = forHidden
     }
     
     func closeButtonTapped() {

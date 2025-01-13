@@ -8,35 +8,29 @@
 import UIKit
 
 protocol RouterProtocol: AnyObject {
-    var rootViewController: UIViewController? { get }
-    
     func setRoot(_ viewController: UIViewController, animated: Bool)
     
     func push(_ viewController: UIViewController, animated: Bool)
     func push(_ viewController: UIViewController, animated: Bool, hideBottomBarWhenPushed: Bool)
-    
     func present(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)?)
     
     func pop(animated: Bool)
-    
     func dismiss(animated: Bool, completion: (() -> Void)?)
 }
 
 final class Router: RouterProtocol {
-    
-    private weak var navigationController: UINavigationController?
-    var rootViewController: UIViewController? { navigationController?.viewControllers.first }
-    
-    init(navigationController: UINavigationController?) {
-        self.navigationController = navigationController
+    private weak var rootViewController: UINavigationController?
+        
+    init(rootViewController: UINavigationController?) {
+        self.rootViewController = rootViewController
     }
     
     func setRoot(_ viewController: UIViewController, animated: Bool) {
-        navigationController?.setViewControllers([viewController], animated: animated)
+        rootViewController?.setViewControllers([viewController], animated: animated)
     }
     
     func push(_ viewController: UIViewController, animated: Bool) {
-        navigationController?.pushViewController(viewController, animated: animated)
+        rootViewController?.pushViewController(viewController, animated: animated)
     }
     
     func push(
@@ -45,7 +39,7 @@ final class Router: RouterProtocol {
         hideBottomBarWhenPushed: Bool
     ) {
         viewController.hidesBottomBarWhenPushed = hideBottomBarWhenPushed
-        navigationController?.pushViewController(viewController, animated: animated)
+        rootViewController?.pushViewController(viewController, animated: animated)
     }
     
     func present(
@@ -53,15 +47,15 @@ final class Router: RouterProtocol {
         animated: Bool,
         completion: (() -> Void)?
     ) {
-        navigationController?.present(viewController, animated: animated, completion: completion)
+        rootViewController?.present(viewController, animated: animated, completion: completion)
     }
     
     func pop(animated: Bool) {
-        navigationController?.popViewController(animated: animated)
+        rootViewController?.popViewController(animated: animated)
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        navigationController?.dismiss(animated: animated, completion: completion)
+        rootViewController?.dismiss(animated: animated, completion: completion)
     }
 
 }

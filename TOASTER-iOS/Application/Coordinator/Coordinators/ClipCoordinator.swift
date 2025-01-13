@@ -30,6 +30,7 @@ private extension ClipCoordinator {
         vc.onEditClipSelected = { [weak self] clipList in
             self?.showEditClipVC(clipList: clipList)
         }
+        router.setRoot(vc, animated: false)
     }
     
     func showEditClipVC(clipList: ClipModel) {

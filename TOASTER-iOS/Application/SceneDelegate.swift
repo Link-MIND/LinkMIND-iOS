@@ -23,12 +23,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let isUserLoggedIn = appDelegate.isLogin
         
         let navigationController = ToasterNavigationController()
-        let router = Router(navigationController: navigationController)
+        navigationController.isNavigationBarHidden = true
+        let router = Router(rootViewController: navigationController)
         let viewControllerFactory = ViewControllerFactory.shared
+        let coordinatorFactory = CoordinatorFactory()
         
         appCoordinator = AppCoordinator(
             router: router,
             viewControllerFactory: viewControllerFactory,
+            coordinatorFactory: coordinatorFactory,
             isLoggedIn: isUserLoggedIn
         )
                 

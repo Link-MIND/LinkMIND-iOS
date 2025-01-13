@@ -8,28 +8,29 @@
 import UIKit
 
 final class AppCoordinator: BaseCoordinator {
+    
     private let router: RouterProtocol
     private let viewControllerFactory: ViewControllerFactoryProtocol
+    private let coordinatorFactory: CoordinatorFactoryProtocol
+
     private var isLoggedIn: Bool
     private let updateAlertManager = UpdateAlertManager()
     
     init(
         router: RouterProtocol,
         viewControllerFactory: ViewControllerFactoryProtocol,
+        coordinatorFactory: CoordinatorFactoryProtocol,
         isLoggedIn: Bool
     ) {
         self.router = router
         self.viewControllerFactory = viewControllerFactory
+        self.coordinatorFactory = coordinatorFactory
         self.isLoggedIn = isLoggedIn
     }
     
     override func start() {
         checkForUpdates()
-        if isLoggedIn {
-            setTabBarRootVC()
-        } else {
-            setLoginRootVC()
-        }
+        isLoggedIn ? setTabBarRootVC() : setLoginRootVC()
     }
     
     func handlePasteboardURL() {
@@ -49,16 +50,25 @@ private extension AppCoordinator {
     }
     
     func setTabBarRootVC() {
-        let vc = viewControllerFactory.makeTabBarVC()
-        router.setRoot(vc, animated: true)
+        let coordinator = coordinatorFactory.makeTabBarCoordinator(
+            router: router,
+            viewControllerFactory: viewControllerFactory,
+            coordinatorFactory: coordinatorFactory
+        )
+        coordinator.onFinish = { [weak self, weak coordinator] in
+            self?.removeDependency(coordinator)
+            self?.start()
+        }
+        self.addDependency(coordinator)
+        coordinator.start()
     }
     
     func checkForUpdates() {
-        Task {
-            if let rootViewController = router.rootViewController,
-               let updateStatus = await updateAlertManager.checkUpdateAlertNeeded() {
-                updateAlertManager.showUpdateAlert(type: updateStatus, on: rootViewController)
-            }
-        }
+//        Task {
+//            if let rootViewController = router.rootViewController,
+//               let updateStatus = await updateAlertManager.checkUpdateAlertNeeded() {
+//                updateAlertManager.showUpdateAlert(type: updateStatus, on: rootViewController)
+//            }
+//        }
     }
 }
