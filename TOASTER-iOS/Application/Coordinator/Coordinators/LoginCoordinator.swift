@@ -14,7 +14,6 @@ final class LoginCoordinator: BaseCoordinator, CoordinatorFinishOutput {
     private let router: RouterProtocol
     private let viewControllerFactory: ViewControllerFactoryProtocol
     private let coordinatorFactory: CoordinatorFactoryProtocol
-    private var tabBarController: UITabBarController?
     
     init(
         router: RouterProtocol,
@@ -34,6 +33,23 @@ final class LoginCoordinator: BaseCoordinator, CoordinatorFinishOutput {
 private extension LoginCoordinator {
     func showLoginVC() {
         let vc = viewControllerFactory.makeLoginVC()
+        vc.onLoginCompleted = { [weak self] in
+            self?.loginVCCompleted()
+        }
         router.setRoot(vc, animated: true)
+    }
+    
+    func loginVCCompleted() {
+        let coordinator = coordinatorFactory.makeTabBarCoordinator(
+            router: router,
+            viewControllerFactory: viewControllerFactory,
+            coordinatorFactory: coordinatorFactory
+        )
+        coordinator.onFinish = { [weak self, weak coordinator] in
+            self?.removeDependency(coordinator)
+            self?.start()
+        }
+        self.addDependency(coordinator)
+        coordinator.start()
     }
 }

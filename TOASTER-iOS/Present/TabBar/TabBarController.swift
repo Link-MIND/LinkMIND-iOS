@@ -15,6 +15,7 @@ import Then
 final class TabBarController: UITabBarController {
     
     private var customTabBar = CustomTabBar()
+    private var currentIndex: Int?
     
     // MARK: - View Controllable
     
@@ -25,7 +26,6 @@ final class TabBarController: UITabBarController {
     var onTimerScene: Scene?
  
     var didSelectPlusTab: (() -> Void)?
-    var click: (() -> Void)?
     
     // MARK: - Life Cycle
     
@@ -106,7 +106,7 @@ private extension TabBarController {
 extension TabBarController {
     func selectTab(_ index: Int) {
         self.selectedIndex = index
-        if let controller = self.viewControllers?[index] as? UINavigationController {
+        if let controller = self.viewControllers?[index] {
             self.tabBarController(self, didSelect: controller)
         }
     }
@@ -122,6 +122,9 @@ extension TabBarController {
 extension TabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         guard let controller = viewController as? UINavigationController else { return }
+        if currentIndex == selectedIndex { return }
+        self.currentIndex = selectedIndex
+        
         switch selectedIndex {
         case 0: onHomeScene?(controller)
         case 1: onClipScene?(controller)
