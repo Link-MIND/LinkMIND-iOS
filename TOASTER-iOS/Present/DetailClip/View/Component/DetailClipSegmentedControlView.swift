@@ -10,31 +10,22 @@ import UIKit
 import SnapKit
 import Then
 
-protocol DetailClipSegmentedDelegate: AnyObject {
-    func setupAllLink()
-    func setupReadLink()
-    func setupNotReadLink()
-}
-
 final class DetailClipSegmentedControlView: UIView {
-    
-    // MARK: - Properties
-    
-    var detailClipSegmentedDelegate: DetailClipSegmentedDelegate?
     
     // MARK: - UI Components
     
     private let readSegmentedControl = UISegmentedControl()
+    lazy var readSegmentedControlValueChanged = readSegmentedControl
+        .publisher(for: .valueChanged)
+        .map { _ in self.readSegmentedControl.selectedSegmentIndex }
     
     // MARK: - Life Cycles
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setupStyle()
         setupHierarchy()
         setupLayout()
-        setupAddTarget()
     }
     
     @available(*, unavailable)
@@ -74,22 +65,6 @@ private extension DetailClipSegmentedControlView {
             $0.top.equalToSuperview()
             $0.height.equalTo(38)
             $0.leading.trailing.equalToSuperview().inset(20)
-        }
-    }
-    
-    func setupAddTarget() {
-        readSegmentedControl.addTarget(self, action: #selector(didChangeValue(_:)), for: .valueChanged)
-    }
-    
-    @objc
-    func didChangeValue(_ segment: UISegmentedControl) {
-        switch segment.selectedSegmentIndex {
-        case 0:
-            detailClipSegmentedDelegate?.setupAllLink()
-        case 1:
-            detailClipSegmentedDelegate?.setupReadLink()
-        default:
-            detailClipSegmentedDelegate?.setupNotReadLink()
         }
     }
 }
