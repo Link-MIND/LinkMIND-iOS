@@ -62,7 +62,8 @@ private extension TabBarCoordinator {
     func startHomeCoordinator(navController: UINavigationController) {
         let coordinator = coordinatorFactory.makeHomeCoordinator(
             router: Router(rootViewController: navController),
-            viewControllerFactory: self.viewControllerFactory
+            viewControllerFactory: self.viewControllerFactory,
+            coordinatorFactory: coordinatorFactory
         )
         self.addDependency(coordinator)
         coordinator.start()
@@ -71,7 +72,8 @@ private extension TabBarCoordinator {
     func startClipCoordinator(navController: UINavigationController) {
         let coordinator = coordinatorFactory.makeClipCoordinator(
             router: Router(rootViewController: navController),
-            viewControllerFactory: self.viewControllerFactory
+            viewControllerFactory: self.viewControllerFactory,
+            coordinatorFactory: self.coordinatorFactory
         )
         self.addDependency(coordinator)
         coordinator.start()
@@ -80,7 +82,8 @@ private extension TabBarCoordinator {
     func startSearchCoordinator(navController: UINavigationController) {
         let coordinator = coordinatorFactory.makeSearchCoordinator(
             router: Router(rootViewController: navController),
-            viewControllerFactory: self.viewControllerFactory
+            viewControllerFactory: self.viewControllerFactory,
+            coordinatorFactory: self.coordinatorFactory
         )
         self.addDependency(coordinator)
         coordinator.start()
@@ -89,7 +92,8 @@ private extension TabBarCoordinator {
     func startTimerCoordinator(navController: UINavigationController) {
         let coordinator = coordinatorFactory.makeTimerCoordinator(
             router: Router(rootViewController: navController),
-            viewControllerFactory: self.viewControllerFactory
+            viewControllerFactory: self.viewControllerFactory,
+            coordinatorFactory: self.coordinatorFactory
         )
         self.addDependency(coordinator)
         coordinator.start()

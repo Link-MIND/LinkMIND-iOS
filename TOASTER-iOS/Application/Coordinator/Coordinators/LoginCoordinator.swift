@@ -7,7 +7,10 @@
 
 import UIKit
 
-final class LoginCoordinator: BaseCoordinator {
+final class LoginCoordinator: BaseCoordinator, CoordinatorFinishOutput {
+    
+    var onFinish: (() -> Void)?
+
     private let router: RouterProtocol
     private let viewControllerFactory: ViewControllerFactoryProtocol
     private let coordinatorFactory: CoordinatorFactoryProtocol
@@ -24,12 +27,13 @@ final class LoginCoordinator: BaseCoordinator {
     }
     
     override func start() {
-        showTabBarVC()
+        showLoginVC()
     }
 }
 
 private extension LoginCoordinator {
-    func showTabBarVC() {
-
+    func showLoginVC() {
+        let vc = viewControllerFactory.makeLoginVC()
+        router.setRoot(vc, animated: true)
     }
 }

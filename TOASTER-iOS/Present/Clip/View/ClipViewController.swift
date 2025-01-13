@@ -13,6 +13,11 @@ import Then
 
 final class ClipViewController: UIViewController {
     
+    // MARK: - View Controllable
+    
+    var onEditClipSelected: ((ClipModel) -> Void)?
+    var onClipItemSelected: ((Int, String) -> Void)?
+    
     // MARK: - UI Properties
     
     private let viewModel: ClipViewModel
@@ -138,11 +143,13 @@ private extension ClipViewController {
     }
     
     func setupNavigationBar() {
-        let type: ToasterNavigationType = ToasterNavigationType(hasBackButton: false,
-                                                                hasRightButton: true,
-                                                                mainTitle: StringOrImageType.string(StringLiterals.Tabbar.clip),
-                                                                rightButton: StringOrImageType.string("편집"),
-                                                                rightButtonAction: editButtonTapped)
+        let type: ToasterNavigationType = ToasterNavigationType(
+            hasBackButton: false,
+            hasRightButton: true,
+            mainTitle: StringOrImageType.string(StringLiterals.Tabbar.clip),
+            rightButton: StringOrImageType.string("편집"),
+            rightButtonAction: editButtonTapped
+        )
         
         if let navigationController = navigationController as? ToasterNavigationController {
             navigationController.setupNavigationBar(forType: type)
@@ -150,10 +157,7 @@ private extension ClipViewController {
     }
     
     func editButtonTapped() {
-        let editClipViewController = ViewControllerFactory.shared.makeEditClipVC()
-        editClipViewController.setupDataBind(clipModel: viewModel.clipList)
-        editClipViewController.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(editClipViewController, animated: false)
+        onEditClipSelected?(viewModel.clipList)
     }
 }
 
@@ -161,15 +165,9 @@ private extension ClipViewController {
 
 extension ClipViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let nextVC = ViewControllerFactory.shared.makeDetailClipVC()
-        if indexPath.item == 0 {
-            nextVC.setupCategory(id: 0, name: "전체 클립")
-        } else {
-            nextVC.setupCategory(id: viewModel.clipList.clips[indexPath.item - 1].id,
-                                 name: viewModel.clipList.clips[indexPath.item - 1].title)
-        }
-        nextVC.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(nextVC, animated: true)
+        let id = indexPath.item == 0 ? 0 : viewModel.clipList.clips[indexPath.item - 1].id
+        let title = indexPath.item == 0 ? "전체 클립" : viewModel.clipList.clips[indexPath.item - 1].title
+        onClipItemSelected?(id, title)
     }
 }
 

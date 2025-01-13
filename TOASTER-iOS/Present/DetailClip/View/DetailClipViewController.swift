@@ -23,20 +23,28 @@ final class DetailClipViewController: UIViewController {
     private let detailClipEmptyView = DetailClipEmptyView()
     private let detailClipListCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
-    private lazy var linkOptionBottomSheetView = LinkOptionBottomSheetView(currentClipType: ClipType(categoryId: viewModel.categoryId))
-    private lazy var optionBottom = ToasterBottomSheetViewController(bottomType: .gray,
-                                                               bottomTitle: "더보기",
-                                                               insertView: linkOptionBottomSheetView)
+    private lazy var linkOptionBottomSheetView = LinkOptionBottomSheetView(
+        currentClipType: ClipType(categoryId: viewModel.categoryId)
+    )
+    private lazy var optionBottom = ToasterBottomSheetViewController(
+        bottomType: .gray,
+        bottomTitle: "더보기",
+        insertView: linkOptionBottomSheetView
+    )
     
     private let editLinkBottomSheetView = EditLinkBottomSheetView()
-    private lazy var editLinkBottom = ToasterBottomSheetViewController(bottomType: .white,
-                                                                       bottomTitle: "링크 제목 편집",
-                                                                       insertView: editLinkBottomSheetView)
+    private lazy var editLinkBottom = ToasterBottomSheetViewController(
+        bottomType: .white,
+        bottomTitle: "링크 제목 편집",
+        insertView: editLinkBottomSheetView
+    )
     
     private let changeClipBottomSheetView = ChangeClipBottomSheetView()
-    private lazy var changeClipBottom = ToasterBottomSheetViewController(bottomType: .gray,
-                                                                       bottomTitle: "클립을 선택해 주세요",
-                                                                       insertView: changeClipBottomSheetView)
+    private lazy var changeClipBottom = ToasterBottomSheetViewController(
+        bottomType: .gray,
+        bottomTitle: "클립을 선택해 주세요",
+        insertView: changeClipBottomSheetView
+    )
     
     private lazy var firstToolTip = ToasterTipView(
         title: "링크를 다른 클립으로\n이동할 수 있어요!",
@@ -158,10 +166,12 @@ private extension DetailClipViewController {
     }
     
     func setupNavigationBar() {
-        let type: ToasterNavigationType = ToasterNavigationType(hasBackButton: true,
-                                                                hasRightButton: false,
-                                                                mainTitle: StringOrImageType.string(viewModel.categoryName),
-                                                                rightButton: StringOrImageType.string("어쩌구"), rightButtonAction: {})
+        let type: ToasterNavigationType = ToasterNavigationType(
+            hasBackButton: true,
+            hasRightButton: false,
+            mainTitle: StringOrImageType.string(viewModel.categoryName),
+            rightButton: StringOrImageType.string("어쩌구"), rightButtonAction: {}
+        )
         
         if let navigationController = navigationController as? ToasterNavigationController {
             navigationController.setupNavigationBar(forType: type)

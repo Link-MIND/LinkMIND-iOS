@@ -45,8 +45,17 @@ final class AppCoordinator: BaseCoordinator {
 
 private extension AppCoordinator {
     func setLoginRootVC() {
-        let vc = viewControllerFactory.makeLoginVC()
-        router.setRoot(vc, animated: true)
+        let coordinator = coordinatorFactory.makeLoginCoordinator(
+            router: router,
+            viewControllerFactory: viewControllerFactory,
+            coordinatorFactory: coordinatorFactory
+        )
+        coordinator.onFinish = { [weak self, weak coordinator] in
+            self?.removeDependency(coordinator)
+            self?.start()
+        }
+        self.addDependency(coordinator)
+        coordinator.start()
     }
     
     func setTabBarRootVC() {

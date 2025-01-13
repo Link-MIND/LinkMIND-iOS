@@ -7,16 +7,22 @@
 
 import Foundation
 
-final class SearchCoordinator: BaseCoordinator {
+final class SearchCoordinator: BaseCoordinator, CoordinatorFinishOutput {
+    
+    var onFinish: (() -> Void)?
+
     private let router: RouterProtocol
     private let viewControllerFactory: ViewControllerFactoryProtocol
+    private let coordinatorFactory: CoordinatorFactoryProtocol
     
     init(
         router: RouterProtocol,
-        viewControllerFactory: ViewControllerFactoryProtocol
+        viewControllerFactory: ViewControllerFactoryProtocol,
+        coordinatorFactory: CoordinatorFactoryProtocol
     ) {
         self.router = router
         self.viewControllerFactory = viewControllerFactory
+        self.coordinatorFactory = coordinatorFactory
     }
     
     override func start() {

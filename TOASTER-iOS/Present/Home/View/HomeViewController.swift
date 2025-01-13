@@ -346,12 +346,13 @@ private extension HomeViewController {
     }
     
     func setupNavigationBar() {
-        let type: ToasterNavigationType = ToasterNavigationType(hasBackButton: false,
-                                                                hasRightButton: true,
-                                                                mainTitle: StringOrImageType.image(.wordmark),
-                                                                rightButton: StringOrImageType.image(.icSettings24),
-                                                                rightButtonAction: rightButtonTapped)
-        
+        let type: ToasterNavigationType = ToasterNavigationType(
+            hasBackButton: false,
+            hasRightButton: true,
+            mainTitle: StringOrImageType.image(.wordmark),
+            rightButton: StringOrImageType.image(.icSettings24),
+            rightButtonAction: rightButtonTapped
+        )
         if let navigationController = navigationController as? ToasterNavigationController {
             navigationController.setupNavigationBar(forType: type)
         }
