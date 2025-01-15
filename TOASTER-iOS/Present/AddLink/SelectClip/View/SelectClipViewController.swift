@@ -13,7 +13,13 @@ import Then
 
 final class SelectClipViewController: UIViewController {
     
+    // MARK: - View Controllable
+
+    var onPopToRoot: (() -> Void)?
+    
     // MARK: - Properties
+    
+    private var isNavigationBarHidden: Bool
     
     var linkURL = String()
     private var categoryID: Int?
@@ -29,9 +35,11 @@ final class SelectClipViewController: UIViewController {
     private let clipSelectCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let completeButton: UIButton = UIButton()
     private let addClipBottomSheetView = AddClipBottomSheetView()
-    private lazy var addClipBottom = ToasterBottomSheetViewController(bottomType: .white,
-                                                                      bottomTitle: "클립 추가",
-                                                                      insertView: addClipBottomSheetView)
+    private lazy var addClipBottom = ToasterBottomSheetViewController(
+        bottomType: .white,
+        bottomTitle: "클립 추가",
+        insertView: addClipBottomSheetView
+    )
     
     private var selectedClipTapped: RemindClipModel? {
         didSet {
@@ -41,8 +49,9 @@ final class SelectClipViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(viewModel: SelectClipViewModel) {
+    init(viewModel: SelectClipViewModel, isNavigationBarHidden: Bool) {
         self.viewModel = viewModel
+        self.isNavigationBarHidden = isNavigationBarHidden
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -63,6 +72,12 @@ final class SelectClipViewController: UIViewController {
         super.viewWillAppear(animated)
         setupNavigationBar()
         requestClipList.send()
+        if !isNavigationBarHidden { self.navigationController?.isNavigationBarHidden = false }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if !isNavigationBarHidden { navigationController?.isNavigationBarHidden = true }
     }
 }
 
@@ -127,13 +142,11 @@ private extension SelectClipViewController {
         
         output.saveLinkResult
             .sink { [weak self] isSuccess in
-                self?.navigationController?.popToRootViewController(animated: true)
-                
+                self?.onPopToRoot?()
                 let width: CGFloat = isSuccess ? 157 : 200
                 let status: ToastStatus = isSuccess ? .check : .warning
                 let message = isSuccess ? "링크 저장 완료!" : "링크 저장에 실패했어요!"
                 self?.navigationController?.showToastMessage(width: width, status: status, message: message)
-                
                 if isSuccess { self?.delegate?.saveLinkButtonTapped() }
             }.store(in: cancelBag)
     }
@@ -208,9 +221,8 @@ private extension SelectClipViewController {
     }
     
     func rightButtonTapped() {
-        dismiss(animated: false)
-        delegate?.cancleLinkButtonTapped()
-        navigationController?.popToRootViewController(animated: true)
+        delegate?.cancelLinkButtonTapped()
+        onPopToRoot?()
     }
     
     @objc func completeButtonTapped() {
@@ -268,9 +280,11 @@ extension SelectClipViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
-                                                                                   withReuseIdentifier: SelectClipHeaderView.className,
-                                                                                   for: indexPath) as? SelectClipHeaderView else { return UICollectionReusableView() }
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: UICollectionView.elementKindSectionHeader,
+                withReuseIdentifier: SelectClipHeaderView.className,
+                for: indexPath
+            ) as? SelectClipHeaderView else { return UICollectionReusableView() }
             headerView.selectClipHeaderViewDelegate = self
             headerView.setupView()
             headerView.bindData(count: viewModel.selectedClip.count)

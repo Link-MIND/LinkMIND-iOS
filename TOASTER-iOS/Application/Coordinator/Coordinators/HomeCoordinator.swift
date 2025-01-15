@@ -33,6 +33,78 @@ final class HomeCoordinator: BaseCoordinator, CoordinatorFinishOutput {
 private extension HomeCoordinator {
     func showHomeVC() {
         let vc = viewControllerFactory.makeHomeVC()
-        router.setRoot(vc, animated: true)
+        vc.onMyLinkSelected = { [weak self] linkURL, isRead, id in
+            self?.showLinkWebVC(linkURL: linkURL, isRead: isRead, id: id)
+        }
+        vc.onOurLinkSelected = { [weak self] linkURL in
+            self?.showLinkWebVC(linkURL: linkURL, isRead: nil, id: nil)
+        }
+        vc.onSettingSelected = { [weak self] in
+            self?.showSettingVC()
+        }
+        vc.onArrowSelected = { [weak self] id, name in
+            self?.showDetailClipVC(id: id, name: name)
+        }
+        vc.onAddLinkSelected = { [weak self] in
+            self?.startAddLinkCoordinator()
+        }
+        router.setRoot(vc, animated: false)
+    }
+    
+    func showLinkWebVC(linkURL: String, isRead: Bool?, id: Int?) {
+        let vc = viewControllerFactory.makeLinkWebVC()
+        vc.setupDataBind(linkURL: linkURL, isRead: isRead, id: id)
+        vc.onBack = { [weak self] in
+            self?.router.pop(animated: true)
+        }
+        router.push(vc, animated: true, hideBottomBarWhenPushed: true)
+    }
+    
+    func showSettingVC() {
+        let vc = viewControllerFactory.makeSettingVC()
+        vc.onChangeRoot = { [weak self] in
+            self?.router.popToRoot(animated: false)
+            self?.changeRootVC()
+            self?.onFinish?()
+        }
+        router.push(vc, animated: true, hideBottomBarWhenPushed: true)
+    }
+    
+    func showDetailClipVC(id: Int, name: String) {
+        let vc = viewControllerFactory.makeDetailClipVC()
+        vc.setupCategory(id: id, name: name)
+        vc.onLinkSelected = { [weak self] linkURL, isRead, id in
+            self?.showLinkWebVC(linkURL: linkURL, isRead: isRead, id: id)
+        }
+        router.push(vc, animated: true, hideBottomBarWhenPushed: true)
+    }
+    
+    func startAddLinkCoordinator() {
+        let coordinator = coordinatorFactory.makeAddLinkCoordinator(
+            router: router,
+            viewControllerFactory: viewControllerFactory,
+            coordinatorFactory: coordinatorFactory,
+            isNavigationBarHidden: true
+        )
+        coordinator.onFinish = { [weak self, weak coordinator] in
+            self?.removeDependency(coordinator)
+            self?.start()
+        }
+        self.addDependency(coordinator)
+        coordinator.start()
+    }
+    
+    func changeRootVC() {
+        let coordinator = coordinatorFactory.makeLoginCoordinator(
+            router: router,
+            viewControllerFactory: viewControllerFactory,
+            coordinatorFactory: coordinatorFactory
+        )
+        coordinator.onFinish = { [weak self, weak coordinator] in
+            self?.removeDependency(coordinator)
+            self?.start()
+        }
+        self.addDependency(coordinator)
+        coordinator.start()
     }
 }

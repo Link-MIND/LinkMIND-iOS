@@ -9,6 +9,7 @@ import UIKit
 
 protocol RouterProtocol: AnyObject {
     func setRoot(_ viewController: UIViewController, animated: Bool)
+    func setRoot(_ viewController: UIViewController, animated: Bool, hideBottomBarWhenPushed: Bool)
     
     func push(_ viewController: UIViewController, animated: Bool)
     func push(_ viewController: UIViewController, animated: Bool, hideBottomBarWhenPushed: Bool)
@@ -16,6 +17,8 @@ protocol RouterProtocol: AnyObject {
     
     func pop(animated: Bool)
     func dismiss(animated: Bool, completion: (() -> Void)?)
+    
+    func popToRoot(animated: Bool)
 }
 
 final class Router: RouterProtocol {
@@ -26,6 +29,15 @@ final class Router: RouterProtocol {
     }
     
     func setRoot(_ viewController: UIViewController, animated: Bool) {
+        rootViewController?.setViewControllers([viewController], animated: animated)
+    }
+    
+    func setRoot(
+        _ viewController: UIViewController,
+        animated: Bool,
+        hideBottomBarWhenPushed: Bool
+    ) {
+        viewController.hidesBottomBarWhenPushed = hideBottomBarWhenPushed
         rootViewController?.setViewControllers([viewController], animated: animated)
     }
     
@@ -57,5 +69,9 @@ final class Router: RouterProtocol {
     func dismiss(animated: Bool, completion: (() -> Void)?) {
         rootViewController?.dismiss(animated: animated, completion: completion)
     }
-
+    
+    func popToRoot(animated: Bool) {
+        rootViewController?.dismiss(animated: false)
+        rootViewController?.popToRootViewController(animated: animated)
+    }
 }

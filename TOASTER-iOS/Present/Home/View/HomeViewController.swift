@@ -12,6 +12,14 @@ import Then
 
 final class HomeViewController: UIViewController {
     
+    // MARK: - View Controllable
+
+    var onMyLinkSelected: ((String, Bool, Int) -> Void)?
+    var onOurLinkSelected: ((String) -> Void)?
+    var onSettingSelected: (() -> Void)?
+    var onArrowSelected: ((Int, String) -> Void)?
+    var onAddLinkSelected: (() -> Void)?
+    
     // MARK: - UI Properties
     
     private let viewModel: HomeViewModel!
@@ -78,29 +86,19 @@ extension HomeViewController: UICollectionViewDelegate {
         case 1:
             let data = viewModel.recentLink
             if indexPath.item < data.count {
-                let nextVC = ViewControllerFactory.shared.makeLinkWebVC()
-                nextVC.hidesBottomBarWhenPushed = true
-                nextVC.setupDataBind(linkURL: viewModel.recentLink[indexPath.item].linkUrl,
-                                     isRead: viewModel.recentLink[indexPath.item].isRead,
-                                     id: viewModel.recentLink[indexPath.item].toastId)
-                self.navigationController?.pushViewController(nextVC, animated: true)
+                let url = viewModel.recentLink[indexPath.item].linkUrl
+                let isRead = viewModel.recentLink[indexPath.item].isRead
+                let id = viewModel.recentLink[indexPath.item].toastId
+                onMyLinkSelected?(url, isRead, id)
             } else {
                 addClipCellTapped()
             }
         case 2:
-            let nextVC = ViewControllerFactory.shared.makeLinkWebVC()
-            nextVC.hidesBottomBarWhenPushed = true
             let data = viewModel.weeklyLinkList[indexPath.item]
-            nextVC.setupDataBind(linkURL: data.toastLink)
-            self.navigationController?.pushViewController(nextVC, animated: true)
+            onOurLinkSelected?(data.toastLink)
         case 3:
-            let nextVC = ViewControllerFactory.shared.makeLinkWebVC()
-            nextVC.hidesBottomBarWhenPushed = true
             let data = viewModel.recommendSiteList[indexPath.item]
-            if let url = data.siteUrl {
-                nextVC.setupDataBind(linkURL: url)
-            }
-            self.navigationController?.pushViewController(nextVC, animated: true)
+            if let url = data.siteUrl { onOurLinkSelected?(url) }
         default: break
         }
     }
@@ -359,16 +357,12 @@ private extension HomeViewController {
     }
     
     func rightButtonTapped() {
-        let settingVC = ViewControllerFactory.shared.makeSettingVC()
-        settingVC.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(settingVC, animated: true)
+        onSettingSelected?()
     }
     
     @objc
     func arrowButtonTapped() {
-        let detailClipViewController = ViewControllerFactory.shared.makeDetailClipVC()
-        detailClipViewController.setupCategory(id: 0, name: "전체 클립")
-        navigationController?.pushViewController(detailClipViewController, animated: true)
+        onArrowSelected?(0, "전체 클립")
     }
 }
 
@@ -376,7 +370,6 @@ private extension HomeViewController {
 
 extension HomeViewController: UserClipCollectionViewCellDelegate {
     func addClipCellTapped() {
-        let nextVC = ViewControllerFactory.shared.makeAddLinkVC()
-        self.navigationController?.pushViewController(nextVC, animated: true)
+        onAddLinkSelected?()
     }
 }

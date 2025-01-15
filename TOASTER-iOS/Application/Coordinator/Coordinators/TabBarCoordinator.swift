@@ -32,7 +32,7 @@ final class TabBarCoordinator: BaseCoordinator, CoordinatorFinishOutput {
         if tabBarController == nil { setupTabBarController() }
         guard let tabBarController else { return }
         tabBarController.selectTab(0)
-        router.setRoot(tabBarController, animated: true)
+        router.setRoot(tabBarController, animated: false)
     }
 }
 
@@ -52,7 +52,6 @@ private extension TabBarCoordinator {
         vc.onTimerScene = { [weak self] navController in
             self?.startTimerCoordinator(navController: navController)
         }
-        
         vc.didSelectPlusTab = { [weak self] in
             self?.handlePlusTabSelection()
         }
@@ -65,6 +64,10 @@ private extension TabBarCoordinator {
             viewControllerFactory: self.viewControllerFactory,
             coordinatorFactory: coordinatorFactory
         )
+        coordinator.onFinish = { [weak self, weak coordinator] in
+            self?.removeDependency(coordinator)
+            self?.start()
+        }
         self.addDependency(coordinator)
         coordinator.start()
     }
@@ -75,6 +78,10 @@ private extension TabBarCoordinator {
             viewControllerFactory: self.viewControllerFactory,
             coordinatorFactory: self.coordinatorFactory
         )
+        coordinator.onFinish = { [weak self, weak coordinator] in
+            self?.removeDependency(coordinator)
+            self?.start()
+        }
         self.addDependency(coordinator)
         coordinator.start()
     }
@@ -85,6 +92,10 @@ private extension TabBarCoordinator {
             viewControllerFactory: self.viewControllerFactory,
             coordinatorFactory: self.coordinatorFactory
         )
+        coordinator.onFinish = { [weak self, weak coordinator] in
+            self?.removeDependency(coordinator)
+            self?.start()
+        }
         self.addDependency(coordinator)
         coordinator.start()
     }
@@ -95,23 +106,30 @@ private extension TabBarCoordinator {
             viewControllerFactory: self.viewControllerFactory,
             coordinatorFactory: self.coordinatorFactory
         )
+        coordinator.onFinish = { [weak self, weak coordinator] in
+            self?.removeDependency(coordinator)
+            self?.start()
+        }
         self.addDependency(coordinator)
         coordinator.start()
     }
     
     func handlePlusTabSelection() {
-        let vc = viewControllerFactory.makeAddLinkVC()
+        let vc = viewControllerFactory.makeAddLinkVC(isNavigationBarHidden: false)
         vc.onLinkInputCompleted = { [weak self] linkURL in
             self?.showSelectClipVC(linkURL: linkURL)
+        }
+        vc.onPopToRoot = { [weak self] in
+            self?.router.popToRoot(animated: false)
         }
         router.push(vc, animated: false)
     }
     
     func showSelectClipVC(linkURL: String) {
-        let vc = ViewControllerFactory.shared.makeSelectClipVC()
+        let vc = ViewControllerFactory.shared.makeSelectClipVC(isNavigationBarHidden: false)
         vc.linkURL = linkURL
         vc.onPopToRoot = { [weak self] in
-            self?.router.popToRoot(animated: true)
+            self?.router.popToRoot(animated: false)
         }
         router.push(vc, animated: true)
     }

@@ -32,6 +32,13 @@ protocol CoordinatorFactoryProtocol {
         coordinatorFactory: CoordinatorFactoryProtocol
     ) -> ClipCoordinator
     
+    func makeAddLinkCoordinator(
+        router: RouterProtocol,
+        viewControllerFactory: ViewControllerFactoryProtocol,
+        coordinatorFactory: CoordinatorFactoryProtocol,
+        isNavigationBarHidden: Bool
+    ) -> AddLinkCoordinator
+    
     func makeSearchCoordinator(
         router: RouterProtocol,
         viewControllerFactory: ViewControllerFactoryProtocol,
@@ -91,6 +98,20 @@ final class CoordinatorFactory: CoordinatorFactoryProtocol {
             router: router,
             viewControllerFactory: viewControllerFactory,
             coordinatorFactory: coordinatorFactory
+        )
+    }
+    
+    func makeAddLinkCoordinator(
+        router: RouterProtocol,
+        viewControllerFactory: ViewControllerFactoryProtocol,
+        coordinatorFactory: CoordinatorFactoryProtocol,
+        isNavigationBarHidden: Bool
+    ) -> AddLinkCoordinator {
+        return AddLinkCoordinator(
+            router: router,
+            viewControllerFactory: viewControllerFactory,
+            coordinatorFactory: coordinatorFactory,
+            isNavigationBarHidden: isNavigationBarHidden
         )
     }
     

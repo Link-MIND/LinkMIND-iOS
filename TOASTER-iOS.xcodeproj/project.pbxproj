@@ -17,6 +17,7 @@
 		3904AC272D30FFC0001FEB8C /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904AC262D30FFC0001FEB8C /* LoginCoordinator.swift */; };
 		3904AC292D315924001FEB8C /* CoordinatorFinishOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904AC282D315924001FEB8C /* CoordinatorFinishOutput.swift */; };
 		3904AC532D34D38D001FEB8C /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904AC522D34D38D001FEB8C /* CustomTabBar.swift */; };
+		3904AC572D379F00001FEB8C /* AddLinkCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904AC562D379F00001FEB8C /* AddLinkCoordinator.swift */; };
 		390925C42B4EF64100487AA3 /* LinkWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390925C32B4EF64100487AA3 /* LinkWebViewController.swift */; };
 		390925C72B4EF66C00487AA3 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 390925C62B4EF66C00487AA3 /* WebKit.framework */; };
 		390925CB2B4F049800487AA3 /* LinkWebNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390925CA2B4F049800487AA3 /* LinkWebNavigationView.swift */; };
@@ -378,6 +379,7 @@
 		3904AC262D30FFC0001FEB8C /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
 		3904AC282D315924001FEB8C /* CoordinatorFinishOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorFinishOutput.swift; sourceTree = "<group>"; };
 		3904AC522D34D38D001FEB8C /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
+		3904AC562D379F00001FEB8C /* AddLinkCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLinkCoordinator.swift; sourceTree = "<group>"; };
 		390925C32B4EF64100487AA3 /* LinkWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkWebViewController.swift; sourceTree = "<group>"; };
 		390925C62B4EF66C00487AA3 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		390925CA2B4F049800487AA3 /* LinkWebNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkWebNavigationView.swift; sourceTree = "<group>"; };
@@ -843,6 +845,7 @@
 				3904AC1C2D2DED51001FEB8C /* TabBarCoordinator.swift */,
 				3904AC202D2DEDAA001FEB8C /* HomeCoordinator.swift */,
 				3967F9722D2D28FF00B0E9FF /* ClipCoordinator.swift */,
+				3904AC562D379F00001FEB8C /* AddLinkCoordinator.swift */,
 				3904AC222D2DEE28001FEB8C /* SearchCoordinator.swift */,
 				3904AC242D2DEE49001FEB8C /* TimerCoordinator.swift */,
 			);
@@ -2152,6 +2155,7 @@
 				8305178E2B4D1EF8009FFB60 /* WeeklyRecommendCollectionViewCell.swift in Sources */,
 				830517902B4D1FC7009FFB60 /* HomeHeaderCollectionView.swift in Sources */,
 				3FE828352B54E58E00F10732 /* APIInterceptor.swift in Sources */,
+				3904AC572D379F00001FEB8C /* AddLinkCoordinator.swift in Sources */,
 				6B6AE6932B3FF5A9000E2366 /* ClipViewController.swift in Sources */,
 				3F2FA17F2B4A31E900EDBF95 /* SocialLoginTokenModel.swift in Sources */,
 				39A843CE2B745B3A007A4D75 /* DetailClipPropertyType.swift in Sources */,
