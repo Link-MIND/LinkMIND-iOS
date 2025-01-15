@@ -101,6 +101,18 @@ private extension TabBarCoordinator {
     
     func handlePlusTabSelection() {
         let vc = viewControllerFactory.makeAddLinkVC()
+        vc.onLinkInputCompleted = { [weak self] linkURL in
+            self?.showSelectClipVC(linkURL: linkURL)
+        }
         router.push(vc, animated: false)
+    }
+    
+    func showSelectClipVC(linkURL: String) {
+        let vc = ViewControllerFactory.shared.makeSelectClipVC()
+        vc.linkURL = linkURL
+        vc.onPopToRoot = { [weak self] in
+            self?.router.popToRoot(animated: true)
+        }
+        router.push(vc, animated: true)
     }
 }

@@ -139,6 +139,7 @@ extension TabBarController: UITabBarControllerDelegate {
         if viewController == viewControllers?[2] {
             didSelectPlusTab?()
             selectedIndex = 0
+            currentIndex = selectedIndex
             return false
         }
         return true
