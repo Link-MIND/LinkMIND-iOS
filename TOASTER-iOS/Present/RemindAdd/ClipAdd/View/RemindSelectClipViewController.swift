@@ -11,6 +11,11 @@ import SnapKit
 import Then
 
 final class RemindSelectClipViewController: UIViewController {
+    
+    // MARK: - View Controllable
+    
+    var onEditTimerSelected: ((RemindClipModel?) -> Void)?
+    var onPopToRoot: (() -> Void)?
 
     // MARK: - Properties
     
@@ -123,18 +128,15 @@ private extension RemindSelectClipViewController {
                   forSubText: "지금까지 진행한 타이머 설정이\n사라져요",
                   forLeftButtonTitle: StringLiterals.Button.close,
                   forRightButtonTitle: StringLiterals.Button.cancel,
-                  forRightButtonHandler: makeTimerCancle)
+                  forRightButtonHandler: makeTimerCancel)
     }
         
-    func makeTimerCancle() {
-        dismiss(animated: false)
-        navigationController?.popViewController(animated: true)
+    func makeTimerCancel() {
+        onPopToRoot?()
     }
     
     @objc func nextButtonTapped() {
-        let nextViewController = ViewControllerFactory.shared.makeRemindTimerAddVC()
-        nextViewController.configureView(forModel: selectedClip)
-        navigationController?.pushViewController(nextViewController, animated: true)
+        onEditTimerSelected?(selectedClip)
     }
 }
 
