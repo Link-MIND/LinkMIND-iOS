@@ -142,11 +142,11 @@ private extension SelectClipViewController {
         
         output.saveLinkResult
             .sink { [weak self] isSuccess in
-                self?.onPopToRoot?()
                 let width: CGFloat = isSuccess ? 157 : 200
                 let status: ToastStatus = isSuccess ? .check : .warning
                 let message = isSuccess ? "링크 저장 완료!" : "링크 저장에 실패했어요!"
                 self?.navigationController?.showToastMessage(width: width, status: status, message: message)
+                self?.onPopToRoot?()
                 if isSuccess { self?.delegate?.saveLinkButtonTapped() }
             }.store(in: cancelBag)
     }

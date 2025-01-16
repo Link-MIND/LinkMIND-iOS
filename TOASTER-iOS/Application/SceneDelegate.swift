@@ -13,7 +13,17 @@ import KakaoSDKCommon
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
+    private let updateAlertManager = UpdateAlertManager()
     private var appCoordinator: AppCoordinator?
+    
+    func checkUpdate(rootViewController: UIViewController) async {
+        if let updateStatus = await updateAlertManager.checkUpdateAlertNeeded() {
+            updateAlertManager.showUpdateAlert(
+                type: updateStatus,
+                on: rootViewController
+            )
+        }
+    }
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
@@ -39,6 +49,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window?.overrideUserInterfaceStyle = .light
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
+        Task {
+            await checkUpdate(rootViewController: navigationController)
+        }
 
         appCoordinator?.start()
     }

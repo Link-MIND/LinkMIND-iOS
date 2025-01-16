@@ -29,15 +29,24 @@ final class AppCoordinator: BaseCoordinator {
     }
     
     override func start() {
-        checkForUpdates()
-        isLoggedIn ? setTabBarRootVC() : setLoginRootVC()
+        if isLoggedIn {
+            setTabBarRootVC()
+        } else {
+            setLoginRootVC()
+        }
     }
     
     func handlePasteboardURL() {
         if let pasteboardUrl = UIPasteboard.general.url, isLoggedIn {
-            let addLinkVC = viewControllerFactory.makeAddLinkVC()
-            addLinkVC.embedURL(url: pasteboardUrl.absoluteString)
-            router.push(addLinkVC, animated: true)
+            let vc = viewControllerFactory.makeAddLinkVC(isNavigationBarHidden: false)
+            vc.embedURL(url: pasteboardUrl.absoluteString)
+            vc.onLinkInputCompleted = { [weak self] linkURL in
+                self?.showSelectClipVC(linkURL: linkURL)
+            }
+            vc.onPopToRoot = { [weak self] in
+                self?.router.popToRoot(animated: false)
+            }
+            router.push(vc, animated: true)
         }
         UIPasteboard.general.url = nil
     }
@@ -72,12 +81,12 @@ private extension AppCoordinator {
         coordinator.start()
     }
     
-    func checkForUpdates() {
-//        Task {
-//            if let rootViewController = router.rootViewController,
-//               let updateStatus = await updateAlertManager.checkUpdateAlertNeeded() {
-//                updateAlertManager.showUpdateAlert(type: updateStatus, on: rootViewController)
-//            }
-//        }
+    func showSelectClipVC(linkURL: String) {
+        let vc = ViewControllerFactory.shared.makeSelectClipVC(isNavigationBarHidden: false)
+        vc.linkURL = linkURL
+        vc.onPopToRoot = { [weak self] in
+            self?.router.popToRoot(animated: false)
+        }
+        router.push(vc, animated: true)
     }
 }
