@@ -16,10 +16,6 @@ protocol SaveLinkButtonDelegate: AnyObject {
     func cancelLinkButtonTapped()
 }
 
-protocol AddLinkViewControllerPopDelegate: AnyObject {
-    func changeTabBarIndex()
-}
-
 protocol SelectClipViewControllerDelegate: AnyObject {
     func sendEmbedUrl()
 }
@@ -35,7 +31,7 @@ final class AddLinkViewController: UIViewController {
     
     private var isNavigationBarHidden: Bool
     
-    private weak var delegate: AddLinkViewControllerPopDelegate?
+    // private weak var delegate: AddLinkViewControllerPopDelegate?
     private weak var urldelegate: SelectClipViewControllerDelegate?
     
     private var addLinkView = AddLinkView()
@@ -78,10 +74,6 @@ final class AddLinkViewController: UIViewController {
 // MARK: - extension
 
 extension AddLinkViewController {
-    func setupDelegate(forDelegate: AddLinkViewControllerPopDelegate) {
-        delegate = forDelegate
-    }
-    
     /// 클립보드 붙여넣기 Alert -> 붙여넣기 허용 클릭 후 자동 링크 임베드를 위한 함수
     func embedURL(url: String) {
         addLinkView.linkEmbedTextField.becomeFirstResponder()
@@ -137,18 +129,12 @@ private extension AddLinkViewController {
     }
     
     func rightButtonTapped() {
-        delegate?.changeTabBarIndex()
         onPopToRoot?()
     }
     
     @objc func tappedNextBottomButton() {
         onLinkInputCompleted?(addLinkView.linkEmbedTextField.text ?? "")
-//        let selectClipViewController = ViewControllerFactory.shared.makeSelectClipVC(isNavigationBarHidden: true)
-//        selectClipViewController.linkURL = addLinkView.linkEmbedTextField.text ?? ""
-//        selectClipViewController.delegate = self  외부 입력 관련인 것으로 추측
-//        self.navigationController?.pushViewController(selectClipViewController, animated: true)
     }
-    
 }
 
 extension AddLinkViewController {
@@ -191,15 +177,5 @@ extension AddLinkViewController {
                 }
             }
             .store(in: cancelBag)
-    }
-}
-
-extension AddLinkViewController: SaveLinkButtonDelegate {
-    func saveLinkButtonTapped() {
-        delegate?.changeTabBarIndex()
-    }
-    
-    func cancelLinkButtonTapped() {
-        delegate?.changeTabBarIndex()
     }
 }
