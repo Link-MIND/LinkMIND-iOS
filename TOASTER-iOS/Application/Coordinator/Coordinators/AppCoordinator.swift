@@ -12,9 +12,7 @@ final class AppCoordinator: BaseCoordinator {
     private let router: RouterProtocol
     private let viewControllerFactory: ViewControllerFactoryProtocol
     private let coordinatorFactory: CoordinatorFactoryProtocol
-
     private var isLoggedIn: Bool
-    private let updateAlertManager = UpdateAlertManager()
     
     init(
         router: RouterProtocol,
@@ -60,6 +58,7 @@ private extension AppCoordinator {
             coordinatorFactory: coordinatorFactory
         )
         coordinator.onFinish = { [weak self, weak coordinator] in
+            self?.isLoggedIn = true
             self?.removeDependency(coordinator)
             self?.start()
         }
@@ -74,6 +73,7 @@ private extension AppCoordinator {
             coordinatorFactory: coordinatorFactory
         )
         coordinator.onFinish = { [weak self, weak coordinator] in
+            self?.isLoggedIn = false
             self?.removeDependency(coordinator)
             self?.start()
         }

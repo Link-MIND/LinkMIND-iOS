@@ -66,7 +66,7 @@ private extension TabBarCoordinator {
         )
         coordinator.onFinish = { [weak self, weak coordinator] in
             self?.removeDependency(coordinator)
-            self?.start()
+            self?.onFinish?()
         }
         self.addDependency(coordinator)
         coordinator.start()
@@ -80,7 +80,6 @@ private extension TabBarCoordinator {
         )
         coordinator.onFinish = { [weak self, weak coordinator] in
             self?.removeDependency(coordinator)
-            self?.start()
         }
         self.addDependency(coordinator)
         coordinator.start()
@@ -94,7 +93,6 @@ private extension TabBarCoordinator {
         )
         coordinator.onFinish = { [weak self, weak coordinator] in
             self?.removeDependency(coordinator)
-            self?.start()
         }
         self.addDependency(coordinator)
         coordinator.start()
@@ -108,7 +106,7 @@ private extension TabBarCoordinator {
         )
         coordinator.onFinish = { [weak self, weak coordinator] in
             self?.removeDependency(coordinator)
-            self?.start()
+            self?.onFinish?()
         }
         self.addDependency(coordinator)
         coordinator.start()

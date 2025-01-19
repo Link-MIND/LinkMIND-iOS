@@ -63,8 +63,7 @@ private extension HomeCoordinator {
     func showSettingVC() {
         let vc = viewControllerFactory.makeSettingVC()
         vc.onChangeRoot = { [weak self] in
-            self?.router.popToRoot(animated: false)
-            self?.changeRootVC()
+            self?.router.dismiss()
             self?.onFinish?()
         }
         router.push(vc, animated: true, hideBottomBarWhenPushed: true)
@@ -85,20 +84,6 @@ private extension HomeCoordinator {
             viewControllerFactory: viewControllerFactory,
             coordinatorFactory: coordinatorFactory,
             isNavigationBarHidden: true
-        )
-        coordinator.onFinish = { [weak self, weak coordinator] in
-            self?.removeDependency(coordinator)
-            self?.start()
-        }
-        self.addDependency(coordinator)
-        coordinator.start()
-    }
-    
-    func changeRootVC() {
-        let coordinator = coordinatorFactory.makeLoginCoordinator(
-            router: router,
-            viewControllerFactory: viewControllerFactory,
-            coordinatorFactory: coordinatorFactory
         )
         coordinator.onFinish = { [weak self, weak coordinator] in
             self?.removeDependency(coordinator)

@@ -11,14 +11,17 @@ protocol RouterProtocol: AnyObject {
     func setRoot(_ viewController: UIViewController, animated: Bool)
     func setRoot(_ viewController: UIViewController, animated: Bool, hideBottomBarWhenPushed: Bool)
     
+    func popToRoot(animated: Bool)
+    
     func push(_ viewController: UIViewController, animated: Bool)
     func push(_ viewController: UIViewController, animated: Bool, hideBottomBarWhenPushed: Bool)
+    
     func present(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)?)
     
     func pop(animated: Bool)
-    func dismiss(animated: Bool, completion: (() -> Void)?)
     
-    func popToRoot(animated: Bool)
+    func dismiss()
+    func dismiss(animated: Bool, completion: (() -> Void)?)
 }
 
 final class Router: RouterProtocol {
@@ -41,6 +44,11 @@ final class Router: RouterProtocol {
         rootViewController?.setViewControllers([viewController], animated: animated)
     }
     
+    func popToRoot(animated: Bool) {
+        rootViewController?.dismiss(animated: false)
+        rootViewController?.popToRootViewController(animated: animated)
+    }
+    
     func push(_ viewController: UIViewController, animated: Bool) {
         rootViewController?.pushViewController(viewController, animated: animated)
     }
@@ -51,7 +59,7 @@ final class Router: RouterProtocol {
         hideBottomBarWhenPushed: Bool
     ) {
         viewController.hidesBottomBarWhenPushed = hideBottomBarWhenPushed
-        rootViewController?.pushViewController(viewController, animated: animated)
+        self.push(viewController, animated: animated)
     }
     
     func present(
@@ -66,12 +74,11 @@ final class Router: RouterProtocol {
         rootViewController?.popViewController(animated: animated)
     }
     
-    func dismiss(animated: Bool, completion: (() -> Void)?) {
-        rootViewController?.dismiss(animated: animated, completion: completion)
+    func dismiss() {
+        dismiss(animated: false, completion: nil)
     }
     
-    func popToRoot(animated: Bool) {
-        rootViewController?.dismiss(animated: false)
-        rootViewController?.popToRootViewController(animated: animated)
+    func dismiss(animated: Bool, completion: (() -> Void)?) {
+        rootViewController?.dismiss(animated: animated, completion: completion)
     }
 }
