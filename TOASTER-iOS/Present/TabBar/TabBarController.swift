@@ -31,19 +31,7 @@ final class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setValue(customTabBar, forKey: "tabBar")
         setupTabBar()
-        setupTabBarItems()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(selectTabNotification(notification:)),
-            name: Notification.Name("selectTab"),
-            object: nil
-        )
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -52,27 +40,27 @@ final class TabBarController: UITabBarController {
 private extension TabBarController {
 
     func setupTabBar() {
+        self.setValue(customTabBar, forKey: "tabBar")
+
         delegate = self
         view.backgroundColor = .toasterBackground
         tabBar.backgroundColor = .toasterWhite
         tabBar.unselectedItemTintColor = .gray150
         tabBar.tintColor = .black900
+        
+        self.viewControllers = [
+            createNavigation(for: .home),
+            createNavigation(for: .clip),
+            createNavigation(for: .plus),
+            createNavigation(for: .search),
+            createNavigation(for: .timer)
+        ]
     }
     
-    func setupTabBarItems() {
-        let homeVC = ToasterNavigationController()
-        let clipVC = ToasterNavigationController()
-        let plusPlaceholderVC = UIViewController()
-        let searchVC = ToasterNavigationController()
-        let timerVC = ToasterNavigationController()
-        
-        homeVC.tabBarItem = createTabBarItem(for: .home)
-        clipVC.tabBarItem = createTabBarItem(for: .clip)
-        plusPlaceholderVC.tabBarItem = createTabBarItem(for: .plus)
-        searchVC.tabBarItem = createTabBarItem(for: .search)
-        timerVC.tabBarItem = createTabBarItem(for: .timer)
-        
-        self.viewControllers = [homeVC, clipVC, plusPlaceholderVC, searchVC, timerVC]
+    func createNavigation(for item: TabBarItem) -> UINavigationController {
+        let navController = ToasterNavigationController()
+        navController.tabBarItem = createTabBarItem(for: item)
+        return navController
     }
     
     func createTabBarItem(for item: TabBarItem) -> UITabBarItem {
@@ -109,11 +97,6 @@ extension TabBarController {
         if let controller = self.viewControllers?[index] {
             self.tabBarController(self, didSelect: controller)
         }
-    }
-    
-    @objc private func selectTabNotification(notification: Notification) {
-        guard let index = notification.object as? Int else { return }
-        selectTab(index)
     }
 }
 
