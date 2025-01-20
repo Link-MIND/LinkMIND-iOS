@@ -24,9 +24,7 @@ final class TabBarController: UITabBarController {
     var onPlusScene: (() -> Void)?
     var onSearchScene: Scene?
     var onTimerScene: Scene?
- 
-    var didSelectPlusTab: (() -> Void)?
-    
+     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -116,15 +114,5 @@ extension TabBarController: UITabBarControllerDelegate {
         case 4: onTimerScene?(controller)
         default: return
         }
-    }
-    
-    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        if viewController == viewControllers?[2] {
-            didSelectPlusTab?()
-            selectedIndex = 0
-            currentIndex = selectedIndex
-            return false
-        }
-        return true
     }
 }

@@ -52,7 +52,8 @@ private extension TabBarCoordinator {
         vc.onTimerScene = { [weak self] navController in
             self?.startTimerCoordinator(navController: navController)
         }
-        vc.didSelectPlusTab = { [weak self] in
+        
+        vc.onPlusScene = { [weak self] in
             self?.handlePlusTabSelection()
         }
         self.tabBarController = vc
@@ -118,6 +119,7 @@ private extension TabBarCoordinator {
             self?.showSelectClipVC(linkURL: linkURL)
         }
         vc.onPopToRoot = { [weak self] in
+            self?.tabBarController?.selectTab(0)
             self?.router.popToRoot(animated: false)
         }
         router.push(vc, animated: false)
@@ -127,6 +129,7 @@ private extension TabBarCoordinator {
         let vc = ViewControllerFactory.shared.makeSelectClipVC(isNavigationBarHidden: false)
         vc.linkURL = linkURL
         vc.onPopToRoot = { [weak self] in
+            self?.tabBarController?.selectTab(0)
             self?.router.popToRoot(animated: false)
         }
         router.push(vc, animated: true)
