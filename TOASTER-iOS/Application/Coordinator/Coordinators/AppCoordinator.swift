@@ -46,7 +46,6 @@ final class AppCoordinator: BaseCoordinator {
             }
             router.push(vc, animated: true)
         }
-        UIPasteboard.general.url = nil
     }
 }
 
