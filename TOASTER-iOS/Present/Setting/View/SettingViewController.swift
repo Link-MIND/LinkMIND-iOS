@@ -12,6 +12,10 @@ import Then
 
 final class SettingViewController: UIViewController {
     
+    // MARK: - View Controllable
+
+    var onChangeRoot: (() -> Void)?
+    
     // MARK: - Properties
     
     private let userInfoView = MypageHeaderView()
@@ -153,7 +157,7 @@ private extension SettingViewController {
                 let result = KeyChainService.deleteTokens(accessKey: Config.accessTokenKey, refreshKey: Config.refreshTokenKey)
                 
                 if result.access && result.refresh {
-                    self?.changeViewController(viewController: LoginViewController())
+                    self?.onChangeRoot?()
                 }
             case .notFound, .unProcessable, .networkFail:
                 print("🍞⛔️회원탈퇴 실패⛔️🍞")
@@ -184,11 +188,15 @@ private extension SettingViewController {
             case .success(let response):
                 if let responseData = response?.data {
                     DispatchQueue.main.async { [weak self] in
-                        self?.userInfoView.bindModel(model: MypageUserModel(nickname: responseData.nickname,
-                                                                                profile: responseData.profile,
-                                                                                allReadToast: responseData.allReadToast,
-                                                                                thisWeekendRead: responseData.thisWeekendRead,
-                                                                                thisWeekendSaved: responseData.thisWeekendSaved))
+                        self?.userInfoView.bindModel(
+                            model: MypageUserModel(
+                                nickname: responseData.nickname,
+                                profile: responseData.profile,
+                                allReadToast: responseData.allReadToast,
+                                thisWeekendRead: responseData.thisWeekendRead,
+                                thisWeekendSaved: responseData.thisWeekendSaved
+                            )
+                        )
                     }
                 }
             case .unAuthorized, .networkFail:
@@ -204,7 +212,7 @@ private extension SettingViewController {
     }
     
     func popupConfirmationButtonTapped() {
-        self.changeViewController(viewController: LoginViewController())
+        onChangeRoot?()
     }
 }
 

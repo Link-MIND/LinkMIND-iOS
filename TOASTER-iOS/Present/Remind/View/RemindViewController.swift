@@ -20,9 +20,16 @@ enum RemindViewType {
 
 final class RemindViewController: UIViewController {
     
+    // MARK: - View Controllable
+    
+    var onRemindClipSelected: (() -> Void)?
+    var onEditTimerSelected: ((Int) -> Void)?
+    var onClipItemSelected: ((Int, String) -> Void)?
+    var onSettingSelected: (() -> Void)?
+    
     // MARK: - Properties
     
-    private let viewModel = RemindViewModel()
+    private let viewModel: RemindViewModel!
     
     private var selectedTimerID: Int?
     private var viewType: RemindViewType?
@@ -36,6 +43,15 @@ final class RemindViewController: UIViewController {
                                                                       type: .normal)
     
     // MARK: - Life Cycle
+    
+    init(viewModel: RemindViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -217,10 +233,7 @@ private extension RemindViewController {
         if viewType != nil {
             switch viewType {
             case .deviceOnAppOff: break
-            default:
-                let clipAddViewController = RemindSelectClipViewController()
-                clipAddViewController.hidesBottomBarWhenPushed = true
-                navigationController?.pushViewController(clipAddViewController, animated: true)
+            default: onRemindClipSelected?()
             }
         }
     }
@@ -236,10 +249,7 @@ private extension RemindViewController {
     }
     
     @objc func editAlarmButtonTapped() {
-        let settingVC = SettingViewController()
-        settingVC.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(settingVC, animated: true)
-        tabBarController?.selectedIndex = 0
+        onSettingSelected?()
     }
 }
 
@@ -262,11 +272,7 @@ extension RemindViewController: RemindEditViewDelegate {
     func editTimer(forID: Int?) {
         selectedTimerID = forID
         dismiss(animated: true)
-        if let forID {
-            let editViewController = RemindTimerAddViewController()
-            editViewController.configureView(forTimerID: forID)
-            navigationController?.pushViewController(editViewController, animated: true)
-        }
+        if let forID { onEditTimerSelected?(forID) }
     }
     
     func deleteTimer(forID: Int?) {
@@ -284,19 +290,15 @@ extension RemindViewController: RemindEditViewDelegate {
 
 extension RemindViewController: UICollectionViewDelegate { 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let clipViewController = DetailClipViewController()
         switch indexPath.section {
         case 0:
             let data = viewModel.timerData.completeTimerModelList[indexPath.item]
-            clipViewController.setupCategory(id: data.clipID,
-                                             name: data.clipName)
+            onClipItemSelected?(data.clipID, data.clipName)
         case 1:
             let data = viewModel.timerData.waitTimerModelList[indexPath.item]
-            clipViewController.setupCategory(id: data.clipID,
-                                             name: data.clipName)
+            onClipItemSelected?(data.clipID, data.clipName)
         default: break
         }
-        navigationController?.pushViewController(clipViewController, animated: true)
     }
 }
 

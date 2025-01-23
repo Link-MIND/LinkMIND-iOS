@@ -13,9 +13,13 @@ import Then
 
 final class LinkWebViewController: UIViewController {
     
+    // MARK: - View Controllable
+    
+    var onBack: (() -> Void)?
+    
     // MARK: - Properties
     
-    private var viewModel = LinkWebViewModel()
+    private var viewModel: LinkWebViewModel!
     private var cancelBag = CancelBag()
     
     private var progressObservation: NSKeyValueObservation?
@@ -41,6 +45,15 @@ final class LinkWebViewController: UIViewController {
     )
     
     // MARK: - Life Cycle
+    
+    init(viewModel: LinkWebViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -166,10 +179,7 @@ private extension LinkWebViewController {
     
     func setupNavigationBarAction() {
         /// 네비게이션바 뒤로가기 버튼 클릭 액션 클로저
-        navigationView.popButtonTapped {
-            self.navigationController?.popViewController(animated: true)
-            self.showNavigationBar()
-        }
+        navigationView.popButtonTapped { self.onBack?() }
         
         /// 네비게이션바 새로고침 버튼 클릭 액션 클로저
         navigationView.reloadButtonTapped { self.webView.reload() }

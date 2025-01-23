@@ -10,6 +10,14 @@
 		390247AA2B58016C00F9A86A /* PatchOpenLinkRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390247A92B58016C00F9A86A /* PatchOpenLinkRequestDTO.swift */; };
 		39049C8D2B43EEF400C9196E /* ToastStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39049C8C2B43EEF400C9196E /* ToastStatus.swift */; };
 		39049C8F2B43F70400C9196E /* ToasterBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39049C8E2B43F70400C9196E /* ToasterBottomSheetViewController.swift */; };
+		3904AC1D2D2DED51001FEB8C /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904AC1C2D2DED51001FEB8C /* TabBarCoordinator.swift */; };
+		3904AC212D2DEDAA001FEB8C /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904AC202D2DEDAA001FEB8C /* HomeCoordinator.swift */; };
+		3904AC232D2DEE28001FEB8C /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904AC222D2DEE28001FEB8C /* SearchCoordinator.swift */; };
+		3904AC252D2DEE49001FEB8C /* TimerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904AC242D2DEE49001FEB8C /* TimerCoordinator.swift */; };
+		3904AC272D30FFC0001FEB8C /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904AC262D30FFC0001FEB8C /* LoginCoordinator.swift */; };
+		3904AC292D315924001FEB8C /* CoordinatorFinishOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904AC282D315924001FEB8C /* CoordinatorFinishOutput.swift */; };
+		3904AC532D34D38D001FEB8C /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904AC522D34D38D001FEB8C /* CustomTabBar.swift */; };
+		3904AC572D379F00001FEB8C /* AddLinkCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904AC562D379F00001FEB8C /* AddLinkCoordinator.swift */; };
 		390925C42B4EF64100487AA3 /* LinkWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390925C32B4EF64100487AA3 /* LinkWebViewController.swift */; };
 		390925C72B4EF66C00487AA3 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 390925C62B4EF66C00487AA3 /* WebKit.framework */; };
 		390925CB2B4F049800487AA3 /* LinkWebNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390925CA2B4F049800487AA3 /* LinkWebNavigationView.swift */; };
@@ -24,6 +32,10 @@
 		391908442B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391908432B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift */; };
 		392461802CD0D1FB00C0CBC4 /* TipUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3924617F2CD0D1FB00C0CBC4 /* TipUserDefaults.swift */; };
 		392461812CD0D1FB00C0CBC4 /* TipUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3924617F2CD0D1FB00C0CBC4 /* TipUserDefaults.swift */; };
+		3967F96A2D2CE6B200B0E9FF /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3967F9692D2CE6B200B0E9FF /* Coordinator.swift */; };
+		3967F96C2D2CE7BB00B0E9FF /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3967F96B2D2CE7BB00B0E9FF /* Router.swift */; };
+		3967F9702D2CF03200B0E9FF /* ViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3967F96F2D2CF03200B0E9FF /* ViewControllerFactory.swift */; };
+		3967F9732D2D28FF00B0E9FF /* ClipCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3967F9722D2D28FF00B0E9FF /* ClipCoordinator.swift */; };
 		396D7ECB2C855F5F0034A14E /* LinkWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396D7ECA2C855F5F0034A14E /* LinkWebViewModel.swift */; };
 		396D7ECD2C880F1F0034A14E /* LinkWebToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396D7ECC2C880F1F0034A14E /* LinkWebToolBarView.swift */; };
 		396DCDF42CA19EC600FEF7C8 /* PatchPopupHiddenResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396DCDF32CA19EC600FEF7C8 /* PatchPopupHiddenResponseDTO.swift */; };
@@ -50,6 +62,8 @@
 		398BE7FA2B467E4B001595E0 /* ClipListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398BE7F92B467E4B001595E0 /* ClipListCollectionViewCell.swift */; };
 		398BE7FC2B468F80001595E0 /* ClipCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398BE7FB2B468F80001595E0 /* ClipCollectionHeaderView.swift */; };
 		398BE7FE2B46C164001595E0 /* AddClipBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398BE7FD2B46C164001595E0 /* AddClipBottomSheetView.swift */; };
+		398EAD1A2D2D5AAF00D523A6 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398EAD192D2D5AAF00D523A6 /* AppCoordinator.swift */; };
+		398EAD1D2D2D5C0100D523A6 /* CoordinatorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398EAD1C2D2D5C0100D523A6 /* CoordinatorFactory.swift */; };
 		39A232DD2CB8F28000ACC803 /* TipPathView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A232DC2CB8F28000ACC803 /* TipPathView.swift */; };
 		39A232DE2CB8F28000ACC803 /* TipPathView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A232DC2CB8F28000ACC803 /* TipPathView.swift */; };
 		39A232E02CB8F29A00ACC803 /* ToasterTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A232DF2CB8F29A00ACC803 /* ToasterTipView.swift */; };
@@ -358,6 +372,14 @@
 		390247A92B58016C00F9A86A /* PatchOpenLinkRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchOpenLinkRequestDTO.swift; sourceTree = "<group>"; };
 		39049C8C2B43EEF400C9196E /* ToastStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastStatus.swift; sourceTree = "<group>"; };
 		39049C8E2B43F70400C9196E /* ToasterBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToasterBottomSheetViewController.swift; sourceTree = "<group>"; };
+		3904AC1C2D2DED51001FEB8C /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
+		3904AC202D2DEDAA001FEB8C /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
+		3904AC222D2DEE28001FEB8C /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
+		3904AC242D2DEE49001FEB8C /* TimerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerCoordinator.swift; sourceTree = "<group>"; };
+		3904AC262D30FFC0001FEB8C /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
+		3904AC282D315924001FEB8C /* CoordinatorFinishOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorFinishOutput.swift; sourceTree = "<group>"; };
+		3904AC522D34D38D001FEB8C /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
+		3904AC562D379F00001FEB8C /* AddLinkCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLinkCoordinator.swift; sourceTree = "<group>"; };
 		390925C32B4EF64100487AA3 /* LinkWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkWebViewController.swift; sourceTree = "<group>"; };
 		390925C62B4EF66C00487AA3 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		390925CA2B4F049800487AA3 /* LinkWebNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkWebNavigationView.swift; sourceTree = "<group>"; };
@@ -371,6 +393,10 @@
 		391908412B56CFE4006F978A /* PatchEditPriorityCategoryRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchEditPriorityCategoryRequestDTO.swift; sourceTree = "<group>"; };
 		391908432B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchEditNameCategoryRequestDTO.swift; sourceTree = "<group>"; };
 		3924617F2CD0D1FB00C0CBC4 /* TipUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipUserDefaults.swift; sourceTree = "<group>"; };
+		3967F9692D2CE6B200B0E9FF /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		3967F96B2D2CE7BB00B0E9FF /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		3967F96F2D2CF03200B0E9FF /* ViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerFactory.swift; sourceTree = "<group>"; };
+		3967F9722D2D28FF00B0E9FF /* ClipCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipCoordinator.swift; sourceTree = "<group>"; };
 		396D7EC72C855F180034A14E /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		396D7ECA2C855F5F0034A14E /* LinkWebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkWebViewModel.swift; sourceTree = "<group>"; };
 		396D7ECC2C880F1F0034A14E /* LinkWebToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkWebToolBarView.swift; sourceTree = "<group>"; };
@@ -392,6 +418,8 @@
 		398BE7F92B467E4B001595E0 /* ClipListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipListCollectionViewCell.swift; sourceTree = "<group>"; };
 		398BE7FB2B468F80001595E0 /* ClipCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipCollectionHeaderView.swift; sourceTree = "<group>"; };
 		398BE7FD2B46C164001595E0 /* AddClipBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClipBottomSheetView.swift; sourceTree = "<group>"; };
+		398EAD192D2D5AAF00D523A6 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		398EAD1C2D2D5C0100D523A6 /* CoordinatorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorFactory.swift; sourceTree = "<group>"; };
 		39A232DC2CB8F28000ACC803 /* TipPathView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipPathView.swift; sourceTree = "<group>"; };
 		39A232DF2CB8F29A00ACC803 /* ToasterTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToasterTipView.swift; sourceTree = "<group>"; };
 		39A843C42B736039007A4D75 /* ClipViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipViewModel.swift; sourceTree = "<group>"; };
@@ -679,6 +707,18 @@
 			path = UpdateAlert;
 			sourceTree = "<group>";
 		};
+		3967F9682D2CE49F00B0E9FF /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				3967F96B2D2CE7BB00B0E9FF /* Router.swift */,
+				3967F9692D2CE6B200B0E9FF /* Coordinator.swift */,
+				3904AC282D315924001FEB8C /* CoordinatorFinishOutput.swift */,
+				398EAD1E2D2D5DA000D523A6 /* Coordinators */,
+				398EAD1B2D2D5BF100D523A6 /* Factory */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		396D7EC92C855F4F0034A14E /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -786,6 +826,30 @@
 				39A843C72B7364C4007A4D75 /* Cell */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		398EAD1B2D2D5BF100D523A6 /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				3967F96F2D2CF03200B0E9FF /* ViewControllerFactory.swift */,
+				398EAD1C2D2D5C0100D523A6 /* CoordinatorFactory.swift */,
+			);
+			path = Factory;
+			sourceTree = "<group>";
+		};
+		398EAD1E2D2D5DA000D523A6 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				398EAD192D2D5AAF00D523A6 /* AppCoordinator.swift */,
+				3904AC262D30FFC0001FEB8C /* LoginCoordinator.swift */,
+				3904AC1C2D2DED51001FEB8C /* TabBarCoordinator.swift */,
+				3904AC202D2DEDAA001FEB8C /* HomeCoordinator.swift */,
+				3967F9722D2D28FF00B0E9FF /* ClipCoordinator.swift */,
+				3904AC562D379F00001FEB8C /* AddLinkCoordinator.swift */,
+				3904AC222D2DEE28001FEB8C /* SearchCoordinator.swift */,
+				3904AC242D2DEE49001FEB8C /* TimerCoordinator.swift */,
+			);
+			path = Coordinators;
 			sourceTree = "<group>";
 		};
 		39A232DB2CB8F1B900ACC803 /* ToasterTipView */ = {
@@ -1015,6 +1079,7 @@
 		6B6AE67D2B3FF4EA000E2366 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				3967F9682D2CE49F00B0E9FF /* Coordinator */,
 				6B6AE64E2B3FF101000E2366 /* AppDelegate.swift */,
 				6B6AE6502B3FF101000E2366 /* SceneDelegate.swift */,
 			);
@@ -1224,6 +1289,7 @@
 			children = (
 				6B6AE6A12B3FF5F7000E2366 /* TabBarController.swift */,
 				830517622B42D871009FFB60 /* TabBarItem.swift */,
+				3904AC522D34D38D001FEB8C /* CustomTabBar.swift */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -2064,11 +2130,14 @@
 				6BE6DA5B2B50B46F008B06FA /* GetMainPageResponseDTO.swift in Sources */,
 				3F2FA1772B45C3E000EDBF95 /* AuthenticationAdapterProtocol.swift in Sources */,
 				6BC493792B4D6FB300544249 /* SearchEmptyResultView.swift in Sources */,
+				3967F96C2D2CE7BB00B0E9FF /* Router.swift in Sources */,
 				39BC5B192B411037004024E6 /* FontLiterals.swift in Sources */,
 				39E794F92B479C8600F16A38 /* ClipEmptyView.swift in Sources */,
 				39BE4BC02B4ABB9E002B471D /* DetailClipEmptyView.swift in Sources */,
 				3F6CD49D2B86229A00DEC113 /* CustomPageIndicatorView.swift in Sources */,
 				6BE6DAB32B547BEF008B06FA /* GetRecommendSiteResponseDTO.swift in Sources */,
+				3904AC252D2DEE49001FEB8C /* TimerCoordinator.swift in Sources */,
+				3904AC232D2DEE28001FEB8C /* SearchCoordinator.swift in Sources */,
 				6B6AE6532B3FF101000E2366 /* ViewController.swift in Sources */,
 				392461802CD0D1FB00C0CBC4 /* TipUserDefaults.swift in Sources */,
 				6B6AE6902B3FF59C000E2366 /* DetailClipViewController.swift in Sources */,
@@ -2081,10 +2150,12 @@
 				6BE6DA612B50B742008B06FA /* ClipAPIService.swift in Sources */,
 				830517AA2B4D95E9009FFB60 /* HomeFooterCollectionView.swift in Sources */,
 				832F0ED72C9C07EA00E38571 /* AddLinkViewModel.swift in Sources */,
+				398EAD1D2D2D5C0100D523A6 /* CoordinatorFactory.swift in Sources */,
 				39049C8D2B43EEF400C9196E /* ToastStatus.swift in Sources */,
 				8305178E2B4D1EF8009FFB60 /* WeeklyRecommendCollectionViewCell.swift in Sources */,
 				830517902B4D1FC7009FFB60 /* HomeHeaderCollectionView.swift in Sources */,
 				3FE828352B54E58E00F10732 /* APIInterceptor.swift in Sources */,
+				3904AC572D379F00001FEB8C /* AddLinkCoordinator.swift in Sources */,
 				6B6AE6932B3FF5A9000E2366 /* ClipViewController.swift in Sources */,
 				3F2FA17F2B4A31E900EDBF95 /* SocialLoginTokenModel.swift in Sources */,
 				39A843CE2B745B3A007A4D75 /* DetailClipPropertyType.swift in Sources */,
@@ -2093,6 +2164,7 @@
 				6BE6DA4D2B50B1EB008B06FA /* UserTargetType.swift in Sources */,
 				6B6AE6932B3FF5A9000E2366 /* ClipViewController.swift in Sources */,
 				8388E98C2BC8FAB200858C5C /* PatchEditLinkTitleRequestDTO.swift in Sources */,
+				3967F9732D2D28FF00B0E9FF /* ClipCoordinator.swift in Sources */,
 				6BE6DAAF2B547A81008B06FA /* SearchAPIService.swift in Sources */,
 				6BE6DA822B545786008B06FA /* PostSaveLinkRequestDTO.swift in Sources */,
 				830517632B42D871009FFB60 /* TabBarItem.swift in Sources */,
@@ -2124,6 +2196,7 @@
 				391908442B56D027006F978A /* PatchEditNameCategoryRequestDTO.swift in Sources */,
 				6BE6D9F42B4EF568008B06FA /* RemindTimerEditBottomSheetView.swift in Sources */,
 				6BE6DA3D2B5067CA008B06FA /* PostSocialLoginResponseDTO.swift in Sources */,
+				3904AC532D34D38D001FEB8C /* CustomTabBar.swift in Sources */,
 				398BE7F32B456367001595E0 /* ToasterToastMessageView.swift in Sources */,
 				3909A0622B62185E005A4546 /* ClipModel.swift in Sources */,
 				6BE6DA302B5054F6008B06FA /* PostSocialLoginRequestDTO.swift in Sources */,
@@ -2150,9 +2223,11 @@
 				3972155B2CA8DB1A009DF1F9 /* Publisher+UIGesture.swift in Sources */,
 				6B6AE6A82B3FF6D5000E2366 /* UITextField+.swift in Sources */,
 				6BE6DA652B50BA4F008B06FA /* PostAddCategoryRequestDTO.swift in Sources */,
+				3904AC272D30FFC0001FEB8C /* LoginCoordinator.swift in Sources */,
 				6BE6D9DE2B4E9054008B06FA /* AlarmOffStateButton.swift in Sources */,
 				390247AA2B58016C00F9A86A /* PatchOpenLinkRequestDTO.swift in Sources */,
 				8309F5882B8DCEAC00A1420A /* SelectClipViewModel.swift in Sources */,
+				3967F96A2D2CE6B200B0E9FF /* Coordinator.swift in Sources */,
 				39049C8F2B43F70400C9196E /* ToasterBottomSheetViewController.swift in Sources */,
 				6BE6DAB12B547BE1008B06FA /* GetMainPageSearchResponseDTO.swift in Sources */,
 				3FEA67502CB6522F00675805 /* ChangeClipBottomSheetView.swift in Sources */,
@@ -2167,6 +2242,7 @@
 				39BE4BB62B4ABA97002B471D /* DetailClipListCollectionViewCell.swift in Sources */,
 				3FE28DC22B879B1400B6AED8 /* OnboardingType.swift in Sources */,
 				3F617CB52B4EC2EE00956E69 /* MypageHeaderView.swift in Sources */,
+				3904AC1D2D2DED51001FEB8C /* TabBarCoordinator.swift in Sources */,
 				6BE6DA9C2B54752B008B06FA /* GetTimerMainpageResponseDTO.swift in Sources */,
 				6B6AE6AA2B3FF6EA000E2366 /* UIStackView+.swift in Sources */,
 				8305178A2B4D1E09009FFB60 /* UserClipCollectionViewCell.swift in Sources */,
@@ -2176,6 +2252,7 @@
 				6BE6DA9A2B54747B008B06FA /* TimerAPIService.swift in Sources */,
 				6BE6DA882B546B24008B06FA /* PatchOpenLinkResponseDTO.swift in Sources */,
 				396D7ECB2C855F5F0034A14E /* LinkWebViewModel.swift in Sources */,
+				398EAD1A2D2D5AAF00D523A6 /* AppCoordinator.swift in Sources */,
 				6BE6DA752B50C373008B06FA /* GetCheckCategoryResponseDTO.swift in Sources */,
 				396DCE012CA19F5C00FEF7C8 /* GetPopupInfoResponseDTO.swift in Sources */,
 				6BE6D9EF2B4EE98D008B06FA /* RemindModel.swift in Sources */,
@@ -2198,7 +2275,9 @@
 				6BE6D9F62B4F0F26008B06FA /* CompleteTimerEmptyCollectionViewCell.swift in Sources */,
 				6BE6D9E62B4EA499008B06FA /* RemindCollectionHeaderView.swift in Sources */,
 				6BE6DA5F2B50B734008B06FA /* ClipTargetType.swift in Sources */,
+				3904AC212D2DEDAA001FEB8C /* HomeCoordinator.swift in Sources */,
 				3F2FA17B2B4928A200EDBF95 /* LoginError.swift in Sources */,
+				3904AC292D315924001FEB8C /* CoordinatorFinishOutput.swift in Sources */,
 				39788C762CFF2A1300956A92 /* Publisher+Operator.swift in Sources */,
 				6BE6DA7E2B54572B008B06FA /* ToasterAPIService.swift in Sources */,
 				830517A72B4D7225009FFB60 /* HomeView.swift in Sources */,
@@ -2213,6 +2292,7 @@
 				6BE6DAAD2B547A77008B06FA /* SearchTargetType.swift in Sources */,
 				6B6AE6512B3FF101000E2366 /* SceneDelegate.swift in Sources */,
 				3FACF9B82B4FE306007E5A8F /* KeyChainService.swift in Sources */,
+				3967F9702D2CF03200B0E9FF /* ViewControllerFactory.swift in Sources */,
 				396DCDF52CA19EC600FEF7C8 /* PatchPopupHiddenResponseDTO.swift in Sources */,
 				3F2FA1812B4A32A200EDBF95 /* LogoutUseCase.swift in Sources */,
 				6BE6D9D62B4E8935008B06FA /* RemindAlarmOffView.swift in Sources */,

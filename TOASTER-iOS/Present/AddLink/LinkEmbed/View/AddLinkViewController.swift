@@ -13,11 +13,7 @@ import Then
 
 protocol SaveLinkButtonDelegate: AnyObject {
     func saveLinkButtonTapped()
-    func cancleLinkButtonTapped()
-}
-
-protocol AddLinkViewControllerPopDelegate: AnyObject {
-    func changeTabBarIndex()
+    func cancelLinkButtonTapped()
 }
 
 protocol SelectClipViewControllerDelegate: AnyObject {
@@ -26,16 +22,33 @@ protocol SelectClipViewControllerDelegate: AnyObject {
 
 final class AddLinkViewController: UIViewController {
     
+    // MARK: - View Controllable
+
+    var onLinkInputCompleted: ((String) -> Void)?
+    var onPopToRoot: (() -> Void)?
+        
     // MARK: - Properties
     
-    private weak var delegate: AddLinkViewControllerPopDelegate?
+    private var isNavigationBarHidden: Bool
+    
+    // private weak var delegate: AddLinkViewControllerPopDelegate?
     private weak var urldelegate: SelectClipViewControllerDelegate?
     
     private var addLinkView = AddLinkView()
-    private var viewModel = AddLinkViewModel()
+    private var viewModel: AddLinkViewModel!
     private var cancelBag = CancelBag()
     
     // MARK: - Life Cycle
+    
+    init(viewModel: AddLinkViewModel, isNavigationBarHidden: Bool) {
+        self.viewModel = viewModel
+        self.isNavigationBarHidden = isNavigationBarHidden
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,25 +61,19 @@ final class AddLinkViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         setupNavigationBar()
-        navigationBarHidden(forHidden: true)
+        if !isNavigationBarHidden { self.navigationController?.isNavigationBarHidden = false }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        navigationBarHidden(forHidden: false)
+        if !isNavigationBarHidden { navigationController?.isNavigationBarHidden = true }
     }
 }
 
 // MARK: - extension
 
 extension AddLinkViewController {
-    func setupDelegate(forDelegate: AddLinkViewControllerPopDelegate) {
-        delegate = forDelegate
-    }
-    
     /// 클립보드 붙여넣기 Alert -> 붙여넣기 허용 클릭 후 자동 링크 임베드를 위한 함수
     func embedURL(url: String) {
         addLinkView.linkEmbedTextField.becomeFirstResponder()
@@ -100,19 +107,17 @@ private extension AddLinkViewController {
    }
     
     func setupNavigationBar() {
-        let type: ToasterNavigationType = ToasterNavigationType(hasBackButton: false,
-                                                                hasRightButton: true,
-                                                                mainTitle: StringOrImageType.string("링크 저장"),
-                                                                rightButton: StringOrImageType.image(.icClose24),
-                                                                rightButtonAction: closeButtonTapped)
+        let type: ToasterNavigationType = ToasterNavigationType(
+            hasBackButton: false,
+            hasRightButton: true,
+            mainTitle: StringOrImageType.string("링크 저장"),
+            rightButton: StringOrImageType.image(.icClose24),
+            rightButtonAction: closeButtonTapped
+        )
         
         if let navigationController = navigationController as? ToasterNavigationController {
             navigationController.setupNavigationBar(forType: type)
         }
-    }
-    
-    func navigationBarHidden(forHidden: Bool) {
-        tabBarController?.tabBar.isHidden = forHidden
     }
     
     func closeButtonTapped() {
@@ -124,18 +129,12 @@ private extension AddLinkViewController {
     }
     
     func rightButtonTapped() {
-        dismiss(animated: false)
-        delegate?.changeTabBarIndex()
-        navigationController?.popViewController(animated: false)
+        onPopToRoot?()
     }
     
     @objc func tappedNextBottomButton() {
-        let selectClipViewController = SelectClipViewController()
-        selectClipViewController.linkURL = addLinkView.linkEmbedTextField.text ?? ""
-        selectClipViewController.delegate = self
-        self.navigationController?.pushViewController(selectClipViewController, animated: true)
+        onLinkInputCompleted?(addLinkView.linkEmbedTextField.text ?? "")
     }
-    
 }
 
 extension AddLinkViewController {
@@ -178,15 +177,5 @@ extension AddLinkViewController {
                 }
             }
             .store(in: cancelBag)
-    }
-}
-
-extension AddLinkViewController: SaveLinkButtonDelegate {
-    func saveLinkButtonTapped() {
-        delegate?.changeTabBarIndex()
-    }
-    
-    func cancleLinkButtonTapped() {
-        delegate?.changeTabBarIndex()
     }
 }

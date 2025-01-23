@@ -16,9 +16,13 @@ enum RemindTimerAddButtonType {
 
 final class RemindTimerAddViewController: UIViewController {
     
+    // MARK: - View Controllable
+
+    var onPopToRoot: (() -> Void)?
+    
     // MARK: - Properties
     
-    private let viewModel = RemindTimerAddViewModel()
+    private let viewModel: RemindTimerAddViewModel!
     
     private let labelDateformatter = DateFormatter()
     private let networkDateformatter = DateFormatter()
@@ -60,6 +64,15 @@ final class RemindTimerAddViewController: UIViewController {
     private let completeButton: UIButton = UIButton()
     
     // MARK: - Life Cycle
+    
+    init(viewModel: RemindTimerAddViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -275,12 +288,12 @@ private extension RemindTimerAddViewController {
     }
     
     func patchSuccessAction() {
-        self.navigationController?.popToRootViewController(animated: true)
+        onPopToRoot?()
         self.navigationController?.showToastMessage(width: 169, status: .check, message: StringLiterals.ToastMessage.completeSetTimer)
     }
     
     func editSuccessAction() {
-        self.navigationController?.popToRootViewController(animated: true)
+        onPopToRoot?()
         self.navigationController?.showToastMessage(width: 169, status: .check, message: StringLiterals.ToastMessage.completeEditTimer)
     }
     
@@ -329,12 +342,11 @@ private extension RemindTimerAddViewController {
                   forSubText: "지금까지 진행한 타이머 설정이\n사라져요",
                   forLeftButtonTitle: StringLiterals.Button.close,
                   forRightButtonTitle: StringLiterals.Button.cancel,
-                  forRightButtonHandler: makeTimerCancle)
+                  forRightButtonHandler: makeTimerCancel)
     }
     
-    func makeTimerCancle() {
-        dismiss(animated: false)
-        navigationController?.popToRootViewController(animated: true)
+    func makeTimerCancel() {
+        onPopToRoot?()
     }
     
     /// 매일, 주중, 주말 -> 요일 값으로 바꿔주기 위한 함수
@@ -371,15 +383,23 @@ private extension RemindTimerAddViewController {
         switch buttonType {
         case .add:
             guard let categoryID else { return }
-            self.viewModel.postClipData(forClipID: categoryID,
-                                        forModel: RemindTimerAddModel(clipTitle: "", 
-                                                                      remindTime: dateString,
-                                                                      remindDates: Array(selectedIndex)))
+            self.viewModel.postClipData(
+                forClipID: categoryID,
+                forModel: RemindTimerAddModel(
+                    clipTitle: "",
+                    remindTime: dateString,
+                    remindDates: Array(selectedIndex)
+                )
+            )
         case .edit:
             guard let timerID else { return }
-            self.viewModel.editClipData(forModel: RemindTimerEditModel(remindID: timerID,
-                                                                       remindTime: dateString,
-                                                                       remindDates: Array(selectedIndex)))
+            self.viewModel.editClipData(
+                forModel: RemindTimerEditModel(
+                    remindID: timerID,
+                    remindTime: dateString,
+                    remindDates: Array(selectedIndex)
+                )
+            )
         }
     }
 }

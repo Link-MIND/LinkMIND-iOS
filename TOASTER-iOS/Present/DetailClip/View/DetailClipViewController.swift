@@ -13,9 +13,13 @@ import Then
 
 final class DetailClipViewController: UIViewController {
     
-    // MARK: - Data Stream
+    // MARK: - View Controllable
     
-    private let viewModel = DetailClipViewModel()
+    var onLinkSelected: ((String, Bool, Int) -> Void)?
+    
+    // MARK: - Data Streams
+    
+    private let viewModel: DetailClipViewModel!
     private var cancelBag = CancelBag()
     
     private var requestToastList = PassthroughSubject<Bool, Never>()
@@ -66,6 +70,15 @@ final class DetailClipViewController: UIViewController {
     )
     
     // MARK: - Life Cycle
+    
+    init(viewModel: DetailClipViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -359,14 +372,10 @@ extension DetailClipViewController: UICollectionViewDataSource {
 extension DetailClipViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         indexNumber = indexPath.item
-        let nextVC = LinkWebViewController()
-        nextVC.hidesBottomBarWhenPushed = true
-        nextVC.setupDataBind(
-            linkURL: viewModel.toastList.toastList[indexPath.item].url,
-            isRead: viewModel.toastList.toastList[indexPath.item].isRead,
-            id: viewModel.toastList.toastList[indexPath.item].id
-        )
-        self.navigationController?.pushViewController(nextVC, animated: true)
+        let linkURL = viewModel.toastList.toastList[indexPath.item].url
+        let isRead = viewModel.toastList.toastList[indexPath.item].isRead
+        let id = viewModel.toastList.toastList[indexPath.item].id
+        onLinkSelected?(linkURL, isRead, id)
     }
 }
 

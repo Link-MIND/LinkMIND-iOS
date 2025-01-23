@@ -12,9 +12,14 @@ import Then
 
 final class SearchViewController: UIViewController {
     
+    // MARK: - View Controllable
+    
+    var onLinkItemSelected: ((String, Bool, Int) -> Void)?
+    var onClipItemSelected: ((Int, String) -> Void)?
+    
     // MARK: - Properties
     
-    private let viewModel = SearchViewModel()
+    private let viewModel: SearchViewModel!
     
     private var isSearching: Bool = true {
         didSet {
@@ -36,6 +41,15 @@ final class SearchViewController: UIViewController {
     private let searchResultCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     // MARK: - Life Cycle
+    
+    init(viewModel: SearchViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -144,9 +158,11 @@ private extension SearchViewController {
     }
     
     func setupViewModel() {
-        viewModel.setupDataChangeAction(changeAction: reloadCollectionView,
-                                        emptyAction: reloadEmptyView,
-                                        forUnAuthorizedAction: unAuthorizedAction)
+        viewModel.setupDataChangeAction(
+            changeAction: reloadCollectionView,
+            emptyAction: reloadEmptyView,
+            forUnAuthorizedAction: unAuthorizedAction
+        )
     }
     
     func reloadCollectionView() {
@@ -177,12 +193,13 @@ private extension SearchViewController {
     }
     
     func setupNavigationBar() {
-        let type: ToasterNavigationType = ToasterNavigationType(hasBackButton: false,
-                                                                hasRightButton: false,
-                                                                mainTitle: StringOrImageType.string(StringLiterals.Tabbar.search),
-                                                                rightButton: StringOrImageType.string(""),
-                                                                rightButtonAction: {})
-        
+        let type: ToasterNavigationType = ToasterNavigationType(
+            hasBackButton: false,
+            hasRightButton: false,
+            mainTitle: StringOrImageType.string(StringLiterals.Tabbar.search),
+            rightButton: StringOrImageType.string(""),
+            rightButtonAction: {}
+        )
         if let navigationController = navigationController as? ToasterNavigationController {
             navigationController.setupNavigationBar(forType: type)
         }
@@ -220,17 +237,10 @@ extension SearchViewController: UICollectionViewDelegate {
         switch indexPath.section {
         case 0:
             let data = viewModel.searchResultData.detailClipList[indexPath.item]
-            let webViewController = LinkWebViewController()
-            webViewController.setupDataBind(linkURL: data.link,
-                                            isRead: false,
-                                            id: data.iD)
-            navigationController?.pushViewController(webViewController, animated: true)
+            onLinkItemSelected?(data.link, data.isRead, data.iD)
         case 1:
             let data = viewModel.searchResultData.clipList[indexPath.item]
-            let detailClipViewController = DetailClipViewController()
-            detailClipViewController.setupCategory(id: data.iD,
-                                                   name: data.title)
-            navigationController?.pushViewController(detailClipViewController, animated: true)
+            onClipItemSelected?(data.iD, data.title)
         default: break
         }
     }

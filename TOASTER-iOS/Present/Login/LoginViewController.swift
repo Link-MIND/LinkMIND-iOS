@@ -14,6 +14,8 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Properties
     
+    var onLoginCompleted: (() -> Void)?
+    
     var loginUseCase: LoginUseCase?
     private var currentIndex = 0
     
@@ -22,7 +24,11 @@ final class LoginViewController: UIViewController {
     private let kakaoSocialLoginButtonView = SocialLoginButtonView(type: .kakao)
     private let appleSocialLoginButtonView = SocialLoginButtonView(type: .apple)
     private let socialLoginButtonStackView = UIStackView()
-    private let onboardingPageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+    private let onboardingPageViewController = UIPageViewController(
+        transitionStyle: .scroll,
+        navigationOrientation: .horizontal,
+        options: nil
+    )
     private let customPageIndicatorView = CustomPageIndicatorView()
     
     // MARK: - Life Cycle
@@ -122,9 +128,13 @@ private extension LoginViewController {
     func fetchTokenSocialLogin(token: String, socialType: String) async throws -> Bool {
         return try await withCheckedThrowingContinuation { continuation in
         
-            NetworkService.shared.authService.postSocialLogin(socialToken: token, 
-                                                              requestBody: PostSocialLoginRequestDTO(socialType: socialType,
-                                                                                                     fcmToken: KeyChainService.loadFCMToken(key: Config.fcmTokenKey) ?? "")) { result in
+            NetworkService.shared.authService.postSocialLogin(
+                socialToken: token,
+                requestBody: PostSocialLoginRequestDTO(
+                    socialType: socialType,
+                    fcmToken: KeyChainService.loadFCMToken(key: Config.fcmTokenKey) ?? ""
+                )
+            ) { result in
                 switch result {
                 case .success(let response):
                     /// Decoding 하는 과정 중 생길 수 있는 오류
@@ -167,7 +177,7 @@ private extension LoginViewController {
         
                 if serverResult == true {
                     UserDefaults.standard.set("\(Config.kakaoLogin)", forKey: Config.loginType)
-                    self.changeViewController(viewController: TabBarController())
+                    onLoginCompleted?()
                 }
             } catch {
                 guard let error = error as? LoginError else { return }
@@ -194,7 +204,7 @@ private extension LoginViewController {
                 
                 if serverResult == true {
                     UserDefaults.standard.set(Config.appleLogin, forKey: Config.loginType)
-                    self.changeViewController(viewController: TabBarController())
+                    onLoginCompleted?()
                 }
             } catch let error {
                 print("Apple Login Error:", error)

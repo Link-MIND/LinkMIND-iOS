@@ -11,10 +11,15 @@ import SnapKit
 import Then
 
 final class RemindSelectClipViewController: UIViewController {
+    
+    // MARK: - View Controllable
+    
+    var onEditTimerSelected: ((RemindClipModel?) -> Void)?
+    var onPopToRoot: (() -> Void)?
 
     // MARK: - Properties
     
-    private let viewModel = RemindSelectClipViewModel()
+    private let viewModel: RemindSelectClipViewModel!
     
     private var selectedClip: RemindClipModel? {
         didSet {
@@ -28,6 +33,15 @@ final class RemindSelectClipViewController: UIViewController {
     private let nextButton: UIButton = UIButton()
     
     // MARK: - Life Cycle
+    
+    init(viewModel: RemindSelectClipViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,18 +128,15 @@ private extension RemindSelectClipViewController {
                   forSubText: "지금까지 진행한 타이머 설정이\n사라져요",
                   forLeftButtonTitle: StringLiterals.Button.close,
                   forRightButtonTitle: StringLiterals.Button.cancel,
-                  forRightButtonHandler: makeTimerCancle)
+                  forRightButtonHandler: makeTimerCancel)
     }
         
-    func makeTimerCancle() {
-        dismiss(animated: false)
-        navigationController?.popViewController(animated: true)
+    func makeTimerCancel() {
+        onPopToRoot?()
     }
     
     @objc func nextButtonTapped() {
-        let nextViewController = RemindTimerAddViewController()
-        nextViewController.configureView(forModel: selectedClip)
-        navigationController?.pushViewController(nextViewController, animated: true)
+        onEditTimerSelected?(selectedClip)
     }
 }
 
